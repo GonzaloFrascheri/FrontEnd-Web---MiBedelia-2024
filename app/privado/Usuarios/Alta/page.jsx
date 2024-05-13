@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import RegistroBasico from '../componentes/registro/registroBasico.jsx';
+import RegistroBasico from '../componentes/registro/registroCompleto.jsx';
 
 function RegistrarPage() {
 
@@ -17,7 +17,8 @@ function RegistrarPage() {
     username: "",
     email: "",
     password: "",
-    telefono: ""
+    telefono: "",
+    rol: ""
   });
   const handleChange = (e) => {
     setCredentials({

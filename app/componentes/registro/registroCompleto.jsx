@@ -52,6 +52,15 @@ export default function Index( {estado, credentials, handleChange, handleSubmit}
                                                             )}
                                                         </div>
                                                     </div>
+                                                    <div className="col-md-6">
+                                                        <div className="mb-3">
+                                                            <label className="small mb-1" >Rol</label>
+                                                            <input className="form-control"   name="rol" type="text" id="rol" onChange={handleChange} required />
+                                                            {credentials.rol === "" && (
+                                                                <span className="text-red-500 text-xs">Este campo es requerido</span>
+                                                            )}
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div className="row gx-3">
                                                     <div className="col-md-12">

@@ -3,18 +3,34 @@ import React from "react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDashboard, faBook, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faDashboard, faBook, faAngleDown, faUserTie, faArrowsToCircle, faPenFancy, faGraduationCap} from '@fortawesome/free-solid-svg-icons';
 
 
 export default function Sidebar() {
 
   const [currentPath, setCurrentPath] = useState('');
 
-  const [collapseCursos, setCollapseCursos] = useState(false);
+  const [collapseAdministrador, setCollapseAdministrador] = useState(false);
+  const [collapseCoordinador, setCollapseCoordinador] = useState(false);
+  const [collapseFuncionario, setCollapseFuncionario] = useState(false);
+  const [collapseEstudiante, setCollapseEstudiante] = useState(false);
+
   const [collapseOtroElemento, setCollapseOtroElemento] = useState(false);
 
-  const toggleCollapseCursos = () => {
-    setCollapseCursos(!collapseCursos);
+  const toggleCollapseAdministrador = () => {
+    setCollapseAdministrador(!collapseAdministrador);
+  };
+
+  const toggleCollapseCoordinador = () => {
+    setCollapseCoordinador(!collapseCoordinador);
+  };
+
+  const toggleCollapseFuncionario = () => {
+    setCollapseFuncionario(!collapseFuncionario);
+  };
+
+  const toggleCollapseEstudiante = () => {
+    setCollapseEstudiante(!collapseEstudiante);
   };
 
   const toggleCollapseOtroElemento = () => {
@@ -31,17 +47,74 @@ export default function Sidebar() {
         <div className="sidenav-menu">
           <div className="nav accordion" id="accordionSidenav">
             <div className="sidenav-menu-heading">Principal</div>
+
+            {/* Administrador */}
             <a className="nav-link collapsed" 
-              onClick={toggleCollapseCursos}
-              aria-expanded={collapseCursos ? 'true' : 'false'}
-              data-bs-toggle="collapse" data-bs-target="#collapsePrincipal" aria-controls="collapsePrincipal">
-                <div className="nav-link-icon"><FontAwesomeIcon icon={faDashboard} /></div>
+              onClick={toggleCollapseAdministrador}
+              aria-expanded={collapseAdministrador ? 'true' : 'false'}
+              data-bs-toggle="collapse" data-bs-target="#collapseAdministrador" aria-controls="collapseAdministrador">
+                <div className="nav-link-icon"><FontAwesomeIcon icon={faUserTie} /></div>
                 Administrador
                 <div className="sidenav-collapse-arrow"><FontAwesomeIcon icon={faAngleDown} /></div>
             </a>
-            <div className={`collapse ${collapseCursos ? 'show' : ''}`} id="collapsePrincipal" data-bs-parent="#accordionSidenav">
+            <div className={`collapse ${collapseAdministrador ? 'show' : ''}`} id="collapseAdministrador" data-bs-parent="#accordionSidenav">
                 <nav className="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
-                    <a className="nav-link" href="/privado">Dashboard</a>
+                    <a className="nav-link" href="/privado">Alta de Usuario</a>
+                    <a className="nav-link" href="/privado">Baja de Usuario</a>
+                    <a className="nav-link" href="/privado">Listar Usuarios</a>
+                </nav>
+            </div>
+
+            {/** Coordinador */} 
+            <a className="nav-link collapsed" 
+              onClick={toggleCollapseCoordinador}
+              aria-expanded={collapseCoordinador ? 'true' : 'false'}
+              data-bs-toggle="collapse" data-bs-target="#collapseCoordinador" aria-controls="collapseCoordinador">
+                <div className="nav-link-icon"><FontAwesomeIcon icon={faArrowsToCircle} /></div>
+                Coordinador
+                <div className="sidenav-collapse-arrow"><FontAwesomeIcon icon={faAngleDown} /></div>
+            </a>
+            <div className={`collapse ${collapseCoordinador ? 'show' : ''}`} id="collapseCoordinador" data-bs-parent="#accordionSidenav">
+                <nav className="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
+                    <a className="nav-link" href="/privado">Alta Carrera</a>
+                    <a className="nav-link" href="/privado">Alta Asignatura</a>
+                </nav>
+            </div>
+
+            {/** Funcionario */}
+            <a className="nav-link collapsed" 
+              onClick={toggleCollapseFuncionario}
+              aria-expanded={collapseFuncionario ? 'true' : 'false'}
+              data-bs-toggle="collapse" data-bs-target="#collapseFuncionario" aria-controls="collapseFuncionario">
+                <div className="nav-link-icon"><FontAwesomeIcon icon={faPenFancy} /></div>
+                Funcionario
+                <div className="sidenav-collapse-arrow"><FontAwesomeIcon icon={faAngleDown} /></div>
+            </a>
+            <div className={`collapse ${collapseFuncionario ? 'show' : ''}`} id="collapseFuncionario" data-bs-parent="#accordionSidenav">
+                <nav className="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
+                    <a className="nav-link" href="/privado">Generar acta fin de curso</a>
+                    <a className="nav-link" href="/privado">Generar acta examen</a>
+                    <a className="nav-link" href="/privado">Registro de horario a asignatura</a>
+                    <a className="nav-link" href="/privado">Registro periodo de examen</a>
+                    <a className="nav-link" href="/privado">Registro examen relacionado asignatura dada</a>
+                    <a className="nav-link" href="/privado">Alta docente</a>
+                </nav>
+            </div>
+
+            {/* Estudiante */}
+            <a className="nav-link collapsed" 
+              onClick={toggleCollapseEstudiante}
+              aria-expanded={collapseEstudiante ? 'true' : 'false'}
+              data-bs-toggle="collapse" data-bs-target="#collapseEstudiante" aria-controls="collapseEstudiante">
+                <div className="nav-link-icon"><FontAwesomeIcon icon={faGraduationCap} /></div>
+                Estudiante
+                <div className="sidenav-collapse-arrow"><FontAwesomeIcon icon={faAngleDown} /></div>
+            </a>
+            <div className={`collapse ${collapseEstudiante ? 'show' : ''}`} id="collapseEstudiante" data-bs-parent="#accordionSidenav">
+                <nav className="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
+                    <a className="nav-link" href="/privado">Inscripción a una carrera</a>
+                    <a className="nav-link" href="/privado">Inscripción a una asignatura</a>
+                    <a className="nav-link" href="/privado">Inscripción a un examen</a>
                 </nav>
             </div>
 
