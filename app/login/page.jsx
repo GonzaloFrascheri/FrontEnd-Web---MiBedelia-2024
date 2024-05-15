@@ -10,12 +10,15 @@ const provider = new GoogleAuthProvider();
 
 function LoginPage() {
   const router = useRouter();
-  // constantes apra login
+
+  // constantes para el login
+  
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
     google: ""
   });
+  
   const [userData, setUserData] = useState({
     nombre: "",
     username: "",
