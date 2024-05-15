@@ -1,6 +1,8 @@
 'use client'
 
-import { useState } from "react";
+import React, { useState } from "react";
+import Sidebar from "../../../componentes/siders/sidebar.jsx";
+import NavPrivado from '../../../componentes/navs/nav-privado.jsx';
 
 function AltaCarrera() {
   const [formData, setFormData] = useState({
@@ -10,7 +12,7 @@ function AltaCarrera() {
     descripcion: ""
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
       ...prevState,
@@ -18,7 +20,7 @@ function AltaCarrera() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     // Aquí puedes enviar los datos del formulario a tu backend o realizar cualquier otra acción necesaria
     console.log(formData);
@@ -31,55 +33,75 @@ function AltaCarrera() {
     });
   };
 
+  const [isSidebarToggled, setIsSidebarToggled] = useState(false);
+  const toggleSidebar = () => {
+      setIsSidebarToggled(!isSidebarToggled);
+  };
+
   return (
-    <div>
-      <h1>Alta de Carrera</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="nombre">Nombre:</label>
-          <input
-            type="text"
-            id="nombre"
-            name="nombre"
-            value={formData.nombre}
-            onChange={handleChange}
-            required
-          />
+    <div className="container mt-5">
+      <div className="card">
+        <div className="card-header">
+          <h1 className="text-center">Alta de Carrera</h1>
         </div>
-        <div>
-          <label htmlFor="duracion">Duración:</label>
-          <input
-            type="text"
-            id="duracion"
-            name="duracion"
-            value={formData.duracion}
-            onChange={handleChange}
-            required
-          />
+        <div className="card-body">
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label htmlFor="nombre" className="form-label">Nombre:</label>
+              <input
+                type="text"
+                id="nombre"
+                name="nombre"
+                value={formData.nombre}
+                onChange={handleChange}
+                className="form-control"
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="duracion" className="form-label">Duración:</label>
+              <input
+                type="text"
+                id="duracion"
+                name="duracion"
+                value={formData.duracion}
+                onChange={handleChange}
+                className="form-control"
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="nivel" className="form-label">Nivel:</label>
+              <input
+                type="text"
+                id="nivel"
+                name="nivel"
+                value={formData.nivel}
+                onChange={handleChange}
+                className="form-control"
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="descripcion" className="form-label">Descripción:</label>
+              <textarea
+                id="descripcion"
+                name="descripcion"
+                value={formData.descripcion}
+                onChange={handleChange}
+                className="form-control"
+                required
+              ></textarea>
+              <div></div>
+              <button type="submit" className="btn btn-primary">Guardar</button>
+            </div>
+              
+              <div className="card-footer text-center">
+                  <div className="small"><a href="./">Volver al inicio</a></div>
+              </div>
+          </form>
         </div>
-        <div>
-          <label htmlFor="nivel">Nivel:</label>
-          <input
-            type="text"
-            id="nivel"
-            name="nivel"
-            value={formData.nivel}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="descripcion">Descripción:</label>
-          <textarea
-            id="descripcion"
-            name="descripcion"
-            value={formData.descripcion}
-            onChange={handleChange}
-            required
-          ></textarea>
-        </div>
-        <button type="submit">Guardar</button>
-      </form>
+      </div>
     </div>
   );
 }
