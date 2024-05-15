@@ -1,5 +1,3 @@
-
-```bash
 # instala next
 npm i next
 # instalar typescript
@@ -35,6 +33,29 @@ npm i --save @fortawesome/fontawesome-svg-core
 npm i --save @fortawesome/free-solid-svg-icons
 npm i --save @fortawesome/free-regular-svg-icons
 npm i --save @fortawesome/free-brands-svg-icons
+npm i react-native-vector-icons
+
+## uso
+```bash
+import Icon from 'react-native-vector-icons/Feather';
+
+const MyIcon = () => <Icon name="home" size={30} color="#000" />;
+```
+
+
+# tools tips
+npm i react-native-elements
+## uso
+```bash
+import { Tooltip, Text } from 'react-native-elements';
+
+const MyTooltip = () => (
+  <Tooltip popover={<Text>Info here</Text>}>
+    <Text>Press me</Text>
+  </Tooltip>
+);
+```
+
 
 # base de datos en vercel
 # copair archivo de confirguacion en .env

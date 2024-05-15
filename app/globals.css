@@ -16471,6 +16471,33 @@ body {
           animation-timing-function: opacity cubic-bezier(0, 1, 0.4, 1);
 }
 
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(90deg);
+  }
+}
+
+.rotate {
+  animation: rotate 0.5s linear;
+}
+
+@keyframes rotate-0 {
+  from {
+    transform: rotate(90deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.rotate-0 {
+  animation: rotate 0.5s linear;
+}
+
+
 .bg-gradient-primary-to-secondary {
   background-color: #0061f2 !important;
   background-image: linear-gradient(135deg, #0061f2 0%, rgba(105, 0, 199, 0.8) 100%) !important;

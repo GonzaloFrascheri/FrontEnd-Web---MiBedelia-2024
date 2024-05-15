@@ -1,12 +1,15 @@
 "use client";
-
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import RegistroBasico from '../componentes/registro/registroCompleto.jsx';
+import Sidebar from "../../../componentes/siders/sidebar.jsx";
+import MainDashboard from "../../../componentes/main/dashboard.jsx";
+import NavPrivado from '../../../componentes/navs/nav-privado.jsx';
+import RegistroBasico from '../../../componentes/registro/registroCompleto.jsx';
 
 function RegistrarPage() {
 
   const router = useRouter();
+  const [data, setData] = useState('');
   const [estado, setEstado] = useState({
     message: "",
     estado: ""
@@ -20,6 +23,10 @@ function RegistrarPage() {
     telefono: "",
     rol: ""
   });
+  const [isSidebarToggled, setIsSidebarToggled] = useState(false);
+  const toggleSidebar = () => {
+      setIsSidebarToggled(!isSidebarToggled);
+  };
   const handleChange = (e) => {
     setCredentials({
       ...credentials,
@@ -74,9 +81,17 @@ function RegistrarPage() {
   };
 
   return (
-    <>
+    <body className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}>
+      <NavPrivado data={data} isSidebarToggled={isSidebarToggled} toggleSidebar={toggleSidebar} />
+      <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+          <Sidebar isSidebarToggled={isSidebarToggled} />
+        </div>
+        <div id="layoutSidenav_content">
       <RegistroBasico estado={estado} credentials={credentials} handleChange={handleChange} handleSubmit={handleSubmit} />
-    </>
+      </div>
+      </div>
+    </body>
   );
 }
 

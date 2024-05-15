@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDashboard, faBook, faAngleDown, faUserTie, faArrowsToCircle, faPenFancy, faGraduationCap} from '@fortawesome/free-solid-svg-icons';
 
 
-export default function Sidebar() {
+export default function Sidebar({ isSidebarToggled }) {
 
   const [currentPath, setCurrentPath] = useState('');
 
@@ -43,6 +43,7 @@ export default function Sidebar() {
   }, []);
 
   return (
+    isSidebarToggled && (
       <nav className="sidenav shadow-right sidenav-light">
         <div className="sidenav-menu">
           <div className="nav accordion" id="accordionSidenav">
@@ -59,9 +60,9 @@ export default function Sidebar() {
             </a>
             <div className={`collapse ${collapseAdministrador ? 'show' : ''}`} id="collapseAdministrador" data-bs-parent="#accordionSidenav">
                 <nav className="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
-                    <a className="nav-link" href="/privado">Alta de Usuario</a>
-                    <a className="nav-link" href="/privado">Baja de Usuario</a>
-                    <a className="nav-link" href="/privado">Listar Usuarios</a>
+                    <a className="nav-link" href="/privado/Usuarios/Alta">Alta de Usuario</a>
+                    <a className="nav-link" href="/privado/Usuarios/Baja/">Baja de Usuario</a>
+                    <a className="nav-link" href="/privado/Usuarios/Listar">Listar Usuarios</a>
                 </nav>
             </div>
 
@@ -137,5 +138,6 @@ export default function Sidebar() {
           </div>
         </div>
       </nav>
+    )
   );
 }

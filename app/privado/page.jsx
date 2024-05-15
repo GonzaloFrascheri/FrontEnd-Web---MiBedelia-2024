@@ -10,6 +10,11 @@ function PrivadoPage() {
   const router = useRouter();
   const [data, setData] = useState('');
 
+  const [isSidebarToggled, setIsSidebarToggled] = useState(false);
+  const toggleSidebar = () => {
+      setIsSidebarToggled(!isSidebarToggled);
+  };
+
   useEffect(() => {
     const token = sessionStorage.getItem("tokenFront");
     if (!token) {
@@ -20,17 +25,17 @@ function PrivadoPage() {
   }, []);
 
   return (
-    <>
-      <NavPrivado data={data} />
+    <body className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}>
+      <NavPrivado data={data} isSidebarToggled={isSidebarToggled} toggleSidebar={toggleSidebar} />
       <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
-          <Sidebar />
+          <Sidebar isSidebarToggled={isSidebarToggled} />
         </div>
         <div id="layoutSidenav_content">
           <MainDashboard data={data} />
         </div>
       </div>
-    </>
+    </body>
   );
 
 }

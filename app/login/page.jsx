@@ -28,94 +28,33 @@ function LoginPage() {
     uidgoogle: ""
   });
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDljci4JPTaLFqO40GiqaIUIzZfZZWUr9c",
-    authDomain: "prototipo1-1e6c8.firebaseapp.com",
-    projectId: "prototipo1-1e6c8",
-    storageBucket: "prototipo1-1e6c8.appspot.com",
-    messagingSenderId: "859805179851",
-    appId: "1:859805179851:web:1b3f384c7f289a4de7604e",
-    measurementId: "G-DX5HY70DDV"
-  }
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth();
+  const [error, setError] = useState('El nombre de usuario debe tener 8 dígitos.');
+  const handleUsernameChange = (e) => {
+    const value = e.target.value;
+    if (/^\d{0,8}$/.test(value)) {
+      setCredentials({ ...credentials, username: value });
+      if (value.length === 8) {
+        setError('');
+      } else {
+        setError('El nombre de usuario debe tener 8 dígitos.');
+      }
+    }
+  };
 
-  // login por google
-  function call_login_google() {
-    signInWithPopup(auth, provider)
-    .then((result) => {
-
-      setCredentials({ ...credentials, google: "google" });
-
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      // The signed-in user info.
-      const user = result.user;
-      // IdP data available using getAdditionalUserInfo(result)
-  
-      setUserData({ ...userData
-        , nombre: user.displayName
-        , email: user.email
-        , telefono: user.phoneNumber
-        , img: user.photoURL
-        , uidgoogle: user.uid
-        , token: user.accessToken
-      });
-      
-      // enviar token de google al backend
-
-      res = fetch('http://localhost:8080/verifyToken', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'text/plain'
-        },
-        mode: 'cors',
-        body: user.accessToken
-      }).then(res => {
-        if (res.status !== 200) {
-          if (res.status === 401) 
-            throw new Error('Credenciales incorrectas.');
-          else
-            throw new Error('Error en la conexión.');
-        }
-        return res.json();
-      }).then(data => {
-        //console.log(data.evento, data.token);
-        if (data.evento === 'success') {
-          if (data.token === null){
-            // No esta Registrado
-            // alert('No estas registrado en la aplicación. Por favor registrate.');
-            
-            // router.push("/registrarGoogle", { userData: userData });
-          }else{
-            // Esta Registrado
-
-            alert('Bienvenido ' + data.nombre + ' ' + data.apellido + ' a la aplicación.')
-            //router.push("/privado");
-          }
-        }
-        //router.push("/privado");
-      }).catch(error => {
-        alert(error.message, error.evento);
-      });
-        
-      
-       /**
-       * creo una ruta privada para el usuario
-       * y le paso los datos del usuario
-       */
-     // router.push("/privado", { userData: userData });
-      
-    }).catch((error) => {
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    });
+  const [errorP, setErrorP] = useState('La contraseña debe tener al menos 4 caracteres.');
+  const handlePaswordChange = (e) => {
+    const value = e.target.value;
+    if (value.length >= 4) {
+      setCredentials({ ...credentials, password: value });
+      setErrorP('');
+    } else {
+      setErrorP('La contraseña debe tener al menos 4 caracteres.');
+    }
   }
 
   // enviar formulario de login
   const handleSubmit = async (e) => {
-    console.log(credentials);
+    //console.log(credentials);
     e.preventDefault();
     fetch('http://localhost:8080/login', {
       method: 'POST',
@@ -163,57 +102,37 @@ function LoginPage() {
                             <div className="card my-5">
                                 <div className="card-body p-5 text-center">
                                     <div className="h3 fw-light mb-3">Iniciar Sesion</div>
-                                    <a className="btn btn-icon mx-1" href="#!">
-                                        <img
-                                            alt="..."
-                                            className="w-5 mr-1"
-                                            src="img/github.svg"
-                                        />
-                                    </a>
-                                    <button className="btn btn-icon mx-1" onClick={call_login_google} >
-                                        <img
-                                            alt="..."
-                                            className="w-5 mr-1"
-                                            src="img/google.svg"
-                                        />
-                                    </button>
-
                                 </div>
                                 <hr className="my-0" />
                                 <div className="card-body p-5">
                                     <form id="login" onSubmit={handleSubmit}>
                                         <div className="mb-3">
                                             <label className="text-gray-600 small">Nombre de usuario</label>
-                                            <input className="form-control form-control-solid" 
-                                                type="username"
-                                                placeholder="Username"
-                                                onChange={(e) =>
-                                                    setCredentials({
-                                                    ...credentials,
-                                                    username: e.target.value,
-                                                    })
-                                                }
+                                            <input
+                                              className="form-control form-control-solid"
+                                              type="text"
+                                              placeholder="Username"
+                                              maxLength="8"
+                                              value={credentials.username}
+                                              onChange={handleUsernameChange}
                                             />
+                                            {error && <div className="text-danger small mt-2">{error}</div>}
                                         </div>
                                         <div className="mb-3">
                                             <label className="text-gray-600 small" >Contraseña</label>
                                             <input className="form-control form-control-solid"
                                                 type="password"
                                                 placeholder="Password"
-                                                onChange={(e) =>
-                                                    setCredentials({
-                                                    ...credentials,
-                                                    password: e.target.value,
-                                                    })
-                                                }
+                                                onChange={handlePaswordChange}
                                             />
+                                            {errorP && <div className="text-danger small mt-2">{errorP}</div>}
                                         </div>
                                         <div className="d-flex align-items-center justify-content-between mb-0">
                                             <div className="form-check">
                                                 <input className="form-check-input" id="checkRememberPassword" type="checkbox" value="" />
                                                 <label className="form-check-label">Recuerdame</label>
                                             </div>
-                                            <button className="btn btn-primary" type="submit">Iniciar</button>
+                                            <button className="btn btn-primary" type="submit" disabled={!!error || !!errorP}>Iniciar</button>
                                         </div>
                                     </form>
                                 </div>

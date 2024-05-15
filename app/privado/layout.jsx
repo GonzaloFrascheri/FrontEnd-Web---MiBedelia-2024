@@ -8,9 +8,11 @@ export const metadata = {
 export default function PrivadoLayout({ children }) {
 
   return (
-    <>
-      {children}
-    </>
+    <html lang="es">
+      <body className="nav-fixed sidenav-toggled">
+        {children}
+      </body>
+    </html>
   );
 }
   
