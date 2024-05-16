@@ -10,6 +10,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit}
             <div id="layoutAuthentication_content">
                 <main>
                     <div className="container-xl px-4">
+                        
                         <div className="row justify-content-center">
                             <div className="col-lg-7">
                                 <div className="card shadow-lg border-0 rounded-lg mt-5">
@@ -102,7 +103,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit}
                                             </form>
                                         </div>
                                         <div className="card-footer text-center">
-                                            <div className="small"><a href="./">Volver al inicio</a></div>
+                                            <div className="small"><a href="/privado">Volver al inicio</a></div>
                                         </div>
                                     </>
                                     ) : (
@@ -118,7 +119,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit}
                                                 </div>
                                             </div>
                                             <div className="card-footer text-center">
-                                                <div className="small"><a href="./">Volver al inicio</a></div>
+                                                <div className="small"><a href="/privado">Volver al inicio</a></div>
                                             </div>
                                         </div>
                                     )}

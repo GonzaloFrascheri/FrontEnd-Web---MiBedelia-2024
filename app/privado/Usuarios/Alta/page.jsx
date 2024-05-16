@@ -1,10 +1,9 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Sidebar from "../../../componentes/siders/sidebar.jsx";
-import MainDashboard from "../../../componentes/main/dashboard.jsx";
 import NavPrivado from '../../../componentes/navs/nav-privado.jsx';
-import RegistroBasico from '../../../componentes/registro/registroCompleto.jsx';
+import AltaUsuario from '../../../componentes/registro/altaUsuario.jsx';
 
 function RegistrarPage() {
 
@@ -88,7 +87,7 @@ function RegistrarPage() {
           <Sidebar isSidebarToggled={isSidebarToggled} />
         </div>
         <div id="layoutSidenav_content">
-      <RegistroBasico estado={estado} credentials={credentials} handleChange={handleChange} handleSubmit={handleSubmit} />
+        <AltaUsuario estado={estado} credentials={credentials} handleChange={handleChange} handleSubmit={handleSubmit} />
       </div>
       </div>
     </body>

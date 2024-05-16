@@ -1,10 +1,17 @@
 'use client'
-
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import Sidebar from "../../../componentes/siders/sidebar.jsx";
 import NavPrivado from '../../../componentes/navs/nav-privado.jsx';
+import AltaAsignatura from '../../../componentes/coordinador/asignatura/altaAsignatura.jsx';
 
-function AltaAsignatura() {
+function CoordinadorAltaAsignatura() {
+  const router = useRouter();
+  const [data, setData] = useState('');
+  const [estado, setEstado] = useState({
+    message: "",
+    estado: ""
+  });
   const [formData, setFormData] = useState({
     nombre: "",
     codigo: "",
@@ -32,71 +39,25 @@ function AltaAsignatura() {
       descripcion: ""
     });
   };
+  
+  const [isSidebarToggled, setIsSidebarToggled] = useState(false);
+  const toggleSidebar = () => {
+      setIsSidebarToggled(!isSidebarToggled);
+  };
 
   return (
-    <div className="container">
-      <div className="card">
-        <div className="card-header">
-          <h1 className="text-center mb-0">Alta de Asignatura</h1>
+    <body className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}>
+      <NavPrivado data={data} isSidebarToggled={isSidebarToggled} toggleSidebar={toggleSidebar} />
+      <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+          <Sidebar isSidebarToggled={isSidebarToggled} />
         </div>
-        <div className="card-body">
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="nombre" className="form-label">Nombre:</label>
-              <input
-                type="text"
-                id="nombre"
-                name="nombre"
-                value={formData.nombre}
-                onChange={handleChange}
-                className="form-control"
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="codigo" className="form-label">Código:</label>
-              <input
-                type="text"
-                id="codigo"
-                name="codigo"
-                value={formData.codigo}
-                onChange={handleChange}
-                className="form-control"
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="creditos" className="form-label">Créditos:</label>
-              <input
-                type="text"
-                id="creditos"
-                name="creditos"
-                value={formData.creditos}
-                onChange={handleChange}
-                className="form-control"
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="descripcion" className="form-label">Descripción:</label>
-              <textarea
-                id="descripcion"
-                name="descripcion"
-                value={formData.descripcion}
-                onChange={handleChange}
-                className="form-control"
-                required
-              ></textarea>
-            </div>
-            <button type="submit" className="btn btn-primary">Guardar</button>
-            <div className="card-footer text-center">
-                <div className="small"><a href="./">Volver al inicio</a></div>
-            </div>
-          </form>
-        </div>
+        <div id="layoutSidenav_content">
+        <AltaAsignatura formData={formData} estado={estado} handleChange={handleChange} handleSubmit={handleSubmit} />
       </div>
-    </div>
+      </div>
+    </body>
   );
 }
 
-export default AltaAsignatura;
+export default CoordinadorAltaAsignatura;

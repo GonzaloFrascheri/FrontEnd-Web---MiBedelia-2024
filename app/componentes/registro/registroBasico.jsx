@@ -93,7 +93,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit}
                                             </form>
                                         </div>
                                         <div className="card-footer text-center">
-                                            <div className="small"><a href="./">Volver al inicio</a></div>
+                                            <div className="small"><a href="/privado">Volver al inicio</a></div>
                                         </div>
                                     </>
                                     ) : (
@@ -109,7 +109,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit}
                                                 </div>
                                             </div>
                                             <div className="card-footer text-center">
-                                                <div className="small"><a href="./">Volver al inicio</a></div>
+                                                <div className="small"><a href="/privado">Volver al inicio</a></div>
                                             </div>
                                         </div>
                                     )}
