@@ -77,7 +77,7 @@ export default function Sidebar({ isSidebarToggled }) {
             </a>
             <div className={`collapse ${collapseCoordinador ? 'show' : ''}`} id="collapseCoordinador" data-bs-parent="#accordionSidenav">
                 <nav className="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
-                    <a className="nav-link" href="/privado/Coordinador/Carrera/Alta">Alta Carrera</a>
+                    <a className="nav-link" href="/privado/Coordinador/Carrera/">Alta Carrera</a>
                     <a className="nav-link" href="/privado/Coordinador/Asignatura/Alta">Alta Asignatura</a>
                 </nav>
             </div>
@@ -113,9 +113,9 @@ export default function Sidebar({ isSidebarToggled }) {
             </a>
             <div className={`collapse ${collapseEstudiante ? 'show' : ''}`} id="collapseEstudiante" data-bs-parent="#accordionSidenav">
                 <nav className="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
-                    <a className="nav-link" href="/privado">Inscripción a una carrera</a>
-                    <a className="nav-link" href="/privado">Inscripción a una asignatura</a>
-                    <a className="nav-link" href="/privado">Inscripción a un examen</a>
+                    <a className="nav-link" href="/privado/Estudiantes/Carrera">Inscripción a una carrera</a>
+                    <a className="nav-link" href="/privado/Estudiantes/Asignatura">Inscripción a una asignatura</a>
+                    <a className="nav-link" href="/privado/Estudiantes/Examen">Inscripción a un exámen</a>
                 </nav>
             </div>
 
