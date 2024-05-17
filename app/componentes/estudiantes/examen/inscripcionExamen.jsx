@@ -24,6 +24,9 @@ export default function Index({estado, formData, handleChange, handleSubmit}) {
                                     onChange={handleChange}
                                     className="form-control"
                                     required
+                                    min="2000"
+                                    max="2024"
+                                    
                                     />
                                 </div>
                                 <div className="mb-3">

@@ -24,8 +24,19 @@ function EstudianteInscripcionExamen() {
         finalizado: "",
       });
     
+    const handleShow = () => setShow(true); // Esto es una alerta de boostrap pero no me esta funcionando
+
     const handleChange = (e) => {
         const { name, value } = e.target;
+
+        if (name == "año"){
+            // Solamente dejaremos ingresar números en el campo año
+            if(!/^\d*$/.test(value)){
+                handleShow(); // Idem mas arriba linea 27
+                return;
+            }
+        }
+
         setFormData(prevState => ({
           ...prevState,
           [name]: value
@@ -76,3 +87,7 @@ function EstudianteInscripcionExamen() {
 }
 
 export default EstudianteInscripcionExamen;
+
+function setShow(arg0: boolean) {
+    throw new Error("Function not implemented.");
+}
