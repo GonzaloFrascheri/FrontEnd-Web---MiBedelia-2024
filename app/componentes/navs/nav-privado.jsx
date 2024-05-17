@@ -26,7 +26,7 @@ function NavPrivado({ data, isSidebarToggled, toggleSidebar }) {
             <a className="navbar-brand pe-3 ps-4 ps-lg-2" href="/privado">
                 <img
                     alt="logo.png"
-                    src="../../img/logo.png"
+                    src="/img/logo.png"
                     width={50}
                     className="h-auto align-middle border-none absolute -m-5 -ml-20 lg:-ml-16 max-w-150-px"
                 />

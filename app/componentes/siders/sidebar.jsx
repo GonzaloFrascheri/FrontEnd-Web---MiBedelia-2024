@@ -60,9 +60,9 @@ export default function Sidebar({ isSidebarToggled }) {
             </a>
             <div className={`collapse ${collapseAdministrador ? 'show' : ''}`} id="collapseAdministrador" data-bs-parent="#accordionSidenav">
                 <nav className="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
-                    <a className="nav-link" href="/privado/Usuarios/Alta">Alta de Usuario</a>
-                    <a className="nav-link" href="/privado/Usuarios/Baja/">Baja de Usuario</a>
-                    <a className="nav-link" href="/privado/Usuarios/Listar">Listar Usuarios</a>
+                    <a className="nav-link" href="/privado/Administrador/Usuarios/Alta">Alta de Usuario</a>
+                    <a className="nav-link" href="/privado/Administrador/Usuarios/Baja/">Baja de Usuario</a>
+                    <a className="nav-link" href="/privado/Administrador/Usuarios/Listar">Listar Usuarios</a>
                 </nav>
             </div>
 
@@ -77,8 +77,8 @@ export default function Sidebar({ isSidebarToggled }) {
             </a>
             <div className={`collapse ${collapseCoordinador ? 'show' : ''}`} id="collapseCoordinador" data-bs-parent="#accordionSidenav">
                 <nav className="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
-                    <a className="nav-link" href="/privado/Coordinador/Carrera">Alta Carrera</a>
-                    <a className="nav-link" href="/privado/Coordinador/Asignatura">Alta Asignatura</a>
+                    <a className="nav-link" href="/privado/Coordinador/Carrera/Alta">Alta Carrera</a>
+                    <a className="nav-link" href="/privado/Coordinador/Asignatura/Alta">Alta Asignatura</a>
                 </nav>
             </div>
 

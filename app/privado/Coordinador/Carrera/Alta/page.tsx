@@ -1,12 +1,14 @@
 'use client'
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import Sidebar from "../../../componentes/siders/sidebar.jsx";
-import NavPrivado from '../../../componentes/navs/nav-privado.jsx';
-import AltaCarrera from '../../../componentes/coordinador/carrera/altaCarrera.jsx';
+import Sidebar from "../../../../componentes/siders/sidebar.jsx";
+import NavPrivado from '../../../../componentes/navs/nav-privado.jsx';
+import HeaderPagePrivado from '../../../../componentes/headers/headerPage-privado.jsx';
+import AltaCarrera from '../../../../componentes/coordinador/carrera/altaCarrera.jsx';
 
 function CoordinadorAltaCarrera() {
   const router = useRouter();
+  const breadcrumbs = ['privado', 'Coordinador', 'Carrera', 'Alta'];
   const [data, setData] = useState('');
   const [estado, setEstado] = useState({
     message: "",
@@ -49,8 +51,15 @@ function CoordinadorAltaCarrera() {
           <Sidebar isSidebarToggled={isSidebarToggled} />
         </div>
         <div id="layoutSidenav_content">
-        <AltaCarrera formData={formData} estado={estado} handleChange={handleChange} handleSubmit={handleSubmit} />
-      </div>
+          <div id="layoutAuthentication">
+            <div id="layoutAuthentication_content">
+              <main>
+                <HeaderPagePrivado breadcrumbs={breadcrumbs}/>
+                <AltaCarrera formData={formData} estado={estado} handleChange={handleChange} handleSubmit={handleSubmit} />
+              </main>
+            </div>
+          </div>
+        </div>
       </div>
     </body>
   );

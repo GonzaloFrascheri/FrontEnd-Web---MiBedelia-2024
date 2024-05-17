@@ -1,13 +1,15 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import Sidebar from "../../../componentes/siders/sidebar.jsx";
-import NavPrivado from '../../../componentes/navs/nav-privado.jsx';
-import AltaUsuario from '../../../componentes/registro/altaUsuario.jsx';
+import Sidebar from "../../../../componentes/siders/sidebar.jsx";
+import NavPrivado from '../../../../componentes/navs/nav-privado.jsx';
+import HeaderPagePrivado from '../../../../componentes/headers/headerPage-privado.jsx';
+import AltaUsuario from '../../../../componentes/administrador/usuarios/altaUsuario.jsx';
 
 function RegistrarPage() {
 
   const router = useRouter();
+  const breadcrumbs = ['privado', 'Administrador', 'Usuarios', 'Alta'];
   const [data, setData] = useState('');
   const [estado, setEstado] = useState({
     message: "",
@@ -87,8 +89,15 @@ function RegistrarPage() {
           <Sidebar isSidebarToggled={isSidebarToggled} />
         </div>
         <div id="layoutSidenav_content">
-        <AltaUsuario estado={estado} credentials={credentials} handleChange={handleChange} handleSubmit={handleSubmit} />
-      </div>
+          <div id="layoutAuthentication">
+            <div id="layoutAuthentication_content">
+              <main>
+                <HeaderPagePrivado breadcrumbs={breadcrumbs}/>
+                <AltaUsuario estado={estado} credentials={credentials} handleChange={handleChange} handleSubmit={handleSubmit} />
+              </main>
+            </div>
+          </div>
+        </div>
       </div>
     </body>
   );
