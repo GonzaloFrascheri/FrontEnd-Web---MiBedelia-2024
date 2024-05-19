@@ -5,10 +5,11 @@ import NavPrivado from '../../componentes/navs/nav-privado.jsx';
 import Sidebar from "../../componentes/siders/sidebar.jsx";
 import VerPerfil from '../../componentes/perfil/verPerfil.jsx';
 import { decodeJwt} from "jose";
+import storage from "@/utils/storage";
 
 function VerPerfilPage() {
   const router = useRouter();
-  const token = sessionStorage.getItem("tokenFront");
+  const token = storage.getToken()
   const [estado, setEstado] = useState({
     message: "",
     estado: 0
@@ -26,7 +27,7 @@ function VerPerfilPage() {
   });
   const [data, setData] = useState('');
   useEffect(() => {
-    const token = sessionStorage.getItem("tokenFront");
+    const token = storage.getToken()
     if (!token) {
       router.push("/");
     } else {

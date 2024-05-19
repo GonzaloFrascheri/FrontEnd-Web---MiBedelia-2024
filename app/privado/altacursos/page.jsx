@@ -3,9 +3,8 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from "../../componentes/siders/sidebar.jsx";
 import NavPrivado from '../../componentes/navs/nav-privado.jsx';
 import { useRouter } from 'next/navigation.js';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { decodeJwt} from "jose";
+import storage from "@/utils/storage";
 
 const Formulario = () => {
     const router = useRouter();
@@ -14,7 +13,7 @@ const Formulario = () => {
     const [asignaturas, setAsignaturas] = useState([]);
     const [data, setData] = useState('');
     useEffect(() => {
-      const token = sessionStorage.getItem("tokenFront");
+      const token = storage.getToken()
       if (!token) {
         router.push("/");
       } else {

@@ -1,6 +1,6 @@
 
 const storagePrefix = 'mibedelia_'
-const userSessionToken = `${storagePrefix}userToken`
+const userSessionToken = `${storagePrefix}tokenFront`
 const userSessionData = `${storagePrefix}userData`
 
 const storage = {
