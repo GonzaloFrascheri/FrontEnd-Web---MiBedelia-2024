@@ -14,7 +14,7 @@ function LoginPage() {
   // constantes para el login
   
   const [credentials, setCredentials] = useState({
-    username: "",
+    ci: "",
     password: "",
     google: ""
   });
@@ -35,7 +35,7 @@ function LoginPage() {
   const handleUsernameChange = (e) => {
     const value = e.target.value;
     if (/^\d{0,8}$/.test(value)) {
-      setCredentials({ ...credentials, username: value });
+      setCredentials({ ...credentials, ci: value });
       if (value.length === 8) {
         setError('');
       } else {
@@ -44,11 +44,29 @@ function LoginPage() {
     }
   };
 
+  async function hashPassword(password) {
+    
+    // Convert the password string to an ArrayBuffer
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+  
+    // Use the SubtleCrypto API to hash the password
+    const hashBuffer = await crypto.subtle.digest('SHA-512', data);
+  
+    // Convert the ArrayBuffer to a hexadecimal string
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  
+    return hashHex;
+    }
+  
   const [errorP, setErrorP] = useState('La contraseña debe tener al menos 4 caracteres.');
   const handlePaswordChange = (e) => {
     const value = e.target.value;
     if (value.length >= 4) {
-      setCredentials({ ...credentials, password: value });
+      hashPassword(value).then(hash => {
+        setCredentials({ ...credentials, password: hash });
+      });
       setErrorP('');
     } else {
       setErrorP('La contraseña debe tener al menos 4 caracteres.');
@@ -88,7 +106,6 @@ function LoginPage() {
       } else
         console.error('There was a problem with the fetch operation:', error);
     });
-
   };
 
   return (
@@ -116,7 +133,7 @@ function LoginPage() {
                                               type="text"
                                               placeholder="Username"
                                               maxLength="8"
-                                              value={credentials.username}
+                                              value={credentials.ci}
                                               onChange={handleUsernameChange}
                                             />
                                             {error && <div className="text-danger small mt-2">{error}</div>}
