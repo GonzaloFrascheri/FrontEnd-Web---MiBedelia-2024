@@ -5,12 +5,13 @@ import Sidebar from "../../../componentes/siders/sidebar.jsx";
 import NavPrivado from '../../../componentes/navs/nav-privado.jsx';
 import Previas from '../../../componentes/grafos/previas.jsx';
 import { decodeJwt} from "jose";
+import storage from "@/utils/storage";
 
 function VerPreviaturas() {
 
     const [data, setData] = useState('');
     useEffect(() => {
-      const token = sessionStorage.getItem("tokenFront");
+      const token = storage.getToken()
       if (!token) {
         router.push("/");
       } else {

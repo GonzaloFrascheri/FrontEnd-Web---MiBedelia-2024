@@ -5,6 +5,7 @@ import Sidebar from "../componentes/siders/sidebar.jsx";
 import MainDashboard from "../componentes/main/dashboard.jsx";
 import NavPrivado from '../componentes/navs/nav-privado.jsx';
 import { decodeJwt} from "jose";
+import storage from "@/utils/storage";
 
 function PrivadoPage() {
   const router = useRouter();
@@ -16,7 +17,7 @@ function PrivadoPage() {
   };
 
   useEffect(() => {
-    const token = sessionStorage.getItem("tokenFront");
+    const token = storage.getToken();
     if (!token) {
       router.push("/");
     } else {

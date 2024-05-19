@@ -1,7 +1,10 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import validators from "../../utils/validators";
+import validators from "@/utils/validators";
+import axios from "@/utils/axios";
+import storage from "@/utils/storage";
+import { hashPassword } from "@/utils/utils"
 
 function LoginPage() {
   const router = useRouter();
@@ -33,12 +36,11 @@ function LoginPage() {
     const error = validators.validateCi(ci);
 
     // Change value
-    setCredentials({...credentials, ci: ci });
+    setCredentials({ ...credentials, ci: ci });
 
     // Set error if any
     setError(error);
   };
-
 
   // Campo contraseña
   const handlePaswordChange = (e) => {
@@ -46,42 +48,46 @@ function LoginPage() {
     const error = validators.validatePassword(password);
 
     // Change value
-    setCredentials({...credentials, password: password });
+    setCredentials({ ...credentials, password: password });
 
     // Set error if any
-    setErrorP(error)
+    setErrorP(error);
   };
 
   // enviar formulario de login
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    fetch("http://localhost:8080/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      mode: "cors",
-      body: JSON.stringify(credentials),
-    })
-      .then((res) => {
-        if (res.status !== 200) {
-          if (res.status === 401) throw new Error("Credenciales incorrectas.");
-          else throw new Error("Error en la conexión.");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        sessionStorage.setItem("tokenFront", data.token);
-        sessionStorage.setItem("userData", JSON.stringify(userData));
+    try {
+      e.preventDefault();
+
+      const formData = {
+        ...credentials,
+        password: await hashPassword(credentials.password),
+      };
+
+      // Send request to server
+      const { data, status } = await axios.post("/login", formData);
+
+      if (status === 200) {
+        storage.setToken(data.token);
+        storage.setUser(userData);
         router.push("/privado");
-      })
-      .catch((error) => {
-        if (error.message === "Credenciales incorrectas.") {
-          alert("Credenciales incorrectas.");
-          document.getElementById("login").reset();
-        } else
-          console.error("There was a problem with the fetch operation:", error);
-      });
+      }
+
+      // Manejo de errores
+    } catch (error) {
+      const { status, data } = error.response;
+      if (status === 401) {
+        alert(data.message);
+
+        // Resetear formulario
+        setCredentials({
+          ci: "",
+          password: "",
+        });
+      } else {
+        console.error("There was a problem with the fetch operation:", error);
+      }
+    }
   };
 
   return (
@@ -123,6 +129,7 @@ function LoginPage() {
                             className="form-control form-control-solid"
                             type="password"
                             placeholder="Password"
+                            value={credentials.password}
                             onChange={handlePaswordChange}
                           />
                           {errorP && (

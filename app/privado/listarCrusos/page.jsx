@@ -4,6 +4,7 @@ import Sidebar from "../../componentes/siders/sidebar.jsx";
 import TablaConContenido from "../../componentes/tablas/tablas-lista-cursos.jsx";
 import React, { useEffect, useState } from "react";
 import { decodeJwt} from "jose";
+import storage from '@/utils/storage';
 
 const ListarCursos = () => {
 
@@ -14,7 +15,7 @@ const ListarCursos = () => {
     const [controlError, setControlError] = useState("Cargando...");
     const [data, setData] = useState('');
     useEffect(() => {
-      const token = sessionStorage.getItem("tokenFront");
+      const token = storage.getToken()
       if (!token) {
         router.push("/");
       } else {
