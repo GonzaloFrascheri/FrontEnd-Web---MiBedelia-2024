@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignIn, faBell, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import storage from "@/utils/storage";
 
 
 export default function RegistrarGoogle({ userdata }) {
@@ -84,7 +85,7 @@ export default function RegistrarGoogle({ userdata }) {
   };
 
   if (estado.message === "Usuario registrado con exito") {
-    sessionStorage.setItem('tokenFront', estado.token);
+    storage.setToken(estado.token);
     router.push("../privado");
   }
 
