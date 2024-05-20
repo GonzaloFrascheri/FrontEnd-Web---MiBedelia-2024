@@ -78,5 +78,8 @@ npm i bootstrap
 npm i simple-datatables
 
 ```
-
 ver useEffect en verperfil/page.jsx
+```
+
+# dependencia para crear pdf
+npm install jspdf

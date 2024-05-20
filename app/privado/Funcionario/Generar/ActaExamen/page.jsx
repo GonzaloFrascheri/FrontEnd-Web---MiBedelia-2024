@@ -11,13 +11,13 @@ import ActaExamenListExamen from '../../../../componentes/funcionario/generar/ac
 
 export default function Index() {
     const router = useRouter();
-    const breadcrumbs = ['privado', 'Funcionario', 'Generar Acta de Examen'];
+    const breadcrumbs = ['privado', 'Funcionario', 'Generar', 'ActaExamen'];
     const [data, setData] = useState('');
     const [isSidebarToggled, setIsSidebarToggled] = useState(false);
     const [listaCarrera, setListaCarrera] = useState([]);
     const [selectedCarreraId, setSelectedCarreraId] = useState(null);
-    const [listaAsignatura, setListaAsignatura] = useState([]);
-    const [selectedAsignaturaId, setSelectedAsignaturaId] = useState(null);
+    const [listaExamen, setListaExamen] = useState([]);
+    const [selectedExamenId, setSelectedExamenId] = useState(null);
 
     const toggleSidebar = () => {
         setIsSidebarToggled(!isSidebarToggled);
@@ -27,23 +27,35 @@ export default function Index() {
         setSelectedCarreraId(id);
     };
 
-    const handleChangeAsignatura = (id) => {
-        setSelectedAsignaturaId(id);
-        fetchListaAsignaturas();
+    const handleChangeExamen = (id) => {
+        setSelectedExamenId(id);
     }
 
-    const fetchListaAsignaturas = async () => {
-        try {
-            const response = await axios.get('/listaAsignaturas', {
-                params: {
-                    carreraId: selectedCarreraId
-                }
-            });
-            setListaAsignatura(response.data);
-        } catch (error) {
-            console.error('Error fetching listaAsignaturas:', error);
-        }
-    };
+    useEffect(() => {
+        const fetchListaExamenes = async () => {
+            try {
+                const response = await axios.get('/listaExamenes', {
+                    params: {
+                        carreraId: selectedCarreraId
+                    }
+                });
+                setListaExamen(response.data);
+            } catch (error) {
+                // Simulando la respuesta del servidor con una lista de Examenes
+                const simulatedResponse = [
+                    { id: 0, nombre: 'Elegir una' },
+                    { id: 1, nombre: 'Examen #1' },
+                    { id: 2, nombre: 'Examen #2' },
+                    { id: 3, nombre: 'Examen #3' },
+                    { id: 4, nombre: 'Examen #4' },
+                    { id: 5, nombre: 'Examen #5' },
+                ];
+                setListaExamen(simulatedResponse);
+                console.error('Error fetching listaExamenes:', error);
+            }
+        };
+        fetchListaExamenes();
+    }, []);
 
     useEffect(() => {
         const fetchListaCarreras = async () => {
@@ -80,8 +92,11 @@ export default function Index() {
                         <div id="layoutAuthentication_content">
                             <main>
                                 <HeaderPagePrivado breadcrumbs={breadcrumbs}/>
-                                <ActaExamenListCarrera listaCarrera={listaCarrera} onCarreraChange={handleCarreraChange} />
-                                {selectedCarreraId && <ActaExamenListExamen listaAsignatura={listaAsignatura} handleChangeAsignatura={handleChangeAsignatura} />}
+                                {selectedCarreraId === null ? (
+                                    <ActaExamenListCarrera listaCarrera={listaCarrera} onCarreraChange={handleCarreraChange} />
+                                ) : (
+                                    <ActaExamenListExamen listaExamen={listaExamen} handleChangeExamen={handleChangeExamen} selectedExamenId={selectedExamenId} />
+                                )}
                             </main>
                         </div>
                     </div>

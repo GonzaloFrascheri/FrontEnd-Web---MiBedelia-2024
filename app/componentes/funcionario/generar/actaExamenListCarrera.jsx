@@ -12,7 +12,7 @@ export default function Index({ listaCarrera, onCarreraChange }) {
         <div className="container-xl px-4 mt-n10">
             <div className="card">
                 <div className="card shadow-lg border-0 rounded-lg">
-                    <form>
+
                         <div className="card-header justify-content-center">
                             <h3 className="fw-light">Elegir una carrera</h3>
                         </div>
@@ -34,7 +34,6 @@ export default function Index({ listaCarrera, onCarreraChange }) {
                                 </select>
                             </div>
                         </div>
-                    </form>
                 </div>
             </div>
         </div>
