@@ -77,7 +77,7 @@ export default function Sidebar({ isSidebarToggled }) {
             </a>
             <div className={`collapse ${collapseCoordinador ? 'show' : ''}`} id="collapseCoordinador" data-bs-parent="#accordionSidenav">
                 <nav className="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
-                    <a className="nav-link" href="/privado/Coordinador/Carrera/">Alta Carrera</a>
+                    <a className="nav-link" href="/privado/Coordinador/Carrera/Alta">Alta Carrera</a>
                     <a className="nav-link" href="/privado/Coordinador/Asignatura/Alta">Alta Asignatura</a>
                 </nav>
             </div>
@@ -94,6 +94,11 @@ export default function Sidebar({ isSidebarToggled }) {
             <div className={`collapse ${collapseFuncionario ? 'show' : ''}`} id="collapseFuncionario" data-bs-parent="#accordionSidenav">
                 <nav className="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
                     <a className="nav-link" href="/privado">Generar acta fin de curso</a>
+                    <a className="nav-link" href="/privado">Generar acta examen</a>
+                    <a className="nav-link" href="/privado/Funcionario/Registro/HorarioAsignatura">Registro de horario a asignatura</a>
+                    <a className="nav-link" href="/privado/Funcionario/Registro/PeriodoExamen">Registro periodo de examen</a>
+                    <a className="nav-link" href="/privado/Funcionario/Registro/ExamenAsignatura">Alta de exámen</a>
+                    <a className="nav-link" href="/privado">Alta docente</a>
                     <a className="nav-link" href="/privado/Funcionario/Generar/ActaExamen">Generar acta examen</a>
                     <a className="nav-link" href="/privado">Registro de horario a asignatura</a>
                     <a className="nav-link" href="/privado">Registro periodo de examen</a>
