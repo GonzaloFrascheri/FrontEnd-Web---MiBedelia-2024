@@ -13,7 +13,7 @@ npm install @types/jwt-decode
 # limpiar cache de npm
 npm cache clean --force
 
-# instala la ultima version de nom
+# instala la ultima version de npm
 npm i -g npm@latest
 
 # de ser necesario instalar chocolaty

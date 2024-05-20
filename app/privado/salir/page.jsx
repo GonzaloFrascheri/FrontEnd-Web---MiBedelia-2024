@@ -3,7 +3,7 @@ import React from 'react';
 
 function SalirPage() {
         // Clear sessionStorage
-        sessionStorage.clear();
+        localStorage.clear();
 
         // Redirect to the root URL
         window.location.href = '/';
