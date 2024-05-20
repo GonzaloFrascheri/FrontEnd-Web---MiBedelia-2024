@@ -17,7 +17,7 @@ function LoginPage() {
 
   const [userData, setUserData] = useState({
     nombre: "",
-    username: "",
+    ci: "",
     apellido: "",
     email: "",
     telefono: "",
@@ -27,38 +27,38 @@ function LoginPage() {
     uidgoogle: "",
   });
 
-  const [error, setError] = useState("");
-  const [errorP, setErrorP] = useState("");
+  const [errorU, setErrorU] = useState(false);
+  const [errorP, setErrorP] = useState(false);
 
   // Campo cedula
   const handleCiChange = (e) => {
     const ci = e.target.value;
-    const error = validators.validateCi(ci);
+    const errorU = validators.validateCi(ci);
 
     // Change value
     setCredentials({ ...credentials, ci: ci });
 
     // Set error if any
-    setError(error);
+    setErrorU(errorU);
   };
 
   // Campo contraseña
   const handlePaswordChange = (e) => {
     const password = e.target.value;
-    const error = validators.validatePassword(password);
+    const errorP = validators.validatePassword(password);
 
     // Change value
     setCredentials({ ...credentials, password: password });
 
     // Set error if any
-    setErrorP(error);
+    setErrorP(errorP);
   };
 
   // Enviar formulario de login
   const handleSubmit = async (e) => {
-    try {
-      e.preventDefault();
+    e.preventDefault();
 
+    try {
       const formData = {
         ...credentials,
         password: await hashPassword(credentials.password),
@@ -75,6 +75,9 @@ function LoginPage() {
 
       // Manejo de errores
     } catch (error) {
+      storage.clearToken();
+      storage.clearUser();
+      console.log(error);
       const { status, data } = error.response;
       if (status === 401) {
         alert(data.message);
@@ -115,9 +118,9 @@ function LoginPage() {
                             value={credentials.ci}
                             onChange={handleCiChange}
                           />
-                          {error && (
+                          {errorU && (
                             <div className="text-danger small mt-2">
-                              {error}
+                              {errorU}
                             </div>
                           )}
                         </div>
@@ -153,7 +156,7 @@ function LoginPage() {
                           <button
                             className="btn btn-primary"
                             type="submit"
-                            disabled={!!error || !!errorP}
+                            disabled={!!errorU || !!errorP}
                           >
                             Iniciar
                           </button>

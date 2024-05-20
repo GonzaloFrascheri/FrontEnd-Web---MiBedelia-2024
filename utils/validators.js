@@ -1,7 +1,7 @@
 // Input regex validators
 const validators = {
   validateCi: ci => {
-    console.log(ci.length)
+    //console.log(ci.length)
     return /^\d{0,8}$/.test(ci) && ci.length === 8
       ? ''
       : 'La cedula debe tener 8 dígitos.'
