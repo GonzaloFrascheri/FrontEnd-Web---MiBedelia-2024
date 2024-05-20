@@ -1,0 +1,42 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
+
+export default function Index({ listaCarrera, onCarreraChange }) {
+
+    const handleChange = (event) => {
+        const selectedId = event.target.value;
+        onCarreraChange(selectedId);
+    };
+
+    return (
+        <div className="container-xl px-4 mt-n10">
+            <div className="card">
+                <div className="card shadow-lg border-0 rounded-lg">
+                    <form>
+                        <div className="card-header justify-content-center">
+                            <h3 className="fw-light">Elegir una carrera</h3>
+                        </div>
+                        <div className="card-body">
+                            <div className="mb-3">
+                                <label htmlFor="listaDeCarrera">Lista de carreras</label>
+                                <select 
+                                    className="form-control" 
+                                    id="listaDeCarrera"
+                                    onChange={handleChange}
+                                >
+                                    {listaCarrera.length > 0 ? (
+                                        listaCarrera.map((carrera) => (
+                                            <option key={carrera.id} value={carrera.id}>{carrera.nombre}</option>
+                                        ))
+                                    ) : (
+                                        <option>No se recibieron datos aún</option>
+                                    )}
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    );
+}

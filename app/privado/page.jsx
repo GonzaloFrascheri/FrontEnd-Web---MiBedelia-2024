@@ -21,9 +21,16 @@ function PrivadoPage() {
     if (!token) {
       router.push("/");
     } else {
-      setData(decodeJwt (token));
+      const decodedData = decodeJwt(token);
+      setData(decodedData);
     }
-  }, []);
+  }, [router]);
+
+  useEffect(() => {
+    if (data) {
+      console.log(data.role);
+    }
+  }, [data]);
 
   return (
     <body className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}>

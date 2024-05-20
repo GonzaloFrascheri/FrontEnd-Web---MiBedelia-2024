@@ -40,10 +40,7 @@ function RegistrarPage() {
     // Verifying that the form fields are not empty
     const emptyFields = Object.values(credentials).some(value => value === "");
     if (emptyFields) {
-
       alert("Los campos no pueden estar vacios.");
-
-      console.error("Los campos no pueden estar vacios.");
       return;
     }
 

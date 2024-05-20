@@ -21,7 +21,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit}
                                             <label className="small mb-1">Nombre</label>
                                             <input className="form-control" name="nombre" type="text" id="nombre" onChange={handleChange} required />
                                             {credentials.nombre === "" && (
-                                                <span className="danger text-xs">Este campo es requerido</span>
+                                                <span className="text-danger text-xs">Este campo es requerido</span>
                                             )}
                                         </div>
                                     </div>
@@ -30,7 +30,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit}
                                             <label className="small mb-1" >Apellido</label>
                                             <input className="form-control" name="apellido" type="text" id="apellido" onChange={handleChange} required />
                                             {credentials.apellido === "" && (
-                                                <span className="danger text-xs">Este campo es requerido</span>
+                                                <span className="text-danger text-xs">Este campo es requerido</span>
                                             )}
                                         </div>
                                     </div>
@@ -41,7 +41,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit}
                                             <label className="small mb-1">Usuario</label>
                                             <input className="form-control" name="username" type="text" id="username" onChange={handleChange} required />
                                             {credentials.username === "" && (
-                                                <span className="text-red-500 text-xs">Este campo es requerido</span>
+                                                <span className="text-danger text-xs">Este campo es requerido</span>
                                             )}
                                         </div>
                                     </div>
@@ -50,7 +50,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit}
                                             <label className="small mb-1" >Rol</label>
                                             <input className="form-control"   name="rol" type="text" id="rol" onChange={handleChange} required />
                                             {credentials.rol === "" && (
-                                                <span className="text-red-500 text-xs">Este campo es requerido</span>
+                                                <span className="text-danger text-xs">Este campo es requerido</span>
                                             )}
                                         </div>
                                     </div>
@@ -61,7 +61,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit}
                                             <label className="small mb-1" >Correo</label>
                                             <input className="form-control"  name="email" type="email" id="email" onChange={handleChange} required />
                                             {credentials.email === "" && (
-                                                <span className="text-red-500 text-xs">Este campo es requerido</span>
+                                                <span className="text-danger text-xs">Este campo es requerido</span>
                                             )}
                                         </div>
                                     </div>
@@ -72,7 +72,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit}
                                             <label className="small mb-1" >Password</label>
                                             <input className="form-control" name="password" type="password" id="password" onChange={handleChange} required />
                                             {credentials.password === "" && (
-                                                <span className="text-red-500 text-xs">Este campo es requerido</span>
+                                                <span className="text-danger text-xs">Este campo es requerido</span>
                                             )}
                                         </div>
                                     </div>
@@ -81,7 +81,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit}
                                             <label className="small mb-1" >Telefono</label>
                                             <input className="form-control" name="telefono" type="text" id="telefono" onChange={handleChange} required />
                                             {credentials.telefono === "" && (
-                                                <span className="text-red-500 text-xs">Este campo es requerido</span>
+                                                <span className="text-danger text-xs">Este campo es requerido</span>
                                             )}
                                         </div>
                                     </div>

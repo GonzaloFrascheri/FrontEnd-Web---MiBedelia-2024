@@ -94,11 +94,11 @@ export default function Sidebar({ isSidebarToggled }) {
             <div className={`collapse ${collapseFuncionario ? 'show' : ''}`} id="collapseFuncionario" data-bs-parent="#accordionSidenav">
                 <nav className="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
                     <a className="nav-link" href="/privado">Generar acta fin de curso</a>
-                    <a className="nav-link" href="/privado">Generar acta examen</a>
+                    <a className="nav-link" href="/privado/Funcionario/Generar/ActaExamen">Generar acta examen</a>
                     <a className="nav-link" href="/privado">Registro de horario a asignatura</a>
                     <a className="nav-link" href="/privado">Registro periodo de examen</a>
                     <a className="nav-link" href="/privado">Registro examen relacionado asignatura dada</a>
-                    <a className="nav-link" href="/privado">Alta docente</a>
+                    <a className="nav-link" href="/privado/Funcionario/AltaDocente">Alta docente</a>
                 </nav>
             </div>
 
