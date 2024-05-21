@@ -1,6 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
-
 export default function Index({ listaCarrera, onCarreraChange }) {
 
     const handleChange = (event) => {
@@ -9,7 +6,7 @@ export default function Index({ listaCarrera, onCarreraChange }) {
     };
 
     return (
-        <div className="container-xl px-4 mt-n10">
+        <div className="container-xl px-4">
             <div className="card">
                 <div className="card shadow-lg border-0 rounded-lg">
 

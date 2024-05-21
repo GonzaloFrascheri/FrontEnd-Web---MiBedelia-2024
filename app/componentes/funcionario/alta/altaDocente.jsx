@@ -8,7 +8,6 @@ export default function Index({estado, handleChange, handleSubmit, docenteDto}) 
             <div className="card">
                 <div className="card shadow-lg border-0 rounded-lg">
                     {estado.message === '' ? (
-                        <>
                             <form onSubmit={handleSubmit}>
                                 <div className="card-header justify-content-center">
                                     <h3 className="fw-light">Alta de Usuario</h3>
@@ -70,7 +69,6 @@ export default function Index({estado, handleChange, handleSubmit, docenteDto}) 
                                         type="submit">Alta Usuario</button>
                                 </div>
                             </form>
-                        </>
                     ) : (
                         <div>
                         <div className={'alert alert-icon ${estado.estado === 200 ? "alert-primary" : "alert-secondary"}'} role="alert">

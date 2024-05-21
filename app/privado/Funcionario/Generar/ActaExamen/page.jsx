@@ -8,6 +8,7 @@ import NavPrivado from '../../../../componentes/navs/nav-privado.jsx';
 import HeaderPagePrivado from '../../../../componentes/headers/headerPage-privado.jsx';
 import ActaExamenListCarrera from '../../../../componentes/funcionario/generar/actaExamenListCarrera.jsx';
 import ActaExamenListExamen from '../../../../componentes/funcionario/generar/actaExamenListExamen.jsx';
+import ActaExamenPasos from '../../../../componentes/funcionario/generar/actaExamenPasos.jsx';
 
 export default function Index() {
     const router = useRouter();
@@ -92,6 +93,7 @@ export default function Index() {
                         <div id="layoutAuthentication_content">
                             <main>
                                 <HeaderPagePrivado breadcrumbs={breadcrumbs}/>
+                                <ActaExamenPasos selectedCarreraId={selectedCarreraId} selectedExamenId={selectedExamenId} />
                                 {selectedCarreraId === null ? (
                                     <ActaExamenListCarrera listaCarrera={listaCarrera} onCarreraChange={handleCarreraChange} />
                                 ) : (

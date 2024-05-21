@@ -18,7 +18,7 @@ function NavPublico() {
                     href="./">
                     <img
                         alt="logo.png"
-                        src="../../img/logo.png"
+                        src="/img/logo.png"
                         width={50}
                         className="h-auto align-middle border-none absolute -m-5 -ml-20 lg:-ml-16 max-w-150-px"
                     />

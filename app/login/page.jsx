@@ -27,8 +27,8 @@ function LoginPage() {
     uidgoogle: "",
   });
 
-  const [errorU, setErrorU] = useState(false);
-  const [errorP, setErrorP] = useState(false);
+  const [errorU, setErrorU] = useState("La cedula debe tener 8 dígitos.");
+  const [errorP, setErrorP] = useState("La contraseña debe tener al menos 4 caracteres.");
 
   // Campo cedula
   const handleCiChange = (e) => {
@@ -94,7 +94,6 @@ function LoginPage() {
   };
 
   return (
-    <>
       <div id="layoutAuthentication">
         <div id="layoutAuthentication_content">
           <main>
@@ -109,8 +108,9 @@ function LoginPage() {
                     <div className="card-body p-5">
                       <form id="login" onSubmit={handleSubmit}>
                         <div className="mb-3">
-                          <label className="text-gray-600 small">Cedula</label>
+                          <label className="text-gray-600 small" htmlFor="ciInput">Cedula</label>
                           <input
+                            id="ciInput"
                             className="form-control form-control-solid"
                             type="text"
                             placeholder="Cedula"
@@ -125,9 +125,7 @@ function LoginPage() {
                           )}
                         </div>
                         <div className="mb-3">
-                          <label className="text-gray-600 small">
-                            Contraseña
-                          </label>
+                          <label className="text-gray-600 small">Contraseña</label>
                           <input
                             className="form-control form-control-solid"
                             type="password"
@@ -182,7 +180,6 @@ function LoginPage() {
           </main>
         </div>
       </div>
-    </>
   );
 }
 
