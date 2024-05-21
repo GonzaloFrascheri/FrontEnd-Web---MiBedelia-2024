@@ -29,7 +29,7 @@ export default function Index({estado, formData, handleChange, handleSubmit}) {
                                 <div className="mb-3">
                                     <label htmlFor="codigo" className="form-label">Horario de inicio:</label>
                                     <input
-                                    type="text"
+                                    type="date"
                                     id="horainicio"
                                     name="horainicio"
                                     value={formData.horainicio}
