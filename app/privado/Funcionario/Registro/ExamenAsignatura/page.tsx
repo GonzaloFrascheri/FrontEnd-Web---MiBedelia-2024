@@ -1,17 +1,20 @@
 'use client'
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ExamenAsignatura from "../../../../componentes/funcionario/registro/examenasignatura"
 import { useRouter } from "next/navigation";
 import HeaderPagePrivado from "@/app/componentes/headers/headerPage-privado";
 import NavPrivado from "@/app/componentes/navs/nav-privado";
 import Sidebar from "@/app/componentes/siders/sidebar";
+import axios from "axios";
 
 function FuncionarioExamenAsignatura() {
     
     const router = useRouter();
     const breadcrumbs = ['privado', 'Funcionario', 'Registro', 'ExamenAsignatura'];
     const [data, setData] = useState('');
+    const [listaCarrera, setListaCarrera] = useState([]);
+    const [listaAsignatura, setListaAsignatura] = useState([]);
     const [estado, setEstado] = useState({
         message: "",
         estado: ""
@@ -51,6 +54,52 @@ function FuncionarioExamenAsignatura() {
         setIsSidebarToggled(!isSidebarToggled);
     };
 
+    useEffect(() => {
+        const fetchListaCarreras = async () => {
+            try {
+                const response = await axios.get('/listaCarreras');
+                setListaCarrera(response.data);
+            } catch (error) {
+                // Simulando la respuesta del servidor con una lista de carreras
+                const simulatedResponse = [
+                    { id: 0, nombre: 'Elegir una' },
+                    { id: 1, nombre: 'Carrera #1' },
+                    { id: 2, nombre: 'Carrera #2' },
+                    { id: 3, nombre: 'Carrera #3' },
+                    { id: 4, nombre: 'Carrera #4' },
+                    { id: 5, nombre: 'Carrera #5' },
+                ];
+                setListaCarrera(simulatedResponse);
+                console.error('Error fetching listaCarreras:', error);
+            }
+        };
+    
+        fetchListaCarreras();
+    }, []); // El segundo argumento [] asegura que esto se ejecute solo una vez al montar el componente
+   
+    useEffect(() => {
+        const fetchListaAsignaturas = async () => {
+            try {
+                const response = await axios.get('/listaAsignatura');
+                setListaAsignatura(response.data);
+            } catch (error) {
+                // Simulando la respuesta del servidor con una lista de carreras
+                const simulatedResponse = [
+                    { id: 0, nombre: 'Elegir una' },
+                    { id: 1, nombre: 'Asignatura #1' },
+                    { id: 2, nombre: 'Asignatura #2' },
+                    { id: 3, nombre: 'Asignatura #3' },
+                    { id: 4, nombre: 'Asignatura #4' },
+                    { id: 5, nombre: 'Asignatura #5' },
+                ];
+                setListaAsignatura(simulatedResponse);
+                console.error('Error fetching listaAsignatura:', error);
+            }
+        };
+    
+        fetchListaAsignaturas();
+    }, []); // El segundo argumento [] asegura que esto se ejecute solo una vez al montar el componente
+
     
     
     return (
@@ -65,7 +114,7 @@ function FuncionarioExamenAsignatura() {
                         <div id="layoutAuthentication_content">
                             <main>
                                 <HeaderPagePrivado breadcrumbs={breadcrumbs}/>
-                                <ExamenAsignatura formData={formData} estado={estado} handleChange={handleChange} handleSubmit={handleSubmit} />
+                                <ExamenAsignatura listaCarrera={listaCarrera} listaAsignaturas={listaAsignatura} formData={formData} estado={estado} handleChange={handleChange} handleSubmit={handleSubmit} />
                             </main>
                         </div>
                     </div>

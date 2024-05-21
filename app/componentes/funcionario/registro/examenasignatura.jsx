@@ -1,7 +1,7 @@
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import {  } from '@fortawesome/free-solid-svg-icons';
 
-export default function Index({estado, formData, handleChange, handleSubmit}) {
+export default function Index({estado, formData, handleChange, handleSubmit, listaCarrera, listaAsignaturas}) {
 
     return (
         <div className="container-xl px-4 mt-n10">
@@ -14,29 +14,37 @@ export default function Index({estado, formData, handleChange, handleSubmit}) {
                                 <h3 className="fw-light">Registro de un exámen relacionado a una asignatura</h3>
                             </div>
                             <div className="card-body">
-                            <div className="mb-3">
-                                    <label htmlFor="codigo" className="form-label">Carrera:</label>
-                                    <input
-                                    type="text"
-                                    id="carrera"
-                                    name="carrera"
-                                    value={formData.carrera}
-                                    onChange={handleChange}
-                                    className="form-control"
-                                    required
-                                    />
+                                <div className="mb-3">
+                                    <label htmlFor="listaDeCarrera">Lista de carreras</label>
+                                    <select 
+                                        className="form-control" 
+                                        id="listaDeCarrera"
+                                        onChange={handleChange}
+                                    >
+                                        {listaCarrera.length > 0 ? (
+                                            listaCarrera.map((carrera) => (
+                                                <option key={carrera.id} value={carrera.id}>{carrera.nombre}</option>
+                                            ))
+                                        ) : (
+                                            <option>No se recibieron datos aún</option>
+                                        )}
+                                    </select>
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlFor="codigo" className="form-label">Asignatura:</label>
-                                    <input
-                                    type="text"
-                                    id="asignatura"
-                                    name="asignatura"
-                                    value={formData.asignatura}
-                                    onChange={handleChange}
-                                    className="form-control"
-                                    required
-                                    />
+                                    <label htmlFor="listaDeCarrera">Lista de asignaturas</label>
+                                    <select 
+                                        className="form-control" 
+                                        id="listaDeCarrera"
+                                        onChange={handleChange}
+                                    >
+                                        {listaAsignaturas.length > 0 ? (
+                                            listaAsignaturas.map((asignatura) => (
+                                                <option key={asignatura.id} value={asignatura.id}>{asignatura.nombre}</option>
+                                            ))
+                                        ) : (
+                                            <option>No se recibieron datos aún</option>
+                                        )}
+                                    </select>
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="codigo" className="form-label">Fecha exámen:</label>

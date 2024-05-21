@@ -1,7 +1,7 @@
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import {  } from '@fortawesome/free-solid-svg-icons';
 
-export default function Index({estado, formData, handleChange, handleSubmit}) {
+export default function Index({estado, formData, handleChange, handleSubmit, listaCarrera}) {
 
     return (
         <div className="container-xl px-4 mt-n10">
@@ -27,39 +27,20 @@ export default function Index({estado, formData, handleChange, handleSubmit}) {
                                     />
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlFor="codigo" className="form-label">Código:</label>
-                                    <input
-                                    type="text"
-                                    id="codigo"
-                                    name="codigo"
-                                    value={formData.codigo}
-                                    onChange={handleChange}
-                                    className="form-control"
-                                    required
-                                    />
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="creditos" className="form-label">Créditos:</label>
-                                    <input
-                                    type="text"
-                                    id="creditos"
-                                    name="creditos"
-                                    value={formData.creditos}
-                                    onChange={handleChange}
-                                    className="form-control"
-                                    required
-                                    />
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="descripcion" className="form-label">Descripción:</label>
-                                    <textarea
-                                    id="descripcion"
-                                    name="descripcion"
-                                    value={formData.descripcion}
-                                    onChange={handleChange}
-                                    className="form-control"
-                                    required
-                                    ></textarea>
+                                    <label htmlFor="listaDeCarrera">Lista de carreras</label>
+                                    <select 
+                                        className="form-control" 
+                                        id="listaDeCarrera"
+                                        onChange={handleChange}
+                                    >
+                                        {listaCarrera.length > 0 ? (
+                                            listaCarrera.map((carrera) => (
+                                                <option key={carrera.id} value={carrera.id}>{carrera.nombre}</option>
+                                            ))
+                                        ) : (
+                                            <option>No se recibieron datos aún</option>
+                                        )}
+                                    </select>
                                 </div>
                             </div>
                             <div className="card-footer text-center">
