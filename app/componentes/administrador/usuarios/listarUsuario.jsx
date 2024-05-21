@@ -1,9 +1,10 @@
 'use Client';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import storage from "@/utils/storage";
 
 export default function ListarUsuarios({ estado, ListUsuarios }) {
-  console.warn(ListUsuarios);
+  console.info(ListUsuarios);
   const [usuarios, setUsuarios] = useState(ListUsuarios.items || []);
   const [pageIndex, setPageIndex] = useState(ListUsuarios.pageIndex || 1);
   const [totalPages, setTotalPages] = useState(ListUsuarios.totalPages || 1);
@@ -12,34 +13,36 @@ export default function ListarUsuarios({ estado, ListUsuarios }) {
   const pageSize = 10; // Tamaño de página fijo, pero podría ser dinámico
 
   useEffect(() => {
-    if (pageIndex === ListUsuarios.pageIndex) return;
+    if (pageIndex !== ListUsuarios.pageIndex){
 
-    const fetchData = async () => {
-      setIsLoading(true);
-      const token = localStorage.getItem('authToken');
-      if (!token) {
-        // Manejar el caso en que no haya token
-        return;
-      }
-
-      try {
-        const { data } = await axios.get(`/Administrador/listarUsuario?page=${pageIndex}&pageSize=${pageSize}`);
-
-        setUsuarios(data.items);
-        setPageIndex(data.pageIndex);
-        setTotalPages(data.totalPages);
-        setIsLoading(false); // Desactivar el estado de carga
-      } catch (error) {
-        console.error("There was a problem with the fetch operation:", error);
-        if (error.response && error.response.status === 401) {
-          alert(error.response.data.message);
+      const fetchData = async () => {
+        setIsLoading(true);
+        const token = storage.getToken();
+        if (!token) {
+          // Manejar el caso en que no haya token
+          router.push("/");
         }
-        setError(error); // Establecer el error
-        setIsLoading(false); // Desactivar el estado de carga
-      }
-    };
 
-    fetchData();
+        try {
+          console.info("fetch axios");
+          const { data } = await axios.get(`/Administrador/listarUsuario?page=${pageIndex}&pageSize=${pageSize}`);
+
+          setUsuarios(data.items);
+          setPageIndex(data.pageIndex);
+          setTotalPages(data.totalPages);
+          setIsLoading(false); // Desactivar el estado de carga
+        } catch (error) {
+          console.error("There was a problem with the fetch operation:", error);
+          if (error.response && error.response.status === 401) {
+            alert(error.response.data.message);
+          }
+          setError(error); // Establecer el error
+          setIsLoading(false); // Desactivar el estado de carga
+        }
+      };
+
+      fetchData();
+    }
   }, [pageIndex]);
 
   const handleNextPage = () => {
@@ -53,6 +56,14 @@ export default function ListarUsuarios({ estado, ListUsuarios }) {
       setPageIndex(pageIndex - 1);
     }
   };
+
+  if (isLoading) {
+    return <div>Cargando...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div className="container-xl px-4 mt-n10">
