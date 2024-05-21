@@ -1,10 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import Sidebar from "../../../../componentes/siders/sidebar.jsx";
-import NavPrivado from '../../../../componentes/navs/nav-privado.jsx';
-import HeaderPagePrivado from '../../../../componentes/headers/headerPage-privado.jsx';
-import AltaUsuario from '../../../../componentes/administrador/usuarios/altaUsuario.jsx';
+import Sidebar from "@/app/componentes/siders/sidebar.jsx";
+import NavPrivado from '@/app/componentes/navs/nav-privado.jsx';
+import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado.jsx';
+import AltaUsuario from '@/app/componentes/administrador/usuarios/altaUsuario.jsx';
 
 function RegistrarPage() {
 

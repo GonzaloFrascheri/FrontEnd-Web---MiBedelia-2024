@@ -6,19 +6,19 @@ import storage from "@/utils/storage";
 import Sidebar from "@/app/componentes/siders/sidebar.jsx";
 import NavPrivado from '@/app/componentes/navs/nav-privado.jsx';
 import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado.jsx';
-import ActaExamenListCarrera from '@/app/componentes/funcionario/generar/actaExamenListCarrera.jsx';
-import ActaExamenListExamen from '@/app/componentes/funcionario/generar/actaExamenListExamen.jsx';
-import ActaExamenPasos from '@/app/componentes/funcionario/generar/actaExamenPasos.jsx';
+import ActaFinDeCursoPasos from "@/app/componentes/funcionario/generar/actaFinDeCursoPasos.jsx";
+import ActaFinDeCursoListCarrera from "@/app/componentes/funcionario/generar/actaFinDeCursoListCarrera.jsx";
+import ActaFinDeCursoListAsignatura from "@/app/componentes/funcionario/generar/actaFinDeCursoListAsignatura.jsx";
 
 export default function Index() {
     const router = useRouter();
-    const breadcrumbs = ['privado', 'Funcionario', 'Generar', 'ActaExamen'];
+    const breadcrumbs = ['privado', 'Funcionario', 'Generar', 'ActaFinDeCurso'];
     const [data, setData] = useState('');
     const [isSidebarToggled, setIsSidebarToggled] = useState(false);
     const [listaCarrera, setListaCarrera] = useState([]);
     const [selectedCarreraId, setSelectedCarreraId] = useState(null);
-    const [listaExamen, setListaExamen] = useState([]);
-    const [selectedExamenId, setSelectedExamenId] = useState(null);
+    const [listaAsignatura, setListaAsignatura] = useState([]);
+    const [selectedAsignaturaId, setSelectedAsignaturaId] = useState(null);
 
     const toggleSidebar = () => {
         setIsSidebarToggled(!isSidebarToggled);
@@ -28,34 +28,34 @@ export default function Index() {
         setSelectedCarreraId(id);
     };
 
-    const handleChangeExamen = (id) => {
-        setSelectedExamenId(id);
+    const handleChangeAsignatura = (id) => {
+        setSelectedAsignaturaId(id);
     }
 
     useEffect(() => {
-        const fetchListaExamenes = async () => {
+        const fetchListaAsignatura = async () => {
             try {
-                const response = await axios.get('/listaExamenes', {
+                const response = await axios.get('/listaAsignatura', {
                     params: {
                         carreraId: selectedCarreraId
                     }
                 });
-                setListaExamen(response.data);
+                setListaAsignatura(response.data);
             } catch (error) {
-                // Simulando la respuesta del servidor con una lista de Examenes
+                // Simulando la respuesta del servidor con una lista de Asignatura
                 const simulatedResponse = [
                     { id: 0, nombre: 'Elegir una' },
-                    { id: 1, nombre: 'Examen #1' },
-                    { id: 2, nombre: 'Examen #2' },
-                    { id: 3, nombre: 'Examen #3' },
-                    { id: 4, nombre: 'Examen #4' },
-                    { id: 5, nombre: 'Examen #5' },
+                    { id: 1, nombre: 'Asignatura #1' },
+                    { id: 2, nombre: 'Asignatura #2' },
+                    { id: 3, nombre: 'Asignatura #3' },
+                    { id: 4, nombre: 'Asignatura #4' },
+                    { id: 5, nombre: 'Asignatura #5' },
                 ];
-                setListaExamen(simulatedResponse);
-                console.error('Error fetching listaExamenes:', error);
+                setListaAsignatura(simulatedResponse);
+                console.error('Error fetching listaAsignatura:', error);
             }
         };
-        fetchListaExamenes();
+        fetchListaAsignatura();
     }, []);
 
     useEffect(() => {
@@ -93,11 +93,11 @@ export default function Index() {
                         <div id="layoutAuthentication_content">
                             <main>
                                 <HeaderPagePrivado breadcrumbs={breadcrumbs}/>
-                                <ActaExamenPasos selectedCarreraId={selectedCarreraId} selectedExamenId={selectedExamenId} />
+                                <ActaFinDeCursoPasos selectedCarreraId={selectedCarreraId} selectedAsignaturaId={selectedAsignaturaId} />
                                 {selectedCarreraId === null ? (
-                                    <ActaExamenListCarrera listaCarrera={listaCarrera} onCarreraChange={handleCarreraChange} />
+                                    <ActaFinDeCursoListCarrera listaCarrera={listaCarrera} onCarreraChange={handleCarreraChange} />
                                 ) : (
-                                    <ActaExamenListExamen listaExamen={listaExamen} handleChangeExamen={handleChangeExamen} selectedExamenId={selectedExamenId} />
+                                    <ActaFinDeCursoListAsignatura listaAsignatura={listaAsignatura} handleChangeAsignatura={handleChangeAsignatura} selectedAsignaturaId={selectedAsignaturaId} />
                                 )}
                             </main>
                         </div>

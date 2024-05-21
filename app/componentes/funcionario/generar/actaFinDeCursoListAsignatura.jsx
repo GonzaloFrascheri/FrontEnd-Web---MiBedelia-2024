@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { GenerarPdfActaExamen } from "@/app/componentes/generadorPDF/actaExamen";
+import { GenerarPdfActaFinDeCurso } from "@/app/componentes/generadorPDF/actaFinDeCurso";
 
-export default function Index({ listaExamen, handleChangeExamen, selectedExamenId}) {
+export default function Index({ listaAsignatura, handleChangeAsignatura, selectedAsignaturaId}) {
 
     // Función para cargar la imagen y convertirla a base64
+    console.log(selectedAsignaturaId);
     const loadImageAsBase64 = (url, callback) => {
         const xhr = new XMLHttpRequest();
         xhr.onload = function() {
@@ -18,7 +19,7 @@ export default function Index({ listaExamen, handleChangeExamen, selectedExamenI
         xhr.send();
     };
     
-    const { PDFGenerador } = GenerarPdfActaExamen();
+    const { PDFGenerador } = GenerarPdfActaFinDeCurso();
 
     const [logoBase64, setLogoBase64] = useState(null);
 
@@ -33,16 +34,13 @@ export default function Index({ listaExamen, handleChangeExamen, selectedExamenI
     const generarPDF = () => {
         if (logoBase64) {
             const datosPrueba = {
-                examen: {
-                    nombre: "Matemáticas II"
-                },
+                asignatura: "Matemáticas II",
+                semestre: "Impar",
+                año: "2024",
                 docente: {
                     nombre: "Juan",
                     apellido: "Pérez"
                 },
-                fecha: "2024-05-20",
-                hora: "10:00 AM",
-                aula: "101",
                 estudiantes: [
                     { nombre: "Carlos", apellido: "García" },
                     { nombre: "María", apellido: "Rodríguez" },
@@ -59,22 +57,22 @@ export default function Index({ listaExamen, handleChangeExamen, selectedExamenI
             <div className="card">
                 <div className="card shadow-lg border-0 rounded-lg">
                         <div className="card-header d-flex align-items-center justify-content-between">
-                            <h3 className="fw-light">Elegir un Examen</h3>
+                            <h3 className="fw-light">Elegir una Asignatura</h3>
                             <div className="small">
-                                <a href="/privado/Funcionario/Generar/ActaExamen">Volver</a>
+                                <a href="/privado/Funcionario/Generar/ActaFinDeCurso">Volver</a>
                             </div>
                         </div>
                         <div className="card-body">
                             <div className="mb-3">
-                                <label htmlFor="listaDeExamenes">Lista de Examenes</label>
+                                <label htmlFor="listaDeAsignaturas">Lista de Asignaturas</label>
                                 <select 
                                     className="form-control" 
-                                    id="listaDeExamenes"
-                                    onChange={handleChangeExamen}
+                                    id="listaDeAsignaturas"
+                                    onChange={handleChangeAsignatura}
                                 >
-                                    {listaExamen.length > 0 ? (
-                                        listaExamen.map((examen) => (
-                                            <option key={examen.id} value={examen.id}>{examen.nombre}</option>
+                                    {listaAsignatura.length > 0 ? (
+                                        listaAsignatura.map((Asignatura) => (
+                                            <option key={Asignatura.id} value={Asignatura.id}>{Asignatura.nombre}</option>
                                         ))
                                     ) : (
                                         <option>No se recibieron datos aún</option>
@@ -84,7 +82,7 @@ export default function Index({ listaExamen, handleChangeExamen, selectedExamenI
                             <div className="mb-3">
                                 <button 
                                     className="btn btn-primary" 
-                                    disabled={!selectedExamenId}
+                                    disabled={!selectedAsignaturaId}
                                     onClick={generarPDF}
                                 >
                                     Generar PDF

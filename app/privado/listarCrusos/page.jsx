@@ -1,7 +1,7 @@
 "use client";
-import NavPrivado from '../../componentes/navs/nav-privado.jsx';
-import Sidebar from "../../componentes/siders/sidebar.jsx";
-import TablaConContenido from "../../componentes/tablas/tablas-lista-cursos.jsx";
+import NavPrivado from '@/app/componentes/navs/nav-privado.jsx';
+import Sidebar from "@/app/componentes/siders/sidebar.jsx";
+import TablaConContenido from "@/app/componentes/tablas/tablas-lista-cursos.jsx";
 import React, { useEffect, useState } from "react";
 import { decodeJwt} from "jose";
 import storage from '@/utils/storage';

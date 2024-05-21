@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from "react";
-import HorarioEnAsignatura from "../../../../componentes/funcionario/registro/horarioEnAsignatura"
+import HorarioEnAsignatura from "@/app/componentes/funcionario/registro/horarioEnAsignatura"
 import { useRouter } from "next/navigation";
 import HeaderPagePrivado from "@/app/componentes/headers/headerPage-privado";
 import NavPrivado from "@/app/componentes/navs/nav-privado";

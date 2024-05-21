@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "@/utils/axios";
 import storage from "@/utils/storage";
-import Sidebar from "../../../componentes/siders/sidebar.jsx";
-import NavPrivado from '../../../componentes/navs/nav-privado.jsx';
-import HeaderPagePrivado from '../../../componentes/headers/headerPage-privado.jsx';
-import AltaDocente from '../../../componentes/funcionario/alta/altaDocente.jsx';
+import Sidebar from "@/app/componentes/siders/sidebar.jsx";
+import NavPrivado from '@/app/componentes/navs/nav-privado.jsx';
+import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado.jsx';
+import AltaDocente from '@/app/componentes/funcionario/alta/altaDocente.jsx';
 
 function AltaDocentePage() {
 

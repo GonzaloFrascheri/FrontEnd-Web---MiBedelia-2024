@@ -1,11 +1,11 @@
 'use client'
 
 import React, { useState } from "react";
-import NavPrivado from "../../../componentes/navs/nav-privado";
-import Sidebar from "../../../componentes/siders/sidebar";
-import InscripcionAsignatura from "../../../componentes/estudiantes/asignatura/inscripcionAsignatura"
+import NavPrivado from "@/app/componentes/navs/nav-privado";
+import Sidebar from "@/app/componentes/siders/sidebar";
+import InscripcionAsignatura from "@/app/componentes/estudiantes/asignatura/inscripcionAsignatura"
 import { useRouter } from "next/navigation";
-import HeaderPagePrivado from "../../../componentes/headers/headerPage-privado";
+import HeaderPagePrivado from "@/app/componentes/headers/headerPage-privado";
 
 function EstudianteInscripcionAsignatura() {
     

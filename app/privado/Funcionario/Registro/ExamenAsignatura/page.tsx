@@ -1,12 +1,12 @@
 'use client'
-
 import React, { useEffect, useState } from "react";
-import ExamenAsignatura from "../../../../componentes/funcionario/registro/examenasignatura"
 import { useRouter } from "next/navigation";
-import HeaderPagePrivado from "@/app/componentes/headers/headerPage-privado";
-import NavPrivado from "@/app/componentes/navs/nav-privado";
-import Sidebar from "@/app/componentes/siders/sidebar";
 import axios from "axios";
+import Sidebar from "@/app/componentes/siders/sidebar";
+import NavPrivado from "@/app/componentes/navs/nav-privado";
+import HeaderPagePrivado from "@/app/componentes/headers/headerPage-privado";
+import ExamenAsignatura from "@/app/componentes/funcionario/registro/examen/examenAsignaturaListCarrera";
+import ExamenAsignaturaPasos from "@/app/componentes/funcionario/registro/examen/examenAsignaturaPasos";
 
 function FuncionarioExamenAsignatura() {
     
@@ -15,6 +15,16 @@ function FuncionarioExamenAsignatura() {
     const [data, setData] = useState('');
     const [listaCarrera, setListaCarrera] = useState([]);
     const [listaAsignatura, setListaAsignatura] = useState([]);
+    const [selectedCarreraId, setSelectedCarreraId] = useState(null);
+    const [selectedAsignaturaId, setSelectedAsignaturaId] = useState(null);
+
+    const handleCarreraChange = (id) => {
+        setSelectedCarreraId(id);
+    }
+    const handleAsignaturaChange = (id) => {
+        setSelectedAsignaturaId(id);
+    }
+
     const [estado, setEstado] = useState({
         message: "",
         estado: ""
@@ -25,17 +35,17 @@ function FuncionarioExamenAsignatura() {
         asignatura: "",
         fechaexamen: "",
         docente: "",
-      });
+    });
     
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({
-          ...prevState,
-          [name]: value
+            ...prevState,
+            [name]: value
         }));
-      };
+    };
     
-      const handleSubmit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         // Aquí puedes enviar los datos del formulario a tu backend o realizar cualquier otra acción necesaria
         console.log(formData);
@@ -46,7 +56,7 @@ function FuncionarioExamenAsignatura() {
             fechaexamen: "",
             docente: "",
         });
-      };
+    };
     
     
     const [isSidebarToggled, setIsSidebarToggled] = useState(false);
@@ -100,8 +110,6 @@ function FuncionarioExamenAsignatura() {
         fetchListaAsignaturas();
     }, []); // El segundo argumento [] asegura que esto se ejecute solo una vez al montar el componente
 
-    
-    
     return (
         <body className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}>
             <NavPrivado data={data} isSidebarToggled={isSidebarToggled} toggleSidebar={toggleSidebar} />
@@ -114,6 +122,7 @@ function FuncionarioExamenAsignatura() {
                         <div id="layoutAuthentication_content">
                             <main>
                                 <HeaderPagePrivado breadcrumbs={breadcrumbs}/>
+                                <ExamenAsignaturaPasos selectedCarreraId={selectedCarreraId} selectedAsignaturaId={selectedAsignaturaId} />
                                 <ExamenAsignatura listaCarrera={listaCarrera} listaAsignaturas={listaAsignatura} formData={formData} estado={estado} handleChange={handleChange} handleSubmit={handleSubmit} />
                             </main>
                         </div>

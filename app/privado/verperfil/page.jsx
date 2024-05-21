@@ -1,9 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import NavPrivado from '../../componentes/navs/nav-privado.jsx';
-import Sidebar from "../../componentes/siders/sidebar.jsx";
-import VerPerfil from '../../componentes/perfil/verPerfil.jsx';
+import NavPrivado from '@/app/componentes/navs/nav-privado.jsx';
+import Sidebar from "@/app/componentes/siders/sidebar.jsx";
+import VerPerfil from '@/app/componentes/perfil/verPerfil.jsx';
 import { decodeJwt} from "jose";
 import storage from "@/utils/storage";
 

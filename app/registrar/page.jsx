@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import RegistroBasico from '../componentes/registro/registroBasico.jsx';
+import RegistroBasico from '@/app/componentes/registro/registroBasico.jsx';
 
 function RegistrarPage() {
 

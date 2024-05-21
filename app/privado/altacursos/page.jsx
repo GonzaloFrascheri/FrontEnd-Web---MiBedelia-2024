@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from 'react';
-import Sidebar from "../../componentes/siders/sidebar.jsx";
-import NavPrivado from '../../componentes/navs/nav-privado.jsx';
+import Sidebar from "@/app/componentes/siders/sidebar.jsx";
+import NavPrivado from '@/app/componentes/navs/nav-privado.jsx';
 import { useRouter } from 'next/navigation.js';
 import { decodeJwt} from "jose";
 import storage from "@/utils/storage";

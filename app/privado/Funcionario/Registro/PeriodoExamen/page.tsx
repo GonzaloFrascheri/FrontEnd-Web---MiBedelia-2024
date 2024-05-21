@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from "react";
-import PeriodoExamen from "../../../../componentes/funcionario/registro/periodoExamen"
+import PeriodoExamen from "@/app/componentes/funcionario/registro/periodoExamen"
 import { useRouter } from "next/navigation";
 import HeaderPagePrivado from "@/app/componentes/headers/headerPage-privado";
 import NavPrivado from "@/app/componentes/navs/nav-privado";

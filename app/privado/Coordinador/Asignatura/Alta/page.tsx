@@ -1,11 +1,11 @@
 'use client'
 
 import React, { useEffect, useState } from "react";
-import Sidebar from "../../../../componentes/siders/sidebar.jsx";
-import NavPrivado from '../../../../componentes/navs/nav-privado.jsx';
-import HeaderPagePrivado from '../../../../componentes/headers/headerPage-privado.jsx';
-import ActaExamenListCarrera from '../../../../componentes/funcionario/generar/actaExamenListCarrera.jsx'
-import AltaAsignatura from '../../../../componentes/coordinador/asignatura/altaAsignatura.jsx';
+import Sidebar from "@/app/componentes/siders/sidebar.jsx";
+import NavPrivado from '@/app/componentes/navs/nav-privado.jsx';
+import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado.jsx';
+import ActaExamenListCarrera from '@/app/componentes/funcionario/generar/actaExamenListCarrera.jsx'
+import AltaAsignatura from '@/app/componentes/coordinador/asignatura/altaAsignatura.jsx';
 import axios from "axios";
 import { useRouter } from "next/navigation.js";
 
