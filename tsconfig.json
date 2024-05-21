@@ -30,7 +30,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "app/privado/Coordinador/Asignatura/Alta/page.jsx", "app/privado/Coordinador/Carrera/Alta/page.jsx", "app/privado/Estudiantes/Asignatura/page.jsx", "app/privado/Estudiantes/Carrera/page.jsx", "app/privado/Estudiantes/Examen/page.tsx"  ],
   "exclude": [
     "node_modules"
   ]
