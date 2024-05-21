@@ -17,7 +17,7 @@ export default function Index({estado, formData, handleChange, handleSubmit}) {
                                 <div className="mb-3">
                                     <label htmlFor="codigo" className="form-label">Fecha inicio:</label>
                                     <input
-                                    type="text"
+                                    type="date"
                                     id="fechainicio"
                                     name="fechainicio"
                                     value={formData.fechainicio}
@@ -29,7 +29,7 @@ export default function Index({estado, formData, handleChange, handleSubmit}) {
                                 <div className="mb-3">
                                     <label htmlFor="codigo" className="form-label">Fecha fin:</label>
                                     <input
-                                    type="text"
+                                    type="date"
                                     id="fechafin"
                                     name="fechafin"
                                     value={formData.fechafin}
