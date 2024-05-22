@@ -1,10 +1,12 @@
 'use client'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Sidebar from "../../../../componentes/siders/sidebar.jsx";
 import NavPrivado from '../../../../componentes/navs/nav-privado.jsx';
 import HeaderPagePrivado from '../../../../componentes/headers/headerPage-privado.jsx';
 import AltaCarrera from '../../../../componentes/coordinador/carrera/altaCarrera.jsx';
+import storage from "@/utils/storage.js";
+import axios from "@/utils/axios";
 
 function CoordinadorAltaCarrera() {
   const router = useRouter();
@@ -27,21 +29,61 @@ function CoordinadorAltaCarrera() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí puedes enviar los datos del formulario a tu backend o realizar cualquier otra acción necesaria
-    console.log(formData);
-    // Limpia el formulario después de enviar los datos
-    setFormData({
-      nombre: "",
-      duracion: ""
-    });
+    try {
+      const response = await axios.post('Coordinador/altaCarrera', formData);
+      console.log('Respuesta del servidor:', response); 
+      setEstado({
+        message: 'Carrera guardada con éxito',
+        estado: response.status
+      });
+    } catch (error) {
+      console.error('Error al guardar la carrera:', error); 
+      setEstado({
+        message: error.response ? error.response.data.message : 'Error al guardar la carrera',
+        estado: error.response ? error.response.status : 500
+      });
+    }
   };
 
   const [isSidebarToggled, setIsSidebarToggled] = useState(false);
   const toggleSidebar = () => {
-      setIsSidebarToggled(!isSidebarToggled);
+    setIsSidebarToggled(!isSidebarToggled);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = storage.getToken();
+
+      if (!token) {
+        storage.removeToken();  
+        router.push("/");
+      } else {
+        try {
+          const { data, status } = await axios.get('/Coordinador/altaCarrera');
+
+          if (status !== 200) {
+            if (status === 401) {
+              alert(data.message);
+              setEstado({
+                estado: status,
+                message: data.message
+              });
+            } else {
+              console.error("There was a problem with the fetch operation");
+            }
+          } else {
+            setData(data); 
+          }
+        } catch (error) {
+          console.error("There was a problem with the fetch operation", error);
+        }
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <body className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}>
@@ -54,7 +96,7 @@ function CoordinadorAltaCarrera() {
           <div id="layoutAuthentication">
             <div id="layoutAuthentication_content">
               <main>
-                <HeaderPagePrivado breadcrumbs={breadcrumbs}/>
+                <HeaderPagePrivado breadcrumbs={breadcrumbs} />
                 <AltaCarrera formData={formData} estado={estado} handleChange={handleChange} handleSubmit={handleSubmit} />
               </main>
             </div>
