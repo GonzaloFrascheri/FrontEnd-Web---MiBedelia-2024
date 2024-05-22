@@ -16,6 +16,14 @@ export default function ListarUsuarios ({ estado, ListUsuarios }) {
   const cachedPages = useRef({})
 
   useEffect(() => {
+    if (ListUsuarios && ListUsuarios.items) {
+      setUsuarios(ListUsuarios.items)
+      setPageIndex(ListUsuarios.pageIndex)
+      setTotalPages(ListUsuarios.totalPages)
+    }
+  }, [ListUsuarios])
+
+  useEffect(() => {
     const fetchData = async () => {
       if (cachedPages.current[pageIndex]) {
         setUsuarios(cachedPages.current[pageIndex])
