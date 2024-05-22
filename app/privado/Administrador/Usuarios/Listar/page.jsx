@@ -11,46 +11,11 @@ import storage from "@/utils/storage";
 function Page() {
   const router = useRouter();
   const breadcrumbs = ['privado', 'Administrador', 'Usuarios', 'Listar'];
-  const [ListUsuarios, setListUsuarios] = useState([]);
   const [isSidebarToggled, setIsSidebarToggled] = useState(false);
-  
-  const [estado, setEstado] = useState({
-    estado: 0,
-    message: "",
-  });
   
   const toggleSidebar = () => {
     setIsSidebarToggled(!isSidebarToggled);
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const token = storage.getToken();
-
-      if (!token) {
-        // todo: eliminar localstorage
-        router.push("/");
-      } else {
-        const {data, status } = await axios.get('/Administrador/listarUsuario');
-        
-          if (status !== 200) {
-            if (status === 401) {
-              alert(data.message)
-              setEstado({
-                estado: status,
-                message: data.message
-              });
-            } else {
-              console.error("There was a problem with the fetch operation:", error);
-            }
-          }
-          setListUsuarios(data);
-      }
-    };
-
-    fetchData();
-  }, []);
-
 
   return (
     <body className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}>
@@ -64,7 +29,7 @@ function Page() {
             <div id="layoutAuthentication_content">
               <main>
                 <HeaderPagePrivado breadcrumbs={breadcrumbs}/>
-                <ListarUsuarios estado={estado} ListUsuarios={ListUsuarios} />
+                <ListarUsuarios />
               </main>
             </div>
           </div>

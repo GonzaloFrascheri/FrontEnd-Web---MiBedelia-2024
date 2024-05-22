@@ -5,7 +5,8 @@ import axios from "axios";
 import Sidebar from "@/app/componentes/siders/sidebar";
 import NavPrivado from "@/app/componentes/navs/nav-privado";
 import HeaderPagePrivado from "@/app/componentes/headers/headerPage-privado";
-import ExamenAsignatura from "@/app/componentes/funcionario/registro/examen/examenAsignaturaListCarrera";
+import ExamenAsignaturaListCarrera from "@/app/componentes/funcionario/registro/examen/examenAsignaturaListCarrera";
+import ExamenAsignaturaListAsignatura from "@/app/componentes/funcionario/registro/examen/examenAsignaturaListAsignatura";
 import ExamenAsignaturaPasos from "@/app/componentes/funcionario/registro/examen/examenAsignaturaPasos";
 
 function FuncionarioExamenAsignatura() {
@@ -123,7 +124,11 @@ function FuncionarioExamenAsignatura() {
                             <main>
                                 <HeaderPagePrivado breadcrumbs={breadcrumbs}/>
                                 <ExamenAsignaturaPasos selectedCarreraId={selectedCarreraId} selectedAsignaturaId={selectedAsignaturaId} />
-                                <ExamenAsignatura listaCarrera={listaCarrera} listaAsignaturas={listaAsignatura} formData={formData} estado={estado} handleChange={handleChange} handleSubmit={handleSubmit} />
+                                {selectedCarreraId === null ? (
+                                    <ExamenAsignaturaListCarrera listaCarrera={listaCarrera} onCarreraChange={handleCarreraChange} />
+                                ) : (
+                                    <ExamenAsignaturaListAsignatura ListaAsignatura={listaAsignatura} handleAsignaturaChange={handleAsignaturaChange} selectedAsignaturaId={selectedAsignaturaId} />
+                                )}
                             </main>
                         </div>
                     </div>

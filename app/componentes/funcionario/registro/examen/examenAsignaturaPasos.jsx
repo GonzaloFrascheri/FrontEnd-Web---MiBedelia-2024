@@ -32,7 +32,7 @@ export default function ActaExamenPasos({ selectedCarreraId, selectedAsignaturaI
     return (
         <div className="step step-warning py-4 mt-n15">
             <div className={estado.paso1}>
-                <a className="step-item-link" href="/privado/Funcionario/Generar/ActaExamen">Elegir Carrera</a>
+                <a className="step-item-link" href="/privado/Funcionario/Registro/ExamenAsignatura">Elegir Carrera</a>
             </div>
             <div className={estado.paso2}>
                 <a

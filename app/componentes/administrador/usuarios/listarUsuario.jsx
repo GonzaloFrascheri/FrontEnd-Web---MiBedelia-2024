@@ -3,70 +3,88 @@ import { useEffect, useState, useRef } from 'react'
 import axios from '@/utils/axios'
 import { userAuthenticationCheck } from '@/utils/auth'
 import { useRouter, usePathname } from 'next/navigation'
+import DataTable from 'react-data-table-component'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
-export default function ListarUsuarios ({ estado, ListUsuarios }) {
+export default function ListarUsuarios () {
   const router = useRouter()
   const pathname = usePathname()
-  const [usuarios, setUsuarios] = useState(ListUsuarios.items || [])
-  const [pageIndex, setPageIndex] = useState(ListUsuarios.pageIndex || 1)
-  const [totalPages, setTotalPages] = useState(ListUsuarios.totalPages || 1)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const pageSize = 10
-  const cachedPages = useRef({})
-
-  useEffect(() => {
-    if (ListUsuarios && ListUsuarios.items) {
-      setUsuarios(ListUsuarios.items)
-      setPageIndex(ListUsuarios.pageIndex)
-      setTotalPages(ListUsuarios.totalPages)
+  const [estado, setEstado] = useState({estado: 0,message: "",});
+  const [data, setData]= useState([]);
+  const [search, SetSearch]= useState('');
+  const [filter, setFilter]= useState([]);
+  const columnas = [
+    {
+      name: 'id',
+      selector: (row) => row.id,
+      sortable: true,
+      width: '80px',
+    },
+    {
+      name: 'ci',
+      selector: (row) => row.ci,
+      sortable: true,
+    },
+    {
+      name: 'nombre',
+      selector: (row) => row.nombre,
+      sortable: true,
+    },
+    {
+      name: 'apellido',
+      selector: (row) => row.apellido,
+      sortable: true,
+    },
+    {
+      name: 'rol',
+      selector: (row) => row.rol,
+      sortable: true,
+    },
+    {
+      name: 'email',
+      selector: (row) => row.email,
+      sortable: true,
+    },
+    {
+      name: 'Imagen',
+      selector: (row) => <img height={30} width={30} src='/img/perfil.png' alt='Imagen' />,
+      width: '100px',
     }
-  }, [ListUsuarios])
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (cachedPages.current[pageIndex]) {
-        setUsuarios(cachedPages.current[pageIndex])
-        return
-      }
-
-      setIsLoading(true)
-
-      // User auth guard
-      userAuthenticationCheck(router, pathname)
-
-      try {
-        const { data } = await axios.get(
-          `/Administrador/listarUsuario?page=${pageIndex}&pageSize=${pageSize}`
-        )
-
-        cachedPages.current[pageIndex] = data.items
-        setUsuarios(data.items)
-        setTotalPages(data.totalPages)
-        setIsLoading(false)
-      } catch (error) {
-        console.error('There was a problem with the fetch operation:', error)
-        if (error.response && error.response.status === 401) {
-          alert(error.response.data.message)
-        }
-        setError(error)
-        setIsLoading(false)
-      }
-    }
-
-    fetchData()
-  }, [pageIndex, router, pathname])
-
-  const handleNextPage = () => {
-    if (pageIndex < totalPages) {
-      setPageIndex(pageIndex + 1)
+  ];
+  const getProduct=async()=>{
+    try{
+        const {data, status } = await axios.get('/Administrador/listarUsuario?page=1&pageSize=300');
+        setData(data.items);
+        setFilter(data.items);
+    } catch(error){
+      console.log(error);
+      setEstado({
+        estado: error.status,
+        message: error.message
+      });
     }
   }
-
-  const handlePrevPage = () => {
-    if (pageIndex > 1) {
-      setPageIndex(pageIndex - 1)
-    }
+  useEffect(()=>{
+      getProduct();
+  }, []);
+  useEffect(()=>{
+      const result= data.filter((item)=>{
+       return item.apellido.toLowerCase().match(search.toLocaleLowerCase());
+      });
+      setFilter(result);
+  },[search]);
+  function Loader() {
+    return <div className='text-center'><FontAwesomeIcon icon={faSpinner} spin /></div>
+  }
+  const tableHeaderstyle={
+    headCells:{
+        style:{
+            fontWeight:"bold",
+            fontSize:"14px",
+            backgroundColor:"#ccc"
+        },
+    },
   }
 
   return (
@@ -80,52 +98,26 @@ export default function ListarUsuarios ({ estado, ListUsuarios }) {
               </div>
               <div className='card-body'>
                 <div className='row gx-3 justify-content-center'>
-                  <div className='col-md-6'>
-                    <div className='mb-3'>
-                      {isLoading ? (
-                        <div className='text-center'>Cargando...</div>
-                      ) : error ? (
-                        <div className='text-center'>
-                          Error: {error.message}
-                        </div>
-                      ) : usuarios.length > 0 ? (
-                        <div className='card-body'>
-                          <h5>Listado de Usuarios</h5>
-                          <ul>
-                            {usuarios.map(usuario => (
-                              <li key={usuario.id}>
-                                {usuario.nombre} {usuario.apellido} -{' '}
-                                {usuario.email} - {usuario.rol}
-                              </li>
-                            ))}
-                          </ul>
-                          <div className='pagination justify-content-between'>
-                            <button
-                              className='btn btn-primary'
-                              onClick={handlePrevPage}
-                              disabled={pageIndex === 1}
-                            >
-                              Anterior
-                            </button>
-                            <span>
-                              Página {pageIndex} de {totalPages}
-                            </span>
-                            <button
-                              className='btn btn-primary'
-                              onClick={handleNextPage}
-                              disabled={pageIndex === totalPages}
-                            >
-                              Siguiente
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className='text-center'>
-                          No hay usuarios para mostrar.
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                  <DataTable
+                    customStyles={ tableHeaderstyle}
+                    columns={columnas}
+                    data={filter}
+                    pagination
+                    fixedHeader
+                    highlightOnHover
+                    subHeader
+                    subHeaderComponent={
+                        <input type="text"
+                        className="w-25 form-control"
+                        placeholder="Buscar por apellido..."
+                        value={ search}
+                        onChange={(e)=>SetSearch(e.target.value)}
+                        
+                        />
+                    }
+                    subHeaderAlign="right"
+                    progressComponent={<Loader />}
+                  />
                 </div>
               </div>
               <div className='card-footer text-center'></div>
