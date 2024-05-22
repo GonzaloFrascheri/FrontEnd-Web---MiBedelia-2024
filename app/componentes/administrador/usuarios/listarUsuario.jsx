@@ -1,20 +1,26 @@
 'use Client';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from "@/utils/axios";
 import storage from "@/utils/storage";
 
 export default function ListarUsuarios({ estado, ListUsuarios }) {
-  console.info(ListUsuarios);
-  const [usuarios, setUsuarios] = useState(ListUsuarios.items || []);
-  const [pageIndex, setPageIndex] = useState(ListUsuarios.pageIndex || 1);
-  const [totalPages, setTotalPages] = useState(ListUsuarios.totalPages || 1);
-  const [isLoading, setIsLoading] = useState(false); // Estado para manejar la carga
-  const [error, setError] = useState(null); // Estado para manejar los errores
-  const pageSize = 10; // Tamaño de página fijo, pero podría ser dinámico
+  const [usuarios, setUsuarios] = useState([]);
+  const [pageIndex, setPageIndex] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const pageSize = 10;
 
+  
+  useEffect(() => {
+    if (ListUsuarios && ListUsuarios.items) {
+      setUsuarios(ListUsuarios.items);
+      setPageIndex(ListUsuarios.pageIndex);
+      setTotalPages(ListUsuarios.totalPages);
+    }
+  }, [ListUsuarios]);
   useEffect(() => {
     if (pageIndex !== ListUsuarios.pageIndex){
-
       const fetchData = async () => {
         setIsLoading(true);
         const token = storage.getToken();
