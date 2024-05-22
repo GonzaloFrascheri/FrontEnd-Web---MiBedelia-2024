@@ -1,34 +1,28 @@
 "use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import validators from "@/utils/validators";
 import axios from "@/utils/axios";
 import storage from "@/utils/storage";
 import { hashPassword } from "@/utils/utils"
+import { userAuthenticationCheck } from "@/utils/auth";
 
 function LoginPage() {
   const router = useRouter();
-
+  const pathname = usePathname();
+  
   // constantes para el login
   const [credentials, setCredentials] = useState({
     ci: "",
     password: "",
   });
 
-  const [userData, setUserData] = useState({
-    nombre: "",
-    ci: "",
-    apellido: "",
-    email: "",
-    telefono: "",
-    rol: "usuarioGoogle",
-    img: "",
-    token: "",
-    uidgoogle: "",
-  });
+  const [errorU, setErrorU] = useState("");
+  const [errorP, setErrorP] = useState("");
 
-  const [errorU, setErrorU] = useState("La cedula debe tener 8 dígitos.");
-  const [errorP, setErrorP] = useState("La contraseña debe tener al menos 4 caracteres.");
+  useEffect(()=> {
+    userAuthenticationCheck(router, pathname);
+  },[pathname, router])
 
   // Campo cedula
   const handleCiChange = (e) => {
@@ -69,15 +63,11 @@ function LoginPage() {
 
       if (status === 200) {
         storage.setToken(data.token);
-        storage.setUser(userData);
         router.push("/privado");
       }
 
       // Manejo de errores
     } catch (error) {
-      storage.clearToken();
-      storage.clearUser();
-      console.log(error);
       const { status, data } = error.response;
       if (status === 401) {
         alert(data.message);

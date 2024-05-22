@@ -4,20 +4,19 @@ import "vis-network/styles/vis-network.css";
 import Sidebar from "../../../componentes/siders/sidebar.jsx";
 import NavPrivado from '../../../componentes/navs/nav-privado.jsx';
 import Previas from '../../../componentes/grafos/previas.jsx';
-import { decodeJwt} from "jose";
-import storage from "@/utils/storage";
+import { useRouter } from "next/router.js";
+import { usePathname } from "next/navigation.js";
+import { userAuthenticationCheck } from "@/utils/auth";
 
 function VerPreviaturas() {
-
+    const router = useRouter();
+    const pathname = usePathname();
     const [data, setData] = useState('');
+
     useEffect(() => {
-      const token = storage.getToken()
-      if (!token) {
-        router.push("/");
-      } else {
-        setData(decodeJwt (token));
-      }
-    }, []);
+      const userData = userAuthenticationCheck(router, pathname);
+      setData(userData)
+    }, [router, pathname]);
 
     const [nodes, setNodes] = useState([]);
     const [edges, setEdges] = useState([]);

@@ -2,24 +2,21 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from "@/app/componentes/siders/sidebar.jsx";
 import NavPrivado from '@/app/componentes/navs/nav-privado.jsx';
-import { useRouter } from 'next/navigation.js';
-import { decodeJwt} from "jose";
-import storage from "@/utils/storage";
+import { usePathname, useRouter } from 'next/navigation.js';
+import { userAuthenticationCheck } from "@/utils/auth";
 
 const Formulario = () => {
     const router = useRouter();
+    const pathname = usePathname();
     const [nombre, setNombre] = useState('');
     const [duracion, setDuracion] = useState(0);
     const [asignaturas, setAsignaturas] = useState([]);
     const [data, setData] = useState('');
+    
     useEffect(() => {
-      const token = storage.getToken()
-      if (!token) {
-        router.push("/");
-      } else {
-        setData(decodeJwt (token));
-      }
-    }, []);
+      const userData = userAuthenticationCheck(router, pathname);
+      setData(userData)
+    }, [router, pathname]);
 
     const [estado, setEstado] = useState({
         message: "",
@@ -127,8 +124,8 @@ const Formulario = () => {
                                                         </div>
                                                         
                                                         {asignaturas.map((asignatura, index) => (
-                                                            <div className="col-md-3 m-1">
-                                                                <div key={index}>
+                                                            <div key={index} className="col-md-3 m-1">
+                                                                <div>
                                                                     <input
                                                                         className="form-control bg-light border-bottom-0 border-top-0 border-end-0 border-lg rounded border-primary"
                                                                         type="text"

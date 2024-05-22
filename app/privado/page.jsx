@@ -1,14 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Sidebar from "@/app/componentes/siders/sidebar.jsx";
 import MainDashboard from "@/app/componentes/main/dashboard.jsx";
 import NavPrivado from '@/app/componentes/navs/nav-privado.jsx';
-import { decodeJwt} from "jose";
-import storage from "@/utils/storage";
+import { userAuthenticationCheck } from "@/utils/auth";
 
 function PrivadoPage() {
   const router = useRouter();
+  const pathname = usePathname();
   const [data, setData] = useState('');
 
   const [isSidebarToggled, setIsSidebarToggled] = useState(false);
@@ -17,20 +17,9 @@ function PrivadoPage() {
   };
 
   useEffect(() => {
-    const token = storage.getToken();
-    if (!token) {
-      router.push("/");
-    } else {
-      const decodedData = decodeJwt(token);
-      setData(decodedData);
-    }
-  }, [router]);
-
-  useEffect(() => {
-    if (data) {
-      console.log(data.role);
-    }
-  }, [data]);
+    const userData = userAuthenticationCheck(router, pathname);
+    setData(userData)
+  }, [router, pathname]);
 
   return (
     <body className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}>
