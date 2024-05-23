@@ -37,7 +37,7 @@ export default function Index({listaAsignaturas, handleAsignaturaChange, handleC
                                 </select>
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="codigo" className="form-label">Fecha exámen: <span class="badge badge-primary" >Inicio: {periodoInicio} - Fin {periodoFin}</span></label>
+                                <label htmlFor="codigo" className="form-label">Fecha exámen: <span className="badge badge-primary" >Inicio: {periodoInicio} - Fin {periodoFin}</span></label>
                                 <input
                                 type="date"
                                 id="fechaExamen"

@@ -9,23 +9,27 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 export default function ListarUsuarios () {
   const router = useRouter()
   const pathname = usePathname()
-  const [estado, setEstado] = useState({estado: 0,message: "",});
+  const [estado, setEstado] = useState({estado: "",message: ""});
   const [data, setData]= useState([]);
   const [search, SetSearch]= useState('');
   const [filter, setFilter]= useState([]);
 
   const handleDelete = async (userId) => {
     try {
-        
       // Llamada a la API para eliminar el usuario
       const { data, status } = await axios.delete(`Administrador/borrarUsuario?userId=${userId}`);
-      
       //const updatedData = data.filter(item => item.id !== userId);
-      setData(updatedData);
       //setFilter(updatedData);
-
-      setEstado({ estado: 200, message: "Se elimino el usuario con id: "+userId});
-      
+      console.info(data, status)
+      console.info("estado", estado)
+      if (status === 200) {
+        setEstado({
+          message: data.message + userId,
+          estado: data.evento
+        });
+      }
+      console.info("estado", estado)
+      setData(updatedData);
     } catch (error) {
       console.log(error)
       setEstado({
@@ -121,57 +125,56 @@ export default function ListarUsuarios () {
             <div className='card-header justify-content-center'>
             <h3 className='fw-light text-center'>Listado de Usuarios a dar de baja</h3>
             </div>
-          {estado.message === '' ? (
-            <>
-              <div className='card-body'>
-                <div className='row gx-3 justify-content-center'>
-                  <DataTable
-                    customStyles={ tableHeaderstyle}
-                    columns={columnas}
-                    data={filter}
-                    pagination
-                    fixedHeader
-                    highlightOnHover
-                    subHeader
-                    subHeaderComponent={
-                        <input type="text"
-                        className="w-25 form-control"
-                        placeholder="Buscar por apellido..."
-                        value={ search}
-                        onChange={(e)=>SetSearch(e.target.value)}
-                        
-                        />
-                    }
-                    subHeaderAlign="right"
-                    progressComponent={<Loader />}
-                  />
+            {estado.message !== '' ?  (
+              <div>
+                <div
+                  className={`alert alert-icon m-2 ${
+                    estado.estado === 200 ? 'alert-primary' : 'alert-secondary'
+                  }`}
+                  role='alert'
+                >
+                  <button
+                    className='btn-close'
+                    type='button'
+                    data-bs-dismiss='alert'
+                    aria-label='Close'
+                    onClick={()=>setEstado({estado: 0, message: ""})}
+                  ></button>
+                  <div className='alert-icon-aside'>
+                    <i className='far fa-flag'></i>
+                  </div>
+                  <div className='alert-icon-content'>
+                    <h6 className='alert-heading'>Resultado</h6>
+                    {estado.message}!
+                  </div>
                 </div>
               </div>
-              <div className='card-footer text-center'></div>
-            </>
-          ) : (
-            <div>
-              <div
-                className={`alert alert-icon m-2 ${
-                  estado.estado === 200 ? 'alert-primary' : 'alert-secondary'
-                }`}
-                role='alert'
-              >
-                <div className='alert-icon-aside'>
-                  <i className='far fa-flag'></i>
-                </div>
-                <div className='alert-icon-content'>
-                  <h6 className='alert-heading'>Resultado</h6>
-                  {estado.message}!
-                </div>
-              </div>
-              <div className='card-footer text-center'>
-                <div className='small'>
-                  <a href='/privado'>Volver al inicio</a>
-                </div>
+            ):(<></>)}
+            <div className='card-body'>
+              <div className='row gx-3 justify-content-center'>
+                <DataTable
+                  customStyles={ tableHeaderstyle}
+                  columns={columnas}
+                  data={filter}
+                  pagination
+                  fixedHeader
+                  highlightOnHover
+                  subHeader
+                  subHeaderComponent={
+                      <input type="text"
+                      className="w-25 form-control"
+                      placeholder="Buscar por apellido..."
+                      value={ search}
+                      onChange={(e)=>SetSearch(e.target.value)}
+                      
+                      />
+                  }
+                  subHeaderAlign="right"
+                  progressComponent={<Loader />}
+                />
               </div>
             </div>
-          )}
+            <div className='card-footer text-center'></div>
         </div>
       </div>
     </div>
