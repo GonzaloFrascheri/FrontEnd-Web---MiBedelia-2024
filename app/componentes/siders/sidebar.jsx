@@ -61,7 +61,7 @@ export default function Sidebar({ isSidebarToggled }) {
             <div className={`collapse ${collapseAdministrador ? 'show' : ''}`} id="collapseAdministrador" data-bs-parent="#accordionSidenav">
                 <nav className="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
                     <a className="nav-link" href="/privado/Administrador/Usuarios/Alta">Alta de Usuario</a>
-                    <a className="nav-link" href="/privado/Administrador/Usuarios/Baja/">Baja de Usuario</a>
+                    <a className="nav-link" href="/privado/Administrador/Usuarios/Baja">Baja de Usuario</a>
                     <a className="nav-link" href="/privado/Administrador/Usuarios/Listar">Listar Usuarios</a>
                 </nav>
             </div>
