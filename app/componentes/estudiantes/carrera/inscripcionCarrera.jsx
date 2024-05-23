@@ -1,3 +1,5 @@
+import ListarCarreras from '@/app/componentes/reutilizables/listarCarreras'
+
 export default function Index ({
   estado,
   handleSubmit,
@@ -14,40 +16,11 @@ export default function Index ({
               <div className='card-header justify-content-center'>
                 <h3 className='fw-light'>Inscripción a Carrera</h3>
               </div>
-              <div className='card-body'>
-                <div className='mb-3'>
-                  <label htmlFor='codigo' className='form-label'>
-                    Carreras
-                  </label>
-                  <select
-                    onChange={seleccionarCarrera}
-                    className='form-control'
-                    id='listaDeCarreras'
-                    name='carrera'
-                    required
-                    disabled={estanCargandoCarreras}
-                  >
-                    {estanCargandoCarreras ? (
-                      <option>Cargando carreras...</option>
-                    ) : (
-                      <>
-                        <option value='' disabled>
-                          Seleccione una carrera
-                        </option>
-                        {carreras.length > 0 ? (
-                          carreras.map(carrera => (
-                            <option key={carrera.id} value={carrera.id}>
-                              {carrera.nombre}
-                            </option>
-                          ))
-                        ) : (
-                          <option>No hay carreras.</option>
-                        )}
-                      </>
-                    )}
-                  </select>
-                </div>
-              </div>
+              <ListarCarreras
+                carreras={carreras}
+                seleccionarCarrera={seleccionarCarrera}
+                estanCargandoCarreras={estanCargandoCarreras}
+              />
               <div className='card-footer text-center'>
                 <button type='submit' className='btn btn-primary'>
                   Guardar
