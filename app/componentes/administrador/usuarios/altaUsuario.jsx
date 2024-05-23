@@ -39,7 +39,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit,
                                     <div className="col-md-6">
                                         <div className="mb-3">
                                             <label className="small mb-1">Usuario</label>
-                                            <input className="form-control" name="username" type="text" id="username" onChange={handleChange} value={formData.username} required />
+                                            <input className="form-control" name="ci" type="text" id="ci" onChange={handleChange} value={formData.ci} required />
                                             {credentials.username === "" && (
                                                 <span className="text-danger text-xs">Este campo es requerido</span>
                                             )}

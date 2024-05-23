@@ -29,7 +29,7 @@ function RegistrarPage() {
   const [formData, setFormData] = useState({
     nombre: "",
     apellido: "",
-    username: "",
+    ci: "",
     email: "",
     password: "",
     telefono: "",
