@@ -5,6 +5,8 @@ import Sidebar from "@/app/componentes/siders/sidebar.jsx";
 import NavPrivado from '@/app/componentes/navs/nav-privado.jsx';
 import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado.jsx';
 import AltaUsuario from '@/app/componentes/administrador/usuarios/altaUsuario.jsx';
+import axios from "@/utils/axios";
+import storage from "@/utils/storage";
 
 function RegistrarPage() {
 
@@ -24,19 +26,59 @@ function RegistrarPage() {
     telefono: "",
     rol: ""
   });
+  const [formData, setFormData] = useState({
+    nombre: "",
+    apellido: "",
+    username: "",
+    email: "",
+    password: "",
+    telefono: "",
+    rol: ""
+  });
   const [isSidebarToggled, setIsSidebarToggled] = useState(false);
   const toggleSidebar = () => {
       setIsSidebarToggled(!isSidebarToggled);
   };
+
   const handleChange = (e) => {
     setCredentials({
       ...credentials,
       [e.target.name]: e.target.value
     });
-  }
-  const handleSubmit = (e) => {
+
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
+    try{
+      const { data, status } = await axios.post('Administrador/altaUsuario', formData);
+      if(status === 200){
+        console.log(data)
+        setEstado({
+          message: data.message,
+          estado: data.status
+        });
+      }else{
+        setEstado({
+          message: data.message,
+          estado: data.status
+        });
+      }
+    } catch( error ){
+      setEstado({
+        message: error.response ? error.response.data.message : 'Error al guardar el usuario',
+        estado: error.response ? error.response.status : 500
+      });
+    }
+  };
+
+  /*
     // Verifying that the form fields are not empty
     const emptyFields = Object.values(credentials).some(value => value === "");
     if (emptyFields) {
@@ -78,6 +120,7 @@ function RegistrarPage() {
         
   };
 
+  */
   return (
     <body className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}>
       <NavPrivado data={data} isSidebarToggled={isSidebarToggled} toggleSidebar={toggleSidebar} />
@@ -90,7 +133,7 @@ function RegistrarPage() {
             <div id="layoutAuthentication_content">
               <main>
                 <HeaderPagePrivado breadcrumbs={breadcrumbs}/>
-                <AltaUsuario estado={estado} credentials={credentials} handleChange={handleChange} handleSubmit={handleSubmit} />
+                <AltaUsuario formData={formData} estado={estado} credentials={credentials} handleChange={handleChange} handleSubmit={handleSubmit} />
               </main>
             </div>
           </div>

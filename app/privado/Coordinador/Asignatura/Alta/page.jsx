@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../../../../componentes/siders/sidebar.jsx";
 import NavPrivado from '../../../../componentes/navs/nav-privado.jsx';
 import HeaderPagePrivado from '../../../../componentes/headers/headerPage-privado.jsx';
-import ActaExamenListCarrera from '../../../../componentes/funcionario/generar/actaExamenListCarrera.jsx'
 import AltaAsignatura from '../../../../componentes/coordinador/asignatura/altaAsignatura.jsx';
-import axios from "axios";
+import storage from "@/utils/storage.js";
+import axios from "@/utils/axios";
 import { useRouter } from "next/navigation.js";
 
 function CoordinadorAltaAsignatura() {
@@ -14,15 +14,14 @@ function CoordinadorAltaAsignatura() {
   const breadcrumbs = ['privado', 'Coordinador', 'Asignatura', 'Alta'];
   const [data, setData] = useState('');
   const [listaCarrera, setListaCarrera] = useState([]);
-  const [selectedCarreraId, setSelectedCarreraId] = useState(null);
   const [estado, setEstado] = useState({
     message: "",
     estado: ""
   });
   const [formData, setFormData] = useState({
     nombre: "",
-    carrera: "",
-    });
+    carrera: ""
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,49 +31,72 @@ function CoordinadorAltaAsignatura() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí puedes enviar los datos del formulario a tu backend o realizar cualquier otra acción necesaria
-    console.log(formData);
-    // Limpia el formulario después de enviar los datos
-    setFormData({
-      nombre: "",
-      carrera: "",
+    try {
+      const response = await axios.post('/Coordinador/altaAsignatura', formData);
+      setEstado({
+        message: 'Asignatura guardada con éxito',
+        estado: response.status
       });
+    } catch (error) {
+      setEstado({
+        message: error.response ? error.response.data.message : 'Error al guardar la asignatura',
+        estado: error.response ? error.response.status : 500
+      });
+    }
   };
-  
+
   const [isSidebarToggled, setIsSidebarToggled] = useState(false);
   const toggleSidebar = () => {
       setIsSidebarToggled(!isSidebarToggled);
   };
 
-  const handleCarreraChange = (id) => {
-    setSelectedCarreraId(id);
-  };
-
   useEffect(() => {
     const fetchListaCarreras = async () => {
-        try {
-            const response = await axios.get('/listaCarreras');
-            setListaCarrera(response.data);
-        } catch (error) {
-            // Simulando la respuesta del servidor con una lista de carreras
-            const simulatedResponse = [
-                { id: 0, nombre: 'Elegir una' },
-                { id: 1, nombre: 'Carrera #1' },
-                { id: 2, nombre: 'Carrera #2' },
-                { id: 3, nombre: 'Carrera #3' },
-                { id: 4, nombre: 'Carrera #4' },
-                { id: 5, nombre: 'Carrera #5' },
-            ];
-            setListaCarrera(simulatedResponse);
-            console.error('Error fetching listaCarreras:', error);
-        }
+      try {
+        const response = await axios.get('/Funcionario/listarCarrera');
+        setListaCarrera(response.data);
+      } catch (error) {
+        console.error('Error fetching listaCarreras:', error);
+      }
     };
 
     fetchListaCarreras();
-}, []); // El segundo argumento [] asegura que esto se ejecute solo una vez al montar el componente
+  }, []); 
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = storage.getToken();
+
+      if (!token) {
+        storage.removeToken();  
+        router.push("/");
+      } else {
+        try {
+          const { data, status } = await axios.get('/Coordinador/altaAsignatura');
+
+          if (status !== 200) {
+            if (status === 401) {
+              alert(data.message);
+              setEstado({
+                estado: status,
+                message: data.message
+              });
+            } else {
+              console.error("There was a problem with the fetch operation");
+            }
+          } else {
+            setData(data); 
+          }
+        } catch (error) {
+          console.error("There was a problem with the fetch operation", error);
+        }
+      }
+    };
+
+    fetchData();
+  }, [router]);
 
   useEffect(() => {
     document.body.className = isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled';
@@ -92,7 +114,13 @@ function CoordinadorAltaAsignatura() {
             <div id="layoutAuthentication_content">
               <main>
                 <HeaderPagePrivado breadcrumbs={breadcrumbs}/>
-                <AltaAsignatura listaCarrera={listaCarrera} formData={formData} estado={estado} handleChange={handleChange} handleSubmit={handleSubmit} />
+                <AltaAsignatura 
+                  listaCarrera={listaCarrera} 
+                  formData={formData} 
+                  estado={estado} 
+                  handleChange={handleChange} 
+                  handleSubmit={handleSubmit} 
+                />
               </main>
             </div>
           </div>

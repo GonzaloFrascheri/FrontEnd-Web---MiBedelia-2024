@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignIn, faBell, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 
-export default function Index( {estado, credentials, handleChange, handleSubmit}) {
+export default function Index( {estado, credentials, handleChange, handleSubmit, formData}) {
 
     return (
         <div className="conatiner-xl px-4 mt-n10">
@@ -19,7 +19,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit}
                                     <div className="col-md-6">
                                         <div className="mb-3">
                                             <label className="small mb-1">Nombre</label>
-                                            <input className="form-control" name="nombre" type="text" id="nombre" onChange={handleChange} required />
+                                            <input className="form-control" name="nombre" type="text" id="nombre" onChange={handleChange} value={formData.nombre} required />
                                             {credentials.nombre === "" && (
                                                 <span className="text-danger text-xs">Este campo es requerido</span>
                                             )}
@@ -28,7 +28,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit}
                                     <div className="col-md-6">
                                         <div className="mb-3">
                                             <label className="small mb-1" >Apellido</label>
-                                            <input className="form-control" name="apellido" type="text" id="apellido" onChange={handleChange} required />
+                                            <input className="form-control" name="apellido" type="text" id="apellido" onChange={handleChange} value={formData.apellido} required />
                                             {credentials.apellido === "" && (
                                                 <span className="text-danger text-xs">Este campo es requerido</span>
                                             )}
@@ -39,7 +39,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit}
                                     <div className="col-md-6">
                                         <div className="mb-3">
                                             <label className="small mb-1">Usuario</label>
-                                            <input className="form-control" name="username" type="text" id="username" onChange={handleChange} required />
+                                            <input className="form-control" name="username" type="text" id="username" onChange={handleChange} value={formData.username} required />
                                             {credentials.username === "" && (
                                                 <span className="text-danger text-xs">Este campo es requerido</span>
                                             )}
@@ -48,7 +48,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit}
                                     <div className="col-md-6">
                                         <div className="mb-3">
                                             <label className="small mb-1" >Rol</label>
-                                            <input className="form-control"   name="rol" type="text" id="rol" onChange={handleChange} required />
+                                            <input className="form-control"   name="rol" type="text" id="rol" onChange={handleChange} value={formData.rol} required />
                                             {credentials.rol === "" && (
                                                 <span className="text-danger text-xs">Este campo es requerido</span>
                                             )}
@@ -59,7 +59,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit}
                                     <div className="col-md-12">
                                         <div className="mb-3">
                                             <label className="small mb-1" >Correo</label>
-                                            <input className="form-control"  name="email" type="email" id="email" onChange={handleChange} required />
+                                            <input className="form-control"  name="email" type="email" id="email" onChange={handleChange} value={formData.email} required />
                                             {credentials.email === "" && (
                                                 <span className="text-danger text-xs">Este campo es requerido</span>
                                             )}
@@ -70,7 +70,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit}
                                     <div className="col-md-6">
                                         <div className="mb-3">
                                             <label className="small mb-1" >Password</label>
-                                            <input className="form-control" name="password" type="password" id="password" onChange={handleChange} required />
+                                            <input className="form-control" name="password" type="password" id="password" onChange={handleChange} value={formData.password} required />
                                             {credentials.password === "" && (
                                                 <span className="text-danger text-xs">Este campo es requerido</span>
                                             )}
@@ -79,7 +79,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit}
                                     <div className="col-md-6">
                                         <div className="mb-3">
                                             <label className="small mb-1" >Telefono</label>
-                                            <input className="form-control" name="telefono" type="text" id="telefono" onChange={handleChange} required />
+                                            <input className="form-control" name="telefono" type="text" id="telefono" onChange={handleChange} value={formData.telefono} required />
                                             {credentials.telefono === "" && (
                                                 <span className="text-danger text-xs">Este campo es requerido</span>
                                             )}

@@ -33,13 +33,11 @@ function CoordinadorAltaCarrera() {
     e.preventDefault();
     try {
       const response = await axios.post('Coordinador/altaCarrera', formData);
-      console.log('Respuesta del servidor:', response); 
       setEstado({
         message: 'Carrera guardada con éxito',
         estado: response.status
       });
     } catch (error) {
-      console.error('Error al guardar la carrera:', error); 
       setEstado({
         message: error.response ? error.response.data.message : 'Error al guardar la carrera',
         estado: error.response ? error.response.status : 500
