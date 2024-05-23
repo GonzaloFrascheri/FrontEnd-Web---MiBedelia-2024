@@ -75,7 +75,6 @@ function CoordinadorAltaAsignatura() {
     const fetchListaCarreras = async () => {
       try {
         const response = await axios.get('Funcionario/listarCarrera');
-        console.info("response.data", response.data)
         const carrerasConIds = response.data.map(carrera => ({
           id: carrera.id, 
           nombre: carrera.nombre,

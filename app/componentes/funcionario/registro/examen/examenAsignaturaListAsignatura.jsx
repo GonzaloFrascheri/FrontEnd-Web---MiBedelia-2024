@@ -1,8 +1,16 @@
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import {  } from '@fortawesome/free-solid-svg-icons';
 
-export default function Index({listaAsignaturas, handleAsignaturaChange, handleChange, handleSubmit, formData}) {
-
+export default function Index({listaAsignaturas, handleAsignaturaChange, handleChange, handleSubmit, periodoActivo, formData}) {
+    function formatFecha(fecha) {
+        const date = new Date(fecha);
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Los meses son indexados desde 0
+        const day = date.getDate().toString().padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+    const periodoInicio = formatFecha(periodoActivo.diaInicio);
+    const periodoFin = formatFecha(periodoActivo.diaFin);
     return (
         <div className="container-xl px-4">
             <div className="card">
@@ -21,7 +29,7 @@ export default function Index({listaAsignaturas, handleAsignaturaChange, handleC
                                 >
                                     {listaAsignaturas.length > 0 ? (
                                         listaAsignaturas.map((asignatura) => (
-                                            <option key={asignatura.id} value={asignatura.id}>{asignatura.nombre}</option>
+                                            <option key={asignatura.idCarrera} value={asignatura.idCarrera}>{asignatura.nombre}</option>
                                         ))
                                     ) : (
                                         <option>No se recibieron datos aún</option>
@@ -29,7 +37,7 @@ export default function Index({listaAsignaturas, handleAsignaturaChange, handleC
                                 </select>
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="codigo" className="form-label">Fecha exámen:</label>
+                                <label htmlFor="codigo" className="form-label">Fecha exámen: <span class="badge badge-primary" >Inicio: {periodoInicio} - Fin {periodoFin}</span></label>
                                 <input
                                 type="date"
                                 id="fechaExamen"
