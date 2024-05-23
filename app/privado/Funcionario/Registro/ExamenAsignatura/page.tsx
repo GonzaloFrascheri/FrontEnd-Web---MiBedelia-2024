@@ -21,9 +21,18 @@ function FuncionarioExamenAsignatura() {
 
     const handleCarreraChange = (id) => {
         setSelectedCarreraId(id);
+        setFormData({
+            ...formData,
+            carrera: id
+        });
     }
-    const handleAsignaturaChange = (id) => {
-        setSelectedAsignaturaId(id);
+    const handleAsignaturaChange = (event) => {
+        const selectedId = event.target.value;
+        setSelectedAsignaturaId(selectedId);
+        setFormData({
+            ...formData,
+            idAsignatura: selectedId
+        });
     }
 
     const [estado, setEstado] = useState({
@@ -32,10 +41,12 @@ function FuncionarioExamenAsignatura() {
     });
 
     const [formData, setFormData] = useState({
+        idAsignatura: "",
         carrera: "",
-        asignatura: "",
-        fechaexamen: "",
-        docente: "",
+        fechaExamen: "",
+        idDocente: "",
+        anioLectivo: "",
+        idPeriodo: "",
     });
     
     const handleChange = (e) => {
@@ -49,7 +60,7 @@ function FuncionarioExamenAsignatura() {
     const handleSubmit = (e) => {
         e.preventDefault();
         // Aquí puedes enviar los datos del formulario a tu backend o realizar cualquier otra acción necesaria
-        console.log(formData);
+        console.info("a enviar", formData);
         // Limpia el formulario después de enviar los datos
         setFormData({
             carrera: "",
@@ -125,9 +136,18 @@ function FuncionarioExamenAsignatura() {
                                 <HeaderPagePrivado breadcrumbs={breadcrumbs}/>
                                 <ExamenAsignaturaPasos selectedCarreraId={selectedCarreraId} selectedAsignaturaId={selectedAsignaturaId} />
                                 {selectedCarreraId === null ? (
-                                    <ExamenAsignaturaListCarrera listaCarrera={listaCarrera} onCarreraChange={handleCarreraChange} />
+                                    <ExamenAsignaturaListCarrera 
+                                        listaCarrera={listaCarrera}
+                                        onCarreraChange={handleCarreraChange}
+                                    />
                                 ) : (
-                                    <ExamenAsignaturaListAsignatura ListaAsignatura={listaAsignatura} handleAsignaturaChange={handleAsignaturaChange} selectedAsignaturaId={selectedAsignaturaId} />
+                                    <ExamenAsignaturaListAsignatura 
+                                        listaAsignaturas={listaAsignatura}
+                                        handleAsignaturaChange={handleAsignaturaChange}
+                                        handleChange={handleChange}
+                                        handleSubmit={handleSubmit}
+                                        formData={formData}
+                                    />
                                 )}
                             </main>
                         </div>

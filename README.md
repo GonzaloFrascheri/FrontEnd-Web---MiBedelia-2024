@@ -85,3 +85,6 @@ npm install jspdf
 
 # instalar simple-table
 npm install react-data-table-component
+
+# swagger
+https://mibedelia-backend-production.up.railway.app/doc/swagger-ui/index.html#/

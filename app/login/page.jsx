@@ -16,12 +16,9 @@ function LoginPage() {
     ci: "",
     password: "",
   });
-  /**
-   * dejas los menajes iniciados para mostrar mensaje de error en el formulario
-   * y bloquear el boton al inicio, ya que los cuadros estan vacíos.
-   */
-  const [errorU, setErrorU] = useState("La cedula debe tener 8 dígitos.");
-  const [errorP, setErrorP] = useState("La contraseña debe tener al menos 4 caracteres.");
+
+  const [errorU, setErrorU] = useState(true);
+  const [errorP, setErrorP] = useState(true);
 
   useEffect(()=> {
     userAuthenticationCheck(router, pathname);
@@ -147,7 +144,7 @@ function LoginPage() {
                           <button
                             className="btn btn-primary"
                             type="submit"
-                            disabled={!!errorU || !!errorP}
+                            disabled={errorU || errorP}
                           >
                             Iniciar
                           </button>
