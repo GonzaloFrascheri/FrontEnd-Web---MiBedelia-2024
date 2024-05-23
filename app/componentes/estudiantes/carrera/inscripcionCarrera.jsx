@@ -1,48 +1,65 @@
 export default function Index ({
   estado,
-  formData,
-  handleChange,
-  handleSubmit
+  handleSubmit,
+  carreras,
+  seleccionarCarrera,
+  estanCargandoCarreras
 }) {
   return (
     <div className='container-xl px-4 mt-n10'>
       <div className='card'>
         <div className='card shadow-lg border-0 rounded-lg'>
           {estado.message === '' ? (
-            <>
-              <form onSubmit={handleSubmit}>
-                <div className='card-header justify-content-center'>
-                  <h3 className='fw-light'>Inscripción a Carrera</h3>
+            <form onSubmit={handleSubmit}>
+              <div className='card-header justify-content-center'>
+                <h3 className='fw-light'>Inscripción a Carrera</h3>
+              </div>
+              <div className='card-body'>
+                <div className='mb-3'>
+                  <label htmlFor='codigo' className='form-label'>
+                    Carreras
+                  </label>
+                  <select
+                    onChange={seleccionarCarrera}
+                    className='form-control'
+                    id='listaDeCarreras'
+                    name='carrera'
+                    required
+                    disabled={estanCargandoCarreras}
+                  >
+                    {estanCargandoCarreras ? (
+                      <option>Cargando carreras...</option>
+                    ) : (
+                      <>
+                        <option value='' disabled>
+                          Seleccione una carrera
+                        </option>
+                        {carreras.length > 0 ? (
+                          carreras.map(carrera => (
+                            <option key={carrera.id} value={carrera.id}>
+                              {carrera.nombre}
+                            </option>
+                          ))
+                        ) : (
+                          <option>No hay carreras.</option>
+                        )}
+                      </>
+                    )}
+                  </select>
                 </div>
-                <div className='card-body'>
-                  <div className='mb-3'>
-                    <label htmlFor='codigo' className='form-label'>
-                      Finalizado:
-                    </label>
-                    <input
-                      type='text'
-                      id='finalizado'
-                      name='finalizado'
-                      value={formData.finalizado}
-                      onChange={handleChange}
-                      className='form-control'
-                      required
-                    />
-                  </div>
-                </div>
-                <div className='card-footer text-center'>
-                  <button type='submit' className='btn btn-primary'>
-                    Guardar
-                  </button>
-                </div>
-              </form>
-            </>
+              </div>
+              <div className='card-footer text-center'>
+                <button type='submit' className='btn btn-primary'>
+                  Guardar
+                </button>
+              </div>
+            </form>
           ) : (
             <div>
               <div
-                className={
-                  'alert alert-icon ${estado.estado === 200 ? "alert-primary" : "alert-secondary"}'
-                }
+                className={`alert alert-icon ${
+                  estado.estado === 200 ? 'alert-primary' : 'alert-secondary'
+                }`}
                 role='alert'
               >
                 <button

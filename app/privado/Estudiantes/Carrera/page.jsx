@@ -1,43 +1,52 @@
 'use client'
-
-import React, { useState } from 'react'
-import NavPrivado from '../../../componentes/navs/nav-privado'
-import Sidebar from '../../../componentes/siders/sidebar'
-import InscripcionCarrera from '../../../componentes/estudiantes/carrera/inscripcionCarrera'
-import { useRouter } from 'next/navigation'
-import HeaderPagePrivado from '../../../componentes/headers/headerPage-privado'
+import React, { useEffect, useState } from 'react'
+import NavPrivado from '@/app/componentes/navs/nav-privado'
+import Sidebar from '@/app/componentes/siders/sidebar'
+import InscripcionCarrera from '@/app/componentes/estudiantes/carrera/inscripcionCarrera'
+import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado'
+import axios from '@/utils/axios'
 
 function EstudianteInscripcionCarrera () {
-  const router = useRouter()
   const breadcrumbs = ['privado', 'Estudiantes', 'Carrera']
-  const [data, setData] = useState('')
   const [estado, setEstado] = useState({
     message: '',
     estado: ''
   })
 
-  const [formData, setFormData] = useState({
-    inscripcion: '',
-    finalizado: ''
-  })
+  const [careers, setCareers] = useState([])
+  const [careesAreLoading, setCareesAreLoading] = useState(true)
+  const [selectedCareer, setSelectedCareer] = useState('')
 
-  const handleChange = e => {
-    const { name, value } = e.target
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }))
-  }
+  useEffect(() => {
+    const fetchCareers = async () => {
+      try {
+        const response = await axios.get('/Funcionario/listarCarrera')
+        const { status, data } = response
+        if (status === 200) {
+          setCareers([...data.items])
+          setCareesAreLoading(false)
+        }
+      } catch (error) {
+        const { status, data } = error.response
+        setEstado({
+          estado: status,
+          message: data.message
+        })
+      }
+    }
+    fetchCareers()
+  }, [])
 
   const handleSubmit = e => {
     e.preventDefault()
-    // Aquí puedes enviar los datos del formulario a tu backend o realizar cualquier otra acción necesaria
-    console.log(formData)
-    // Limpia el formulario después de enviar los datos
-    setFormData({
-      inscripcion: '',
-      finalizado: ''
-    })
+    const formData = {
+      idCarrera: Number(selectedCareer)
+    }
+    // Make request and set status
+  }
+
+  const onCareerChange = e => {
+    setSelectedCareer(e.target.value)
   }
 
   const [isSidebarToggled, setIsSidebarToggled] = useState(false)
@@ -63,9 +72,10 @@ function EstudianteInscripcionCarrera () {
               <main>
                 <HeaderPagePrivado breadcrumbs={breadcrumbs} />
                 <InscripcionCarrera
-                  formData={formData}
+                  estanCargandoCarreras={careesAreLoading}
+                  carreras={careers}
+                  seleccionarCarrera={onCareerChange}
                   estado={estado}
-                  handleChange={handleChange}
                   handleSubmit={handleSubmit}
                 />
               </main>
