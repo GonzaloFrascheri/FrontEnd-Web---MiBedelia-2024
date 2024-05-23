@@ -34,15 +34,24 @@ function CoordinadorAltaAsignatura() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/Coordinador/altaAsignatura', formData);
+      // envío datos al bk
+      const { data, status } = await axios.post('Coordinador/altaAsignatura', formData);
+      // si la data es ok - docente fue dado de alta
+      if (status === 200) {
+          setEstado({
+              message: data.message,
+              estado: data.estado
+          });
+      }else{
+          setEstado({
+            message: data.message,
+            estado: data.status
+          });
+        }
+  } catch (error) {
       setEstado({
-        message: 'Asignatura guardada con éxito',
-        estado: response.status
-      });
-    } catch (error) {
-      setEstado({
-        message: error.response ? error.response.data.message : 'Error al guardar la asignatura',
-        estado: error.response ? error.response.status : 500
+          message: error.response ? error.response.data.message : 'Error al guardar el usuario',
+          estado: error.response ? error.response.status : 500
       });
     }
   };
@@ -55,15 +64,19 @@ function CoordinadorAltaAsignatura() {
   useEffect(() => {
     const fetchListaCarreras = async () => {
       try {
-        const response = await axios.get('/Funcionario/listarCarrera');
-        setListaCarrera(response.data);
+        const response = await axios.get('Funcionario/listarCarrera');
+        const carrerasConIds = response.data.map(carrera => ({
+          id: carrera.id, 
+          nombre: carrera.nombre,
+        }));
+        setListaCarrera(carrerasConIds);
       } catch (error) {
         console.error('Error fetching listaCarreras:', error);
       }
     };
 
     fetchListaCarreras();
-  }, []); 
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,7 +87,7 @@ function CoordinadorAltaAsignatura() {
         router.push("/");
       } else {
         try {
-          const { data, status } = await axios.get('/Coordinador/altaAsignatura');
+          const { data, status } = await axios.get('Coordinador/altaAsignatura');
 
           if (status !== 200) {
             if (status === 401) {
