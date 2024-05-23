@@ -42,7 +42,7 @@ function VerPreviaturas() {
 
   return (
     <>
-      <NavPrivado data={data} />
+      <NavPrivado/>
       <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
           <Sidebar />

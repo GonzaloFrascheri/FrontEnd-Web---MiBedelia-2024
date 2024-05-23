@@ -43,7 +43,7 @@ const ListarCursos = () => {
 
   return (
     <>
-      <NavPrivado data={data} />
+      <NavPrivado />
       <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
           <Sidebar />
