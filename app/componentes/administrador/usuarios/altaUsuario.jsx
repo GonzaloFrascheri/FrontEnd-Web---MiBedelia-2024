@@ -1,8 +1,25 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignIn, faBell, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+"use client";
+import React, { useState, useEffect } from "react";
+import axios from "@/utils/axios";
 
+export default function Index( {estado, formData, handleChange, handleSubmit}) {
 
-export default function Index( {estado, credentials, handleChange, handleSubmit, formData}) {
+    const [roles, setRoles] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        // Obtener los tipos de rol desde el endpoint
+        axios.get('/Administrador/getTiposRol')
+            .then(response => {
+                setRoles(response.data);
+                setLoading(false);
+            })
+            .catch(error => {
+                setError(error);
+                setLoading(false);
+            });
+    }, []);
 
     return (
         <div className="conatiner-xl px-4 mt-n10">
@@ -20,7 +37,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit,
                                         <div className="mb-3">
                                             <label className="small mb-1">Nombre</label>
                                             <input className="form-control" name="nombre" type="text" id="nombre" onChange={handleChange} value={formData.nombre} required />
-                                            {credentials.nombre === "" && (
+                                            {formData.nombre === "" && (
                                                 <span className="text-danger text-xs">Este campo es requerido</span>
                                             )}
                                         </div>
@@ -29,7 +46,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit,
                                         <div className="mb-3">
                                             <label className="small mb-1" >Apellido</label>
                                             <input className="form-control" name="apellido" type="text" id="apellido" onChange={handleChange} value={formData.apellido} required />
-                                            {credentials.apellido === "" && (
+                                            {formData.apellido === "" && (
                                                 <span className="text-danger text-xs">Este campo es requerido</span>
                                             )}
                                         </div>
@@ -38,18 +55,39 @@ export default function Index( {estado, credentials, handleChange, handleSubmit,
                                 <div className="row gx-3">
                                     <div className="col-md-6">
                                         <div className="mb-3">
-                                            <label className="small mb-1">Usuario</label>
+                                            <label className="small mb-1">Cédula de identidad</label>
                                             <input className="form-control" name="ci" type="text" id="ci" onChange={handleChange} value={formData.ci} required />
-                                            {credentials.username === "" && (
+                                            {formData.ci === "" && (
                                                 <span className="text-danger text-xs">Este campo es requerido</span>
                                             )}
                                         </div>
                                     </div>
+
                                     <div className="col-md-6">
                                         <div className="mb-3">
-                                            <label className="small mb-1" >Rol</label>
-                                            <input className="form-control"   name="rol" type="text" id="rol" onChange={handleChange} value={formData.rol} required />
-                                            {credentials.rol === "" && (
+                                            <label className="small mb-1">Rol</label>
+                                            {loading ? (
+                                                <p>Cargando roles...</p>
+                                            ) : error ? (
+                                                <p>Error cargando roles: {error.message}</p>
+                                            ) : (
+                                                <select 
+                                                    className="form-control" 
+                                                    name="rol" 
+                                                    id="rol" 
+                                                    onChange={handleChange} 
+                                                    value={formData.rol} 
+                                                    required
+                                                >
+                                                    <option value="">Seleccione un rol</option>
+                                                    {roles.map((role, index) => (
+                                                        <option key={index} value={role}>
+                                                            {role}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            )}
+                                            {formData.rol === "" && (
                                                 <span className="text-danger text-xs">Este campo es requerido</span>
                                             )}
                                         </div>
@@ -60,7 +98,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit,
                                         <div className="mb-3">
                                             <label className="small mb-1" >Correo</label>
                                             <input className="form-control"  name="email" type="email" id="email" onChange={handleChange} value={formData.email} required />
-                                            {credentials.email === "" && (
+                                            {formData.email === "" && (
                                                 <span className="text-danger text-xs">Este campo es requerido</span>
                                             )}
                                         </div>
@@ -71,7 +109,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit,
                                         <div className="mb-3">
                                             <label className="small mb-1" >Password</label>
                                             <input className="form-control" name="password" type="password" id="password" onChange={handleChange} value={formData.password} required />
-                                            {credentials.password === "" && (
+                                            {formData.password === "" && (
                                                 <span className="text-danger text-xs">Este campo es requerido</span>
                                             )}
                                         </div>
@@ -80,7 +118,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit,
                                         <div className="mb-3">
                                             <label className="small mb-1" >Telefono</label>
                                             <input className="form-control" name="telefono" type="text" id="telefono" onChange={handleChange} value={formData.telefono} required />
-                                            {credentials.telefono === "" && (
+                                            {formData.telefono === "" && (
                                                 <span className="text-danger text-xs">Este campo es requerido</span>
                                             )}
                                         </div>
@@ -96,8 +134,7 @@ export default function Index( {estado, credentials, handleChange, handleSubmit,
                     </>
                     ) : (
                         <div>
-                            <div className={'alert alert-icon ${estado.estado === 200 ? "alert-primary" : "alert-secondary"}'} role="alert">
-                                <button className="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <div className={'alert alert-icon ${estado.estado === 200 ? "alert-primary" : "alert-secondary"}'} role="alert">                                
                                 <div className="alert-icon-aside">
                                     <i className="far fa-flag"></i>
                                 </div>

@@ -47,9 +47,7 @@ function RegistrarPage() {
         ...formData,
         password: hashedPassword,
       };
-      
-      console.info("formData: ", updatedFormData);
-      const { data, status } = await axios.post("/register", formData);
+      const { data, status } = await axios.post("/register", updatedFormData);
       if (status === 200) {
         setEstado({
           message: data.message,

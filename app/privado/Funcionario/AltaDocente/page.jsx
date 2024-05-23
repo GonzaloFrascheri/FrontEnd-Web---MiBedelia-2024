@@ -11,7 +11,7 @@ import AltaDocente from '@/app/componentes/funcionario/alta/altaDocente.jsx';
 function AltaDocentePage() {
 
     const router = useRouter();
-    const breadcrumbs = ['privado', 'Funcionario', 'Alta Docente'];
+    const breadcrumbs = ['privado', 'Funcionario', 'AltaDocente'];
     const [data, setData] = useState('');
     const [estado, setEstado] = useState({
         message: "",
@@ -41,26 +41,30 @@ function AltaDocentePage() {
             alert("Los campos no pueden estar vacios.");
             return;
         }
-    
+        console.info(docenteDto)
+
         try {
             // envío datos al bk
-            const { respuesta, status } = await axios.post('/docente', docenteDto);
-            // si la respuesta es ok - docente fue dado de alta
+            const { data, status } = await axios.post('Funcionario/altaDocente', docenteDto);
+            // si la data es ok - docente fue dado de alta
             if (status === 200) {
                 setEstado({
-                    message: respuesta.message,
-                    estado: respuesta.estado
+                    message: data.message,
+                    estado: data.estado
                 });
-            }
+            }else{
+                setEstado({
+                  message: data.message,
+                  estado: data.status
+                });
+              }
         } catch (error) {
-            const { status, respuesta } = error.response;
-            if (status === 409) {
-                alert(respuesta.message);
-            }
-            else {
-                throw new Error('Ocurrió un error: ' + respuesta.message);
-            }
+            setEstado({
+                message: error.response ? error.response.data.message : 'Error al guardar el usuario',
+                estado: error.response ? error.response.status : 500
+            });
         }
+
     }
     
     return (

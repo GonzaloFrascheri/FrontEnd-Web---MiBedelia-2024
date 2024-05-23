@@ -1,43 +1,41 @@
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import {  } from '@fortawesome/free-solid-svg-icons';
-
-export default function Index({estado, formData, handleChange, handleSubmit}) {
+export default function Index({estado, formData, handleChange, handleSubmit, error}) {
 
     return (
         <div className="container-xl px-4 mt-n10">
             <div className="card">
                 <div className="card shadow-lg border-0 rounded-lg">
+                    <div className="card-header justify-content-center">
+                        <h3 className="fw-light">Registro período de exámen</h3>
+                    </div>
                     {estado.message === '' ? (
                     <>
                         <form onSubmit={handleSubmit}>
-                            <div className="card-header justify-content-center">
-                                <h3 className="fw-light">Registro período de exámen</h3>
-                            </div>
                             <div className="card-body">
-                                <div className="mb-3">
-                                    <label htmlFor="codigo" className="form-label">Fecha inicio:</label>
-                                    <input
+                            <div className="mb-3">
+                                <label htmlFor="diaInicio" className="form-label">Fecha inicio:</label>
+                                <input
                                     type="date"
-                                    id="fechainicio"
-                                    name="fechainicio"
-                                    value={formData.fechainicio}
+                                    id="diaInicio"
+                                    name="diaInicio"
+                                    value={formData.diaInicio}
                                     onChange={handleChange}
                                     className="form-control"
                                     required
-                                    />
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="codigo" className="form-label">Fecha fin:</label>
-                                    <input
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="diaFin" className="form-label">Fecha fin:</label>
+                                <input
                                     type="date"
-                                    id="fechafin"
-                                    name="fechafin"
-                                    value={formData.fechafin}
+                                    id="diaFin"
+                                    name="diaFin"
+                                    value={formData.diaFin}
                                     onChange={handleChange}
                                     className="form-control"
                                     required
-                                    />
-                                </div>
+                                />
+                            </div>
+                            {error && <div className="alert alert-danger">{error}</div>}
                             </div>
                             <div className="card-footer text-center">
                                 <button 
@@ -48,8 +46,7 @@ export default function Index({estado, formData, handleChange, handleSubmit}) {
                         </>
                     ) : (
                         <div>
-                            <div className={'alert alert-icon ${estado.estado === 200 ? "alert-primary" : "alert-secondary"}'} role="alert">
-                                <button className="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <div className={`alert alert-icon m-2 ${estado.estado === 200 ? "alert-primary" : "alert-secondary"}`} role="alert">
                                 <div className="alert-icon-aside">
                                     <i className="far fa-flag"></i>
                                 </div>
