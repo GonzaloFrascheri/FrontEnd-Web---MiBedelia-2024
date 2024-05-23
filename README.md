@@ -1,4 +1,33 @@
-# instala next
+# swagger
+https://mibedelia-backend-production.up.railway.app/doc/swagger-ui/index.html#/
+
+## Tareas - Casos de uso críticos 
+- Invitado
+  - Iniciar sesión <img src="https://img.shields.io/badge/Front-Hehco-succes">
+  - Registrarse como estudiante <img src="https://img.shields.io/badge/Front-EnProceso-yellow">
+- Administrador
+  - Alta de Usuario <img src="https://img.shields.io/badge/Front-EnProceso-yellow">
+  - Baja de Usuario <img src="https://img.shields.io/badge/Front-EnProceso-yellow">
+  - Listar Usuario <img src="https://img.shields.io/badge/Front-Hehco-succes">
+- Coordinador	
+  - Alta carrera	<img src="https://img.shields.io/badge/Front-EnProceso-yellow">
+  - Alta Asignatura	<img src="https://img.shields.io/badge/Front-EnProceso-yellow">
+- Estudiante	
+  - Inscripción a una carrera	<img src="https://img.shields.io/badge/Front-EnProceso-yellow">
+  - Inscripción a una asignatura <img src="https://img.shields.io/badge/Front-EnProceso-yellow">	
+  - Inscripción a un examen <img src="https://img.shields.io/badge/Front-EnProceso-yellow">	
+- Funcionario	
+  - Generar acta fin de curso	<img src="https://img.shields.io/badge/Front-EnProceso-yellow">
+  - Generar acta examen	<img src="https://img.shields.io/badge/Front-EnProceso-yellow">
+  - Registro horario en asignatura	
+  - Registro periodo examen <img src="https://img.shields.io/badge/Front-EnProceso-yellow">	
+  - Registro examen relacionado a una asignatura dada	<img src="https://img.shields.io/badge/Front-EnProceso-yellow">
+  - Alta docente	<img src="https://img.shields.io/badge/Front-EnProceso-yellow">
+
+
+# INSTALCION DEL FRONTEND
+```bash
+# instalar next
 npm i next
 # instalar typescript
 npm i -D typescript
@@ -8,83 +37,41 @@ npm i -D tailwindcss postcss autoprefixer
 // npm i jwt-decode
 npm install @types/jwt-decode
 # conflictos con versiones
-# descarga del sitio oficial la ultima verison de node.js e instala (MSI)
-
 # limpiar cache de npm
 npm cache clean --force
-
 # instala la ultima version de npm
 npm i -g npm@latest
-
 # de ser necesario instalar chocolaty
 npm i choco
-
 # verificar instalancian de la app
 npm run
-
-# isntalar dependencias faltantes
-npm i @
-
 # ejecutar
 npm run dev
+```
 
+# INSTALACION DE DEPENDENCIAS
+```bash
+### instalar dependencias faltantes
+npm i @
 # instalar iconos
 npm i --save @fortawesome/fontawesome-svg-core
 npm i --save @fortawesome/free-solid-svg-icons
 npm i --save @fortawesome/free-regular-svg-icons
 npm i --save @fortawesome/free-brands-svg-icons
 npm i react-native-vector-icons
-
-## uso
-```bash
-import Icon from 'react-native-vector-icons/Feather';
-
-const MyIcon = () => <Icon name="home" size={30} color="#000" />;
-```
-
-
 # tools tips
 npm i react-native-elements
-## uso
-```bash
-import { Tooltip, Text } from 'react-native-elements';
-
-const MyTooltip = () => (
-  <Tooltip popover={<Text>Info here</Text>}>
-    <Text>Press me</Text>
-  </Tooltip>
-);
+# dependencia para crear pdf
+npm install jspdf
+# instalar simple-table
+npm install react-data-table-component
 ```
 
-
-# base de datos en vercel
-# copair archivo de confirguacion en .env
-# importar dependencias
-npm i @vercel/postgres
-
-# instalar autenticacion con firebase
-npm i firebase
-
-
-# instalar dependencias para ver grafos
+# INSTALACION DE DEPENDENCIAS PARA GRAFOS
+```bash
 # ejemplos
 # https://visjs.github.io/vis-network/examples/
 npm i vis-network
-
 # instalar boostraps
 npm i bootstrap
-
-# isntalar simple-datatables
-npm i simple-datatables
-
 ```
-ver useEffect en verperfil/page.jsx
-```
-# dependencia para crear pdf
-npm install jspdf
-
-# instalar simple-table
-npm install react-data-table-component
-
-# swagger
-https://mibedelia-backend-production.up.railway.app/doc/swagger-ui/index.html#/
