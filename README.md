@@ -10,8 +10,8 @@ https://mibedelia-backend-production.up.railway.app/doc/swagger-ui/index.html#/
   - Baja de Usuario <img src="https://img.shields.io/badge/Front-NoIniciado-red">
   - Listar Usuario <img src="https://img.shields.io/badge/Front-Hehco-succes">
 - Coordinador	
-  - Alta carrera	<img src="https://img.shields.io/badge/Front-Hehco-succes">
-  - Alta Asignatura	<img src="https://img.shields.io/badge/Front-EnProceso-yellow">
+  - Alta carrera	<img src="https://img.shields.io/badge/Front-Hehco-success">
+  - Alta Asignatura	<img src="https://img.shields.io/badge/Front-Hecho-success">
 - Estudiante	
   - Inscripción a una carrera	<img src="https://img.shields.io/badge/Front-EnProceso-yellow">
   - Inscripción a una asignatura <img src="https://img.shields.io/badge/Front-EnProceso-yellow">	
@@ -22,7 +22,7 @@ https://mibedelia-backend-production.up.railway.app/doc/swagger-ui/index.html#/
   - Registro horario en asignatura	<img src="https://img.shields.io/badge/Front-EnProceso-yellow">	
   - Registro periodo examen <img src="https://img.shields.io/badge/Front-Hecho-success">	
   - Registro examen relacionado a una asignatura dada	<img src="https://img.shields.io/badge/Front-Hehco-succes">
-  - Alta docente	<img src="https://img.shields.io/badge/Front-EnProceso-yellow">
+  - Alta docente	<img src="https://img.shields.io/badge/Front-Hecho-success">
 
 
 # INSTALCION DEL FRONTEND

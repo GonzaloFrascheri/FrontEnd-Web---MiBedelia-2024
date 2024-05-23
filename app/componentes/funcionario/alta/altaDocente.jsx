@@ -7,11 +7,11 @@ export default function Index({estado, handleChange, handleSubmit, docenteDto}) 
         <div className="conatiner-xl px-4 mt-n10">
             <div className="card">
                 <div className="card shadow-lg border-0 rounded-lg">
+                    <div className="card-header justify-content-center">
+                        <h3 className="fw-light">Alta Docente</h3>
+                    </div>
                     {estado.message === '' ? (
                             <form onSubmit={handleSubmit}>
-                                <div className="card-header justify-content-center">
-                                    <h3 className="fw-light">Alta Docente</h3>
-                                </div>
                                 <div className="card-body">
                                     <div className="row gx-3">
                                         <div className="mb-3">
@@ -66,7 +66,7 @@ export default function Index({estado, handleChange, handleSubmit, docenteDto}) 
                                 <div className="card-footer text-center">
                                     <button 
                                         className="btn btn-primary"
-                                        type="submit">Alta Usuario</button>
+                                        type="submit">Alta Docente</button>
                                 </div>
                             </form>
                     ) : (
