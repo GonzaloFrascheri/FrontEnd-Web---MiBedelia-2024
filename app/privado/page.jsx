@@ -5,6 +5,8 @@ import Sidebar from "@/app/componentes/siders/sidebar.jsx";
 import MainDashboard from "@/app/componentes/main/dashboard.jsx";
 import NavPrivado from '@/app/componentes/navs/nav-privado.jsx';
 import { userAuthenticationCheck } from "@/utils/auth";
+import Footer from '@/app/componentes/main/footer';
+import storage from "@/utils/storage";
 
 function PrivadoPage() {
   const router = useRouter();
@@ -15,6 +17,9 @@ function PrivadoPage() {
   const toggleSidebar = () => {
       setIsSidebarToggled(!isSidebarToggled);
   };
+
+  console.log(data);
+  console.info("role", storage.getRole());
 
   useEffect(() => {
     const userData = userAuthenticationCheck(router, pathname);
@@ -30,6 +35,7 @@ function PrivadoPage() {
         </div>
         <div id="layoutSidenav_content">
           <MainDashboard data={data} />
+          <Footer />
         </div>
       </div>
     </body>

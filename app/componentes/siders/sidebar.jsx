@@ -1,10 +1,7 @@
 "use client";
-import React from "react";
-import Link from "next/link";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDashboard, faBook, faAngleDown, faUserTie, faArrowsToCircle, faPenFancy, faGraduationCap} from '@fortawesome/free-solid-svg-icons';
-
 
 export default function Sidebar({ isSidebarToggled }) {
 
@@ -36,7 +33,6 @@ export default function Sidebar({ isSidebarToggled }) {
   const toggleCollapseOtroElemento = () => {
     setCollapseOtroElemento(!collapseOtroElemento);
   };
-
 
   useEffect(() => {
     setCurrentPath(window.location.pathname);
@@ -119,6 +115,7 @@ export default function Sidebar({ isSidebarToggled }) {
                 </nav>
             </div>
 
+            {/** Pruebas de concepto
             <div className="sidenav-menu-heading">Cursos</div>
             <a className="nav-link collapsed" 
                 onClick={toggleCollapseOtroElemento}
@@ -135,6 +132,13 @@ export default function Sidebar({ isSidebarToggled }) {
                   <a className="nav-link" href="/privado/listarCrusos">Listar Cursos</a>
                 </nav>
             </div>
+             */}
+          </div>
+        </div>
+        <div className="sidenav-footer">
+          <div className="sidenav-footer-content">
+            <div className="sidenav-footer-subtitle">Conectado como: Wilson Arriola</div>
+            <div className="sidenav-footer-title">ADMIN</div>
           </div>
         </div>
       </nav>

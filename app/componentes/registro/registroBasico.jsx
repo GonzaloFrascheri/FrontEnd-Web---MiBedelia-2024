@@ -1,3 +1,4 @@
+import Footer from '@/app/componentes/main/footer';
 export default function Index({estado, formData, handleChange, handleSubmit}) {
 
     return (
@@ -5,7 +6,7 @@ export default function Index({estado, formData, handleChange, handleSubmit}) {
         <div id="layoutAuthentication">
             <div id="layoutAuthentication_content">
                 <main>
-                    <div className="container-xl px-4">
+                    <div className="container-xl px-4 py-2">
                         <div className="row justify-content-center">
                             <div className="col-lg-7">
                                 <div className="card shadow-lg border-0 rounded-lg mt-5">
@@ -108,7 +109,7 @@ export default function Index({estado, formData, handleChange, handleSubmit}) {
                                                     {estado.message}!
                                                 </div>
                                             </div>
-                                            <div className="card-footer text-center">
+                                            <div className="card-footer content-center" >
                                                 <div className="small"><a href="/">Volver al inicio</a></div>
                                             </div>
                                         </div>
@@ -118,6 +119,7 @@ export default function Index({estado, formData, handleChange, handleSubmit}) {
                         </div>
                     </div>
                 </main>
+                <Footer />
             </div>
         </div>
     );

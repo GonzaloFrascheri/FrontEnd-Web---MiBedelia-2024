@@ -16,7 +16,7 @@ export default function VerPerfilPage({ data }) {
                                     </div>
                                     Dashboard
                                 </h1>
-                                <div className="page-header-subtitle">Bienvenido {data.sub}.</div>
+                                <div className="page-header-subtitle">Bienvenido {data.name}.</div>
                             </div>
                         </div>
                     </div>

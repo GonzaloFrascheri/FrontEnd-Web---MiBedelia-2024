@@ -6,6 +6,7 @@ import axios from "@/utils/axios";
 import storage from "@/utils/storage";
 import { hashPassword } from "@/utils/utils"
 import { userAuthenticationCheck } from "@/utils/auth";
+import Footer from '@/app/componentes/main/footer';
 
 function LoginPage() {
   const router = useRouter();
@@ -63,6 +64,7 @@ function LoginPage() {
 
       if (status === 200) {
         storage.setToken(data.token);
+        storage.setRole(data.role);
         router.push("/privado");
       }
 
@@ -155,7 +157,7 @@ function LoginPage() {
                     <div className="card-body px-5 py-4">
                       <div className="small text-center">
                         ¿Eres nuevo aquí?
-                        <a href="./registrar">Regístrate!</a>
+                        <a className="ms-2" href="./registrar">Regístrate!</a>
                       </div>
                     </div>
                     <div className="card-footer text-center">
@@ -168,6 +170,7 @@ function LoginPage() {
               </div>
             </div>
           </main>
+          <Footer />
         </div>
       </div>
   );

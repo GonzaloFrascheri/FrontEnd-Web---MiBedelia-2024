@@ -1,9 +1,10 @@
+import Footer from '@/app/componentes/main/footer';
 export default function Index() {
 
     return (
 
         <div id="layoutSidenav">
-            <div className="container mt-4">
+            <div id="layoutSidenav_content">
                 <main>
                     <header className="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
                         <div className="container-xl px-4">
@@ -26,12 +27,12 @@ export default function Index() {
                                 <div className="card h-100">
                                     <div className="card-body h-100 p-5">
                                         <div className="row align-items-center">
-                                            <div className="col-xl-8 col-xxl-12">
-                                                <div className="text-center text-xl-start text-xxl-center mb-4 mb-xl-0 mb-xxl-4">
+                                            <div className="col-xl-12 col-xxl-12">
+                                                <div className="text-center text-xl-center text-xxl-center mb-4 mb-xl-0 mb-xxl-4">
                                                     <h1 className="text-primary">Sistema de gestión online de cursos y escolaridades</h1>
                                                 </div>
                                             </div>
-                                            <div className="col-xl-4 col-xxl-12 text-center">
+                                            <div className="col-xl-12 col-xxl-12 text-center">
                                                 <img
                                                     alt="logo.png"
                                                     src="img/logo.png"
@@ -45,6 +46,7 @@ export default function Index() {
                         </div>
                     </div>
                 </main>
+                <Footer />
             </div>
         </div>
     );
