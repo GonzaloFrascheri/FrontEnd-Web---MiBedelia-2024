@@ -1,6 +1,3 @@
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import {  } from '@fortawesome/free-solid-svg-icons';
-
 import ListarExamenes from '@/app/componentes/reutilizables/listarExamenes'
 
 export default function Index ({
@@ -8,7 +5,8 @@ export default function Index ({
   handleSubmit,
   examenes,
   estanCargandoExamenes,
-  seleccionarExamen
+  seleccionarExamen,
+  examenSeleccionado
 }) {
   return (
     <div className='container-xl px-4 mt-n10'>
@@ -26,7 +24,11 @@ export default function Index ({
                   examenes={examenes}
                 />
                 <div className='card-footer text-center'>
-                  <button type='submit' className='btn btn-primary'>
+                  <button
+                    disabled={!examenSeleccionado}
+                    type='submit'
+                    className='btn btn-primary'
+                  >
                     Inscribirse
                   </button>
                 </div>

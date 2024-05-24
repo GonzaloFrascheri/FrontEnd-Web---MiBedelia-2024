@@ -21,28 +21,28 @@ function EstudianteInscripcionExamen() {
   const [exams, setExams] = useState([]);
   const [examsAreLoading, setExamsAreLoading] = useState(true);
 
-//   useEffect(() => {
-//     const userData = userAuthenticationCheck(router, pathname);
-//     setUserData(userData);
+  //   useEffect(() => {
+  //     const userData = userAuthenticationCheck(router, pathname);
+  //     setUserData(userData);
 
-//     const fetchExams = async () => {
-//       try {
-//         const response = await axios.get("/Funcionario/listarCarrera");
-//         const { status, data } = response;
-//         if (status === 200) {
-//           setExams([...data]);
-//           setExamsAreLoading(false);
-//         }
-//       } catch (error) {
-//         const { status, data } = error.response;
-//         setEstado({
-//           estado: status,
-//           message: data.message,
-//         });
-//       }
-//     };
-//     fetchExams();
-//   }, [router, pathname]);
+  //     const fetchExams = async () => {
+  //       try {
+  //         const response = await axios.get("/Funcionario/listarCarrera");
+  //         const { status, data } = response;
+  //         if (status === 200) {
+  //           setExams([...data]);
+  //           setExamsAreLoading(false);
+  //         }
+  //       } catch (error) {
+  //         const { status, data } = error.response;
+  //         setEstado({
+  //           estado: status,
+  //           message: data.message,
+  //         });
+  //       }
+  //     };
+  //     fetchExams();
+  //   }, [router, pathname]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -76,6 +76,7 @@ function EstudianteInscripcionExamen() {
               <main>
                 <HeaderPagePrivado breadcrumbs={breadcrumbs} />
                 <InscripcionExamen
+                  examenSeleccionado={selectedExam}
                   estanCargandoExamenes={examsAreLoading}
                   examenes={exams}
                   estado={estado}
@@ -92,7 +93,3 @@ function EstudianteInscripcionExamen() {
 }
 
 export default EstudianteInscripcionExamen;
-
-function setShow(arg0: boolean) {
-  throw new Error("Function not implemented.");
-}

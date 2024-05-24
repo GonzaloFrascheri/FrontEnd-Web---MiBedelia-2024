@@ -28,7 +28,7 @@ function EstudianteInscripcionCarrera () {
 
     const fetchCareers = async () => {
       try {
-        const response = await axios.get('/Funcionario/listarCarrera')
+        const response = await axios.get('/Estudiante/listarCarrera')
         const { status, data } = response
         if (status === 200) {
           setCareers([...data])
@@ -51,9 +51,17 @@ function EstudianteInscripcionCarrera () {
       const response = await axios.post(
         `/Estudiante/inscripcionCarrera?carreraId=${selectedCareer}&estudianteId=${userData.id}`
       )
-      console.log(response)
+      setEstado({
+        message: response.data.message,
+        estado: response.status
+      })
     } catch (error) {
-      console.log(error)
+      setEstado({
+        message: error.response
+          ? error.response.data.message
+          : 'Error al inscribirse a la carrera',
+        estado: error.response ? error.response.status : 500
+      })
     }
   }
 
@@ -64,6 +72,16 @@ function EstudianteInscripcionCarrera () {
   const [isSidebarToggled, setIsSidebarToggled] = useState(false)
   const toggleSidebar = () => {
     setIsSidebarToggled(!isSidebarToggled)
+  }
+
+  // If failed, reset form status
+  const resetFormStatus = () => {
+    setEstado({
+      message: '',
+      estado: ''
+    })
+    setSelectedCareer('')
+    setCareers(prevState => [...prevState])
   }
 
   return (
@@ -84,6 +102,8 @@ function EstudianteInscripcionCarrera () {
               <main>
                 <HeaderPagePrivado breadcrumbs={breadcrumbs} />
                 <InscripcionCarrera
+                  resetearForm={resetFormStatus}
+                  carreraSeleccionada={selectedCareer}
                   estanCargandoCarreras={careesAreLoading}
                   carreras={careers}
                   seleccionarCarrera={onCareerChange}

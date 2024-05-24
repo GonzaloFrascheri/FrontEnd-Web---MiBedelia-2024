@@ -40,10 +40,10 @@ export default function InscripcionAsignatura () {
   useEffect(() => {
     const fetchCareers = async () => {
       try {
-        const response = await axios.get('/Funcionario/listarCarrera')
+        const response = await axios.get('/Estudiante/listarCarrera')
         const { status, data } = response
         if (status === 200) {
-          setCareers([...data.items])
+          setCareers([...data])
           setCareesAreLoading(false)
         }
       } catch (error) {
@@ -62,11 +62,11 @@ export default function InscripcionAsignatura () {
       const fetchSubjects = async () => {
         try {
           const response = await axios.get(
-            `/Funcionario/listarAsignatura?idCarrera=${selectedCareerId}`
+            `/Estudiante/listarAsignatura?idCarrera=${selectedCareerId}`
           )
           const { status, data } = response
           if (status === 200) {
-            setSubjects([...data.items])
+            setSubjects([...data])
             setSubjectsAreLoading(false)
           }
         } catch (error) {
@@ -129,8 +129,11 @@ export default function InscripcionAsignatura () {
                             seleccionarAsignatura={handleSubjectChange}
                           />
                           <div className='card-footer text-center'>
-                            <button className='btn btn-primary'>
-                              Guardar
+                            <button
+                              disabled={!selectedCareerId || !selectedSubjectId}
+                              className='btn btn-primary'
+                            >
+                              Inscribirse
                             </button>
                           </div>
                         </>

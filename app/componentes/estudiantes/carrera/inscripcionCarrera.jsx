@@ -5,7 +5,9 @@ export default function Index ({
   handleSubmit,
   carreras,
   seleccionarCarrera,
-  estanCargandoCarreras
+  estanCargandoCarreras,
+  carreraSeleccionada,
+  resetearForm
 }) {
   return (
     <div className='container-xl px-4 mt-n10'>
@@ -17,13 +19,18 @@ export default function Index ({
                 <h3 className='fw-light'>Inscripción a Carrera</h3>
               </div>
               <ListarCarreras
+                carreraSeleccionada={carreraSeleccionada}
                 carreras={carreras}
                 seleccionarCarrera={seleccionarCarrera}
                 estanCargandoCarreras={estanCargandoCarreras}
               />
               <div className='card-footer text-center'>
-                <button type='submit' className='btn btn-primary'>
-                  Guardar
+                <button
+                  disabled={!carreraSeleccionada}
+                  type='submit'
+                  className='btn btn-primary'
+                >
+                  Inscribirse
                 </button>
               </div>
             </form>
@@ -51,7 +58,13 @@ export default function Index ({
               </div>
               <div className='card-footer text-center'>
                 <div className='small'>
-                  <a href='/privado'>Volver al inicio</a>
+                  <a
+                    style={{ cursor: 'pointer' }}
+                    className='link-primary'
+                    onClick={resetearForm}
+                  >
+                    Reintentar
+                  </a>
                 </div>
               </div>
             </div>

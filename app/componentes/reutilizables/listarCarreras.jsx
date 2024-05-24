@@ -1,7 +1,8 @@
 export default function ListarCarreras ({
   carreras,
   seleccionarCarrera,
-  estanCargandoCarreras
+  estanCargandoCarreras,
+  carreraSeleccionada
 }) {
   return (
     <div className='card-body'>
@@ -16,6 +17,7 @@ export default function ListarCarreras ({
           name='carrera'
           required
           disabled={estanCargandoCarreras || carreras.length === 0}
+          value={carreraSeleccionada || ''}
         >
           {estanCargandoCarreras ? (
             <option>Cargando carreras...</option>
