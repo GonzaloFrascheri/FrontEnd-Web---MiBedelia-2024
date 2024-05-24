@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation.js";
 
 function CoordinadorAltaAsignatura() {
   const router = useRouter();
+  const token = storage.getToken();
   const breadcrumbs = ['privado', 'Coordinador', 'Asignatura', 'Alta'];
   const [data, setData] = useState('');
   const [listaCarrera, setListaCarrera] = useState([]);
@@ -20,7 +21,8 @@ function CoordinadorAltaAsignatura() {
   });
   const [formData, setFormData] = useState({
     nombre: "",
-    carrera: ""
+    idCarrera: "",
+    gradoMateria: "",
   });
 
   const handleChange = (e) => {
@@ -33,17 +35,34 @@ function CoordinadorAltaAsignatura() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('/Coordinador/altaAsignatura', formData);
-      setEstado({
-        message: 'Asignatura guardada con éxito',
-        estado: response.status
-      });
-    } catch (error) {
-      setEstado({
-        message: error.response ? error.response.data.message : 'Error al guardar la asignatura',
-        estado: error.response ? error.response.status : 500
-      });
+    if (!token) {
+      storage.removeToken();  
+      router.push("/");
+    } else {
+      console.info(formData);
+
+      try {
+        // envío datos al bk
+        const { data, status } = await axios.post('Coordinador/altaAsignatura', formData);
+        // si la data es ok - docente fue dado de alta
+        if (status === 200) {
+            setEstado({
+                message: data.message,
+                estado: data.estado
+            });
+        }else{
+            setEstado({
+              message: data.message,
+              estado: data.status
+            });
+          }
+      } catch (error) {
+        setEstado({
+            message: error.response ? error.response.data.message : 'Error al guardar el usuario',
+            estado: error.response ? error.response.status : 500
+        });
+      }
+
     }
   };
 
@@ -55,48 +74,19 @@ function CoordinadorAltaAsignatura() {
   useEffect(() => {
     const fetchListaCarreras = async () => {
       try {
-        const response = await axios.get('/Funcionario/listarCarrera');
-        setListaCarrera(response.data);
+        const response = await axios.get('Funcionario/listarCarrera');
+        const carrerasConIds = response.data.map(carrera => ({
+          id: carrera.id, 
+          nombre: carrera.nombre,
+        }));
+        setListaCarrera(carrerasConIds);
       } catch (error) {
         console.error('Error fetching listaCarreras:', error);
       }
     };
 
     fetchListaCarreras();
-  }, []); 
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const token = storage.getToken();
-
-      if (!token) {
-        storage.removeToken();  
-        router.push("/");
-      } else {
-        try {
-          const { data, status } = await axios.get('/Coordinador/altaAsignatura');
-
-          if (status !== 200) {
-            if (status === 401) {
-              alert(data.message);
-              setEstado({
-                estado: status,
-                message: data.message
-              });
-            } else {
-              console.error("There was a problem with the fetch operation");
-            }
-          } else {
-            setData(data); 
-          }
-        } catch (error) {
-          console.error("There was a problem with the fetch operation", error);
-        }
-      }
-    };
-
-    fetchData();
-  }, [router]);
+  }, []);
 
   useEffect(() => {
     document.body.className = isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled';

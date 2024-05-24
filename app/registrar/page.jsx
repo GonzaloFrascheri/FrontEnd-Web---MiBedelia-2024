@@ -1,8 +1,9 @@
 "use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import RegistroBasico from '@/app/componentes/registro/registroBasico.jsx';
+import axios from "@/utils/axios";
+import { hashPassword } from "@/utils/utils"
 
 function RegistrarPage() {
 
@@ -11,25 +12,27 @@ function RegistrarPage() {
     message: "",
     estado: ""
   });
-  const [credentials, setCredentials] = useState({
+  const [formData, setformData] = useState({
     nombre: "",
     apellido: "",
-    username: "",
+    ci: "",
     email: "",
-    password: "",
-    telefono: ""
+    telefono: "",
+    password: ""
   });
+
   const handleChange = (e) => {
-    setCredentials({
-      ...credentials,
+    setformData({
+      ...formData,
       [e.target.name]: e.target.value
     });
   }
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Verifying that the form fields are not empty
-    const emptyFields = Object.values(credentials).some(value => value === "");
+    const emptyFields = Object.values(formData).some(value => value === "");
     if (emptyFields) {
 
       alert("Los campos no pueden estar vacios.");
@@ -38,43 +41,34 @@ function RegistrarPage() {
       return;
     }
 
-    fetch('http://localhost:8080/register', {
-      method: 'POST',
-      headers: {
-      'Content-Type': 'application/json'
-      },
-      mode: 'cors',
-      body: JSON.stringify(credentials)
-    })
-    .then(res => {
-      if (res.status !== 200) {
-        throw new Error('Error en la conexión.');
+    try {
+      const hashedPassword = await hashPassword(formData.password);
+      const updatedFormData = {
+        ...formData,
+        password: hashedPassword,
+      };
+      const { data, status } = await axios.post("/register", updatedFormData);
+      if (status === 200) {
+        setEstado({
+          message: data.message,
+          estado: status
+        });
       }
-      return res.json();
-    })
-    .then(data => {
-      if (data.message === "Usuario registrado con exito") {
-        setEstado({
-          message: data.message,
-          estado: 200
-        });
-      } else {
-        setEstado({
-          message: data.message,
-          estado: 401
-        });
-      }      
-      router.push("/registrar");
-    })
-    .catch(error => {
-      console.error('There was a problem with the fetch operation:', error);
-    });
-        
+    } catch (error) {
+      console.error("Error during form submission", error);
+      /*
+      const { data, status } = error.response;
+      setEstado({
+        message: data.message,
+        estado: status
+      });
+      */
+    }
   };
 
   return (
     <>
-      <RegistroBasico estado={estado} credentials={credentials} handleChange={handleChange} handleSubmit={handleSubmit} />
+      <RegistroBasico estado={estado} formData={formData} handleChange={handleChange} handleSubmit={handleSubmit} />
     </>
   );
 }

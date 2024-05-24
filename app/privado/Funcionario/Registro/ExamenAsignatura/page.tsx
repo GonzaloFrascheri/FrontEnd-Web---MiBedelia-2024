@@ -1,7 +1,7 @@
 'use client'
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import axios from "@/utils/axios";
 import Sidebar from "@/app/componentes/siders/sidebar";
 import NavPrivado from "@/app/componentes/navs/nav-privado";
 import HeaderPagePrivado from "@/app/componentes/headers/headerPage-privado";
@@ -18,26 +18,38 @@ function FuncionarioExamenAsignatura() {
     const [listaAsignatura, setListaAsignatura] = useState([]);
     const [selectedCarreraId, setSelectedCarreraId] = useState(null);
     const [selectedAsignaturaId, setSelectedAsignaturaId] = useState(null);
-
+    const hoy = new Date();
     const handleCarreraChange = (id) => {
         setSelectedCarreraId(id);
+        setFormData({
+            ...formData,
+            carrera: id
+        });
     }
-    const handleAsignaturaChange = (id) => {
-        setSelectedAsignaturaId(id);
+    const handleAsignaturaChange = (event) => {
+        const selectedId = event.target.value;
+        setSelectedAsignaturaId(selectedId);
+        setFormData({
+            ...formData,
+            idAsignatura: selectedId
+        });
     }
-
     const [estado, setEstado] = useState({
         message: "",
         estado: ""
     });
-
+    const [periodoActivo, setPeriodoActivo] = useState({
+        diaFin: "",
+        diaInicio: "",
+    });
     const [formData, setFormData] = useState({
         carrera: "",
-        asignatura: "",
-        fechaexamen: "",
-        docente: "",
+        idAsignatura: "",
+        idPeriodo: "",
+        idDocente: "",
+        anioLectivo: hoy.getFullYear().toString(),
+        fechaExamen: "",
     });
-    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({
@@ -45,20 +57,20 @@ function FuncionarioExamenAsignatura() {
             [name]: value
         }));
     };
-    
     const handleSubmit = (e) => {
         e.preventDefault();
         // Aquí puedes enviar los datos del formulario a tu backend o realizar cualquier otra acción necesaria
-        console.log(formData);
+        console.info("a enviar", formData);
         // Limpia el formulario después de enviar los datos
         setFormData({
             carrera: "",
-            asignatura: "",
-            fechaexamen: "",
-            docente: "",
+            idAsignatura: "",
+            idPeriodo: "",
+            idDocente: "",
+            anioLectivo: "",
+            fechaExamen: "",
         });
     };
-    
     
     const [isSidebarToggled, setIsSidebarToggled] = useState(false);
     const toggleSidebar = () => {
@@ -68,19 +80,9 @@ function FuncionarioExamenAsignatura() {
     useEffect(() => {
         const fetchListaCarreras = async () => {
             try {
-                const response = await axios.get('/listaCarreras');
+                const response = await axios.get('Funcionario/listarCarrera');
                 setListaCarrera(response.data);
             } catch (error) {
-                // Simulando la respuesta del servidor con una lista de carreras
-                const simulatedResponse = [
-                    { id: 0, nombre: 'Elegir una' },
-                    { id: 1, nombre: 'Carrera #1' },
-                    { id: 2, nombre: 'Carrera #2' },
-                    { id: 3, nombre: 'Carrera #3' },
-                    { id: 4, nombre: 'Carrera #4' },
-                    { id: 5, nombre: 'Carrera #5' },
-                ];
-                setListaCarrera(simulatedResponse);
                 console.error('Error fetching listaCarreras:', error);
             }
         };
@@ -91,25 +93,36 @@ function FuncionarioExamenAsignatura() {
     useEffect(() => {
         const fetchListaAsignaturas = async () => {
             try {
-                const response = await axios.get('/listaAsignatura');
-                setListaAsignatura(response.data);
+                //Funcionario/listarAsignaturaPaginado?idCarrera=1&page=1&pageSize=10
+                //const response = await axios.get('Funcionario/listarAsignatura?idCarrera=' + selectedCarreraId);
+                const response = await axios.get('Funcionario/listarAsignaturaPaginado?idCarrera=' + selectedCarreraId + '&page=1&pageSize=300');
+                setListaAsignatura(response.data.items);
+                console.info("listaAsignatura", response.data.items);
             } catch (error) {
-                // Simulando la respuesta del servidor con una lista de carreras
-                const simulatedResponse = [
-                    { id: 0, nombre: 'Elegir una' },
-                    { id: 1, nombre: 'Asignatura #1' },
-                    { id: 2, nombre: 'Asignatura #2' },
-                    { id: 3, nombre: 'Asignatura #3' },
-                    { id: 4, nombre: 'Asignatura #4' },
-                    { id: 5, nombre: 'Asignatura #5' },
-                ];
-                setListaAsignatura(simulatedResponse);
                 console.error('Error fetching listaAsignatura:', error);
             }
         };
-    
         fetchListaAsignaturas();
-    }, []); // El segundo argumento [] asegura que esto se ejecute solo una vez al montar el componente
+    }, [selectedCarreraId]);
+
+    useEffect(() => {
+        const obtenerPeriodoActivo = async () => {
+            try {
+                const response = await axios.get('Funcionario/getPeriodoActivo?Aniolectivo=' + hoy.getFullYear());
+                setPeriodoActivo(
+                    {
+                        diaFin: response.data.diaFin,
+                        diaInicio: response.data.diaInicio,
+                    }
+                );
+                console.info("periodoActivo", response.data);
+                
+            } catch (error) {
+                console.error('Error fetching obtenerPeriodoActivo:', error);
+            }
+        }
+        obtenerPeriodoActivo();
+    }, []);
 
     return (
         <body className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}>
@@ -125,9 +138,19 @@ function FuncionarioExamenAsignatura() {
                                 <HeaderPagePrivado breadcrumbs={breadcrumbs}/>
                                 <ExamenAsignaturaPasos selectedCarreraId={selectedCarreraId} selectedAsignaturaId={selectedAsignaturaId} />
                                 {selectedCarreraId === null ? (
-                                    <ExamenAsignaturaListCarrera listaCarrera={listaCarrera} onCarreraChange={handleCarreraChange} />
+                                    <ExamenAsignaturaListCarrera 
+                                        listaCarrera={listaCarrera}
+                                        onCarreraChange={handleCarreraChange}
+                                    />
                                 ) : (
-                                    <ExamenAsignaturaListAsignatura ListaAsignatura={listaAsignatura} handleAsignaturaChange={handleAsignaturaChange} selectedAsignaturaId={selectedAsignaturaId} />
+                                    <ExamenAsignaturaListAsignatura 
+                                        listaAsignaturas={listaAsignatura}
+                                        handleAsignaturaChange={handleAsignaturaChange}
+                                        handleChange={handleChange}
+                                        handleSubmit={handleSubmit}
+                                        periodoActivo={periodoActivo}
+                                        formData={formData}
+                                    />
                                 )}
                             </main>
                         </div>
