@@ -5,25 +5,33 @@ import Sidebar from '@/app/componentes/siders/sidebar'
 import InscripcionCarrera from '@/app/componentes/estudiantes/carrera/inscripcionCarrera'
 import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado'
 import axios from '@/utils/axios'
+import { userAuthenticationCheck } from '@/utils/auth'
+import { useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
 function EstudianteInscripcionCarrera () {
+  const router = useRouter()
+  const pathname = usePathname()
   const breadcrumbs = ['privado', 'Estudiantes', 'Carrera']
   const [estado, setEstado] = useState({
     message: '',
     estado: ''
   })
-
+  const [userData, setUserData] = useState('')
   const [careers, setCareers] = useState([])
   const [careesAreLoading, setCareesAreLoading] = useState(true)
   const [selectedCareer, setSelectedCareer] = useState('')
 
   useEffect(() => {
+    const userData = userAuthenticationCheck(router, pathname)
+    setUserData(userData)
+
     const fetchCareers = async () => {
       try {
         const response = await axios.get('/Funcionario/listarCarrera')
         const { status, data } = response
         if (status === 200) {
-          setCareers([...data.items])
+          setCareers([...data])
           setCareesAreLoading(false)
         }
       } catch (error) {
@@ -35,14 +43,18 @@ function EstudianteInscripcionCarrera () {
       }
     }
     fetchCareers()
-  }, [])
+  }, [router, pathname])
 
-  const handleSubmit = e => {
-    e.preventDefault()
-    const formData = {
-      idCarrera: Number(selectedCareer)
+  const handleSubmit = async e => {
+    try {
+      e.preventDefault()
+      const response = await axios.post(
+        `/Estudiante/inscripcionCarrera?carreraId=${selectedCareer}&estudianteId=${userData.id}`
+      )
+      console.log(response)
+    } catch (error) {
+      console.log(error)
     }
-    // Make request and set status
   }
 
   const onCareerChange = e => {
