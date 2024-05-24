@@ -70,7 +70,7 @@ function RegistrarPage() {
 
   return (
     <body className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}>
-      <NavPrivado data={data} isSidebarToggled={isSidebarToggled} toggleSidebar={toggleSidebar} />
+      <NavPrivado isSidebarToggled={isSidebarToggled} toggleSidebar={toggleSidebar} />
       <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
           <Sidebar isSidebarToggled={isSidebarToggled} />

@@ -1,93 +1,95 @@
-'use client'
+"use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavPrivado from "@/app/componentes/navs/nav-privado";
 import Sidebar from "@/app/componentes/siders/sidebar";
-import InscripcionExamen from "@/app/componentes/estudiantes/examen/inscripcionExamen"
-import { useRouter } from "next/navigation";
+import InscripcionExamen from "@/app/componentes/estudiantes/examen/inscripcionExamen";
+import { usePathname, useRouter } from "next/navigation";
 import HeaderPagePrivado from "@/app/componentes/headers/headerPage-privado";
-
+import { userAuthenticationCheck } from "@/utils/auth";
+import axios from "@/utils/axios";
 function EstudianteInscripcionExamen() {
-    
-    const router = useRouter();
-    const breadcrumbs = ['privado', 'Estudiantes', 'Exámen'];
-    const [data, setData] = useState('');
-    const [estado, setEstado] = useState({
-        message: "",
-        estado: ""
-    });
+  const router = useRouter();
+  const pathname = usePathname();
+  const breadcrumbs = ["privado", "Estudiantes", "Exámen"];
+  const [userData, setUserData] = useState(null);
+  const [estado, setEstado] = useState({
+    message: "",
+    estado: "",
+  });
+  const [selectedExam, setSelectedExam] = useState("");
+  const [exams, setExams] = useState([]);
+  const [examsAreLoading, setExamsAreLoading] = useState(true);
 
-    const [formData, setFormData] = useState({
-        año: "",
-        inscripcion: "",
-        resultado: "",
-        finalizado: "",
-      });
-    
-    const handleShow = () => setShow(true); // Esto es una alerta de boostrap pero no me esta funcionando
+  //   useEffect(() => {
+  //     const userData = userAuthenticationCheck(router, pathname);
+  //     setUserData(userData);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+  //     const fetchExams = async () => {
+  //       try {
+  //         const response = await axios.get("/Funcionario/listarCarrera");
+  //         const { status, data } = response;
+  //         if (status === 200) {
+  //           setExams([...data]);
+  //           setExamsAreLoading(false);
+  //         }
+  //       } catch (error) {
+  //         const { status, data } = error.response;
+  //         setEstado({
+  //           estado: status,
+  //           message: data.message,
+  //         });
+  //       }
+  //     };
+  //     fetchExams();
+  //   }, [router, pathname]);
 
-        if (name == "año"){
-            // Solamente dejaremos ingresar números en el campo año
-            if(!/^\d*$/.test(value)){
-                handleShow(); // Idem mas arriba linea 27
-                return;
-            }
-        }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // Make request
+  };
 
-        setFormData(prevState => ({
-          ...prevState,
-          [name]: value
-        }));
-      };
-    
-      const handleSubmit = (e) => {
-        e.preventDefault();
-        // Aquí puedes enviar los datos del formulario a tu backend o realizar cualquier otra acción necesaria
-        console.log(formData);
-        // Limpia el formulario después de enviar los datos
-        setFormData({
-            año: "",
-            inscripcion: "",
-            resultado: "",
-            finalizado: "",
-        });
-      };
-    
-    
-    const [isSidebarToggled, setIsSidebarToggled] = useState(false);
-    const toggleSidebar = () => {
-        setIsSidebarToggled(!isSidebarToggled);
-    };
+  const [isSidebarToggled, setIsSidebarToggled] = useState(false);
+  const toggleSidebar = () => {
+    setIsSidebarToggled(!isSidebarToggled);
+  };
 
-    
-    
-    return (
-        <body className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}>
-            <NavPrivado data={data} isSidebarToggled={isSidebarToggled} toggleSidebar={toggleSidebar} />
-            <div id="layoutSidenav">
-                <div id="layoutSidenav_nav">
-                    <Sidebar isSidebarToggled={isSidebarToggled} />
-                </div>
-                <div id="layoutSidenav_content">
-                    <div id="layoutAuthentication">
-                        <div id="layoutAuthentication_content">
-                            <main>
-                                <HeaderPagePrivado breadcrumbs={breadcrumbs}/>
-                                <InscripcionExamen formData={formData} estado={estado} handleChange={handleChange} handleSubmit={handleSubmit} />
-                            </main>
-                        </div>
-                    </div>
-                </div>
+  const onExamChange = (e) => {
+    setSelectedExam(e.target.value);
+  };
+
+  return (
+    <body
+      className={isSidebarToggled ? "nav-fixed" : "nav-fixed sidenav-toggled"}
+    >
+      <NavPrivado
+        isSidebarToggled={isSidebarToggled}
+        toggleSidebar={toggleSidebar}
+      />
+      <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+          <Sidebar isSidebarToggled={isSidebarToggled} />
+        </div>
+        <div id="layoutSidenav_content">
+          <div id="layoutAuthentication">
+            <div id="layoutAuthentication_content">
+              <main>
+                <HeaderPagePrivado breadcrumbs={breadcrumbs} />
+                <InscripcionExamen
+                  examenSeleccionado={selectedExam}
+                  estanCargandoExamenes={examsAreLoading}
+                  examenes={exams}
+                  estado={estado}
+                  seleccionarExamen={onExamChange}
+                  handleSubmit={handleSubmit}
+                />
+              </main>
             </div>
-        </body>
-    );
+          </div>
+        </div>
+      </div>
+    </body>
+  );
 }
 
 export default EstudianteInscripcionExamen;
-
-function setShow(arg0: boolean) {
-    throw new Error("Function not implemented.");
-}

@@ -1,10 +1,10 @@
 function HeaderPagePrivado({ breadcrumbs }) {
     let path = '';  // Variable para ir acumulando la ruta
     return (        
-        <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
-            <div class="container-xl px-4">
-                <div class="page-header-content pt-4">
-                    <nav class="mt-4 rounded" aria-label="breadcrumb">
+        <header className="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
+            <div className="container-xl px-4">
+                <div className="page-header-content pt-4">
+                    <nav className="mt-4 rounded" aria-label="breadcrumb">
                         <ol className="breadcrumb px-3 py-2 rounded mb-0">
                             {breadcrumbs.map((crumb, index) => {
                             // Acumular la ruta

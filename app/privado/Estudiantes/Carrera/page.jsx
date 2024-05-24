@@ -1,74 +1,122 @@
 'use client'
+import React, { useEffect, useState } from 'react'
+import NavPrivado from '@/app/componentes/navs/nav-privado'
+import Sidebar from '@/app/componentes/siders/sidebar'
+import InscripcionCarrera from '@/app/componentes/estudiantes/carrera/inscripcionCarrera'
+import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado'
+import axios from '@/utils/axios'
+import { userAuthenticationCheck } from '@/utils/auth'
+import { useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
-import React, { useState } from "react";
-import NavPrivado from "../../../componentes/navs/nav-privado";
-import Sidebar from "../../../componentes/siders/sidebar";
-import InscripcionCarrera from "../../../componentes/estudiantes/carrera/inscripcionCarrera";
-import { useRouter } from "next/navigation";
-import HeaderPagePrivado from "../../../componentes/headers/headerPage-privado";
+function EstudianteInscripcionCarrera () {
+  const router = useRouter()
+  const pathname = usePathname()
+  const breadcrumbs = ['privado', 'Estudiantes', 'Carrera']
+  const [estado, setEstado] = useState({
+    message: '',
+    estado: ''
+  })
+  const [userData, setUserData] = useState('')
+  const [careers, setCareers] = useState([])
+  const [careesAreLoading, setCareesAreLoading] = useState(true)
+  const [selectedCareer, setSelectedCareer] = useState('')
 
-function EstudianteInscripcionCarrera() {
-    
-    const router = useRouter();
-    const breadcrumbs = ['privado', 'Estudiantes', 'Carrera'];
-    const [data, setData] = useState('');
-    const [estado, setEstado] = useState({
-        message: "",
-        estado: ""
-    });
+  useEffect(() => {
+    const userData = userAuthenticationCheck(router, pathname)
+    setUserData(userData)
 
-    const [formData, setFormData] = useState({
-        inscripcion: "",
-        finalizado: "",
-      });
-    
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prevState => ({
-          ...prevState,
-          [name]: value
-        }));
-      };
-    
-      const handleSubmit = (e) => {
-        e.preventDefault();
-        // Aquí puedes enviar los datos del formulario a tu backend o realizar cualquier otra acción necesaria
-        console.log(formData);
-        // Limpia el formulario después de enviar los datos
-        setFormData({
-          inscripcion: "",
-          finalizado: "",
-        });
-      };
-    
-    
-    const [isSidebarToggled, setIsSidebarToggled] = useState(false);
-    const toggleSidebar = () => {
-        setIsSidebarToggled(!isSidebarToggled);
-    };
+    const fetchCareers = async () => {
+      try {
+        const response = await axios.get('/Estudiante/listarCarrera')
+        const { status, data } = response
+        if (status === 200) {
+          setCareers([...data])
+          setCareesAreLoading(false)
+        }
+      } catch (error) {
+        const { status, data } = error.response
+        setEstado({
+          estado: status,
+          message: data.message
+        })
+      }
+    }
+    fetchCareers()
+  }, [router, pathname])
 
-    
-    
-    return (
-        <body className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}>
-            <NavPrivado data={data} isSidebarToggled={isSidebarToggled} toggleSidebar={toggleSidebar} />
-            <div id="layoutSidenav">
-                <div id="layoutSidenav_nav">
-                    <Sidebar isSidebarToggled={isSidebarToggled} />
-                </div>
-                <div id="layoutSidenav_content">
-                    <div id="layoutAuthentication">
-                        <div id="layoutAuthentication_content">
-                            <main>
-                                <HeaderPagePrivado breadcrumbs={breadcrumbs}/>
-                                <InscripcionCarrera formData={formData} estado={estado} handleChange={handleChange} handleSubmit={handleSubmit} />
-                            </main>
-                        </div>
-                    </div>
-                </div>
+  const handleSubmit = async e => {
+    try {
+      e.preventDefault()
+      const response = await axios.post(
+        `/Estudiante/inscripcionCarrera?carreraId=${selectedCareer}&estudianteId=${userData.id}`
+      )
+      setEstado({
+        message: response.data.message,
+        estado: response.status
+      })
+    } catch (error) {
+      setEstado({
+        message: error.response
+          ? error.response.data.message
+          : 'Error al inscribirse a la carrera',
+        estado: error.response ? error.response.status : 500
+      })
+    }
+  }
+
+  const onCareerChange = e => {
+    setSelectedCareer(e.target.value)
+  }
+
+  const [isSidebarToggled, setIsSidebarToggled] = useState(false)
+  const toggleSidebar = () => {
+    setIsSidebarToggled(!isSidebarToggled)
+  }
+
+  // If failed, reset form status
+  const resetFormStatus = () => {
+    setEstado({
+      message: '',
+      estado: ''
+    })
+    setSelectedCareer('')
+    setCareers(prevState => [...prevState])
+  }
+
+  return (
+    <body
+      className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}
+    >
+      <NavPrivado
+        isSidebarToggled={isSidebarToggled}
+        toggleSidebar={toggleSidebar}
+      />
+      <div id='layoutSidenav'>
+        <div id='layoutSidenav_nav'>
+          <Sidebar isSidebarToggled={isSidebarToggled} />
+        </div>
+        <div id='layoutSidenav_content'>
+          <div id='layoutAuthentication'>
+            <div id='layoutAuthentication_content'>
+              <main>
+                <HeaderPagePrivado breadcrumbs={breadcrumbs} />
+                <InscripcionCarrera
+                  resetearForm={resetFormStatus}
+                  carreraSeleccionada={selectedCareer}
+                  estanCargandoCarreras={careesAreLoading}
+                  carreras={careers}
+                  seleccionarCarrera={onCareerChange}
+                  estado={estado}
+                  handleSubmit={handleSubmit}
+                />
+              </main>
             </div>
-        </body>
-    );
+          </div>
+        </div>
+      </div>
+    </body>
+  )
 }
 
-export default EstudianteInscripcionCarrera;
+export default EstudianteInscripcionCarrera
