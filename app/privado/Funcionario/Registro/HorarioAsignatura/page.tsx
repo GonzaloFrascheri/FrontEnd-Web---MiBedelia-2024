@@ -14,7 +14,7 @@ function FuncionarioExamenAsignatura() {
     
     const router = useRouter();
     const token = storage.getToken();
-    const breadcrumbs = ['privado', 'Funcionario', 'Registro', 'ExamenAsignatura'];
+    const breadcrumbs = ['privado', 'Funcionario', 'Registro', 'HorarioAsignatura'];
     const [data, setData] = useState('');
     const [listaCarrera, setListaCarrera] = useState([]);
     const [listaAsignatura, setListaAsignatura] = useState([]);
@@ -70,7 +70,7 @@ function FuncionarioExamenAsignatura() {
             try {
                 // envío datos al bk
                 const { data, status } = await axios.post('Funcionario/registroHorarioAsignatura', formData);
-                // si la data es ok - docente fue dado de alta
+                
                 if (status === 200) {
                     setEstado({
                         message: data.message,
@@ -84,7 +84,7 @@ function FuncionarioExamenAsignatura() {
                   }
               } catch (error) {
                     setEstado({
-                        message: error.response ? error.response.data.message : 'Error al regristrar el horario',
+                        message: error.response ? error.response.data.message : 'Error al registrar el horario',
                         estado: error.response ? error.response.status : 500
                 });
 
