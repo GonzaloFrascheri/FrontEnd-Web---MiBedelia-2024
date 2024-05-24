@@ -1,11 +1,37 @@
-import React from "react";
+import React, {useState} from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format, parseISO } from "date-fns";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendarAltm, faSearch } from "@fortawesome/free-solid-svg-icons";
 
-export default function Index({listaAsignaturas, handleAsignaturaChange, handleChange, handleSubmit, periodoActivo, formData}) {
+export default function Index({listaAsignaturas, handleAsignaturaChange, handleChange, handleSubmit, periodoActivo, listaDocentes, formData}) {
+    console.info("formdata", formData);
     const periodoInicio = formatFecha(periodoActivo.diaInicio);
     const periodoFin = formatFecha(periodoActivo.diaFin);
+
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [selectedDocente, setSelectedDocente] = useState({
+        id: null,
+        ci: "",
+        nombre: "Debe seleccionar un docente",
+        apellido: ""
+    });
+  
+    const handleOpenPopup = () => {
+      setIsPopupOpen(true);
+    };
+  
+    const handleClosePopup = () => {
+      setIsPopupOpen(false);
+    };
+  
+    const handleSelectDocente = (docente) => {
+      setSelectedDocente(docente);
+      setIsPopupOpen(false);
+      formData.idDocente = docente.id;
+      //console.log('Docente seleccionado:', docente); // Aquí puedes manejar los datos del docente seleccionado
+    };
 
     function formatFecha(fecha) {
         const date = new Date(fecha);
@@ -42,9 +68,10 @@ export default function Index({listaAsignaturas, handleAsignaturaChange, handleC
                                             id="listaAsignatura"
                                             onChange={handleAsignaturaChange}
                                         >
+                                            <option value="" disabled selected>Seleccione una asignatura</option>
                                             {listaAsignaturas.length > 0 ? (
                                                 listaAsignaturas.map((asignatura) => (
-                                                    <option key={asignatura.idCarrera} value={asignatura.idCarrera}>{asignatura.nombre}</option>
+                                                    <option key={asignatura.id} value={asignatura.id}>{asignatura.nombre}</option>
                                                 ))
                                             ) : (
                                                 <option>No se recibieron datos aún</option>
@@ -75,17 +102,54 @@ export default function Index({listaAsignaturas, handleAsignaturaChange, handleC
                                     </div>
                                 </div>
                             </div>
-                            <div className="mb-3">
-                                <label htmlFor="codigo" className="form-label">Docente:</label>
-                                <input
-                                type="text"
-                                id="idDocente"
-                                name="idDocente"
-                                value={formData.idDocente}
-                                onChange={handleChange}
-                                className="form-control"
-                                required
-                                />
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <div className="mb-3">
+                                        <label htmlFor="codigo" className="form-label">Docente:</label>
+                                        <div className="input-group input-group-joined">
+                                            <input
+                                                type="text"
+                                                id="idDocente"
+                                                name="idDocenteDatos"
+                                                value={"[ "+selectedDocente.id+" ] " + selectedDocente.nombre + " " + selectedDocente.apellido + " ( "+selectedDocente.ci+" )"}
+                                                onChange={handleChange}
+                                                className="form-control"
+                                                disabled
+                                                required
+                                            />
+                                            <span className="input-group-text">
+                                                <FontAwesomeIcon 
+                                                    icon={faSearch} 
+                                                    onClick={handleOpenPopup}
+                                                    data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                                />
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        id="idDocente"
+                                        name="idDocente"
+                                        value={selectedDocente.ci}
+                                        onChange={handleChange}
+                                        className="form-control"
+                                        disabled
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div>
+                                {selectedDocente && (
+                                    <div>
+                                    <h3>Docente Seleccionado:</h3>
+                                    <p>
+                                        ID: {selectedDocente.id} -
+                                        CI: {selectedDocente.ci} -
+                                        Nombre: {selectedDocente.nombre} -
+                                        Apellido: {selectedDocente.apellido}
+                                    </p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className="card-footer text-center">
@@ -94,6 +158,30 @@ export default function Index({listaAsignaturas, handleAsignaturaChange, handleC
                                 className="btn btn-primary">Crear exámen</button>
                         </div>
                     </form>
+
+
+                    <div className="modal fade" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div className="modal-dialog" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title" id="exampleModalLabel">Default Bootstrap Modal</h5>
+                                    <button className="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div className="modal-body">
+                                    <div className="popup">
+                                        <ul>
+                                            {listaDocentes.map(docente => (
+                                                <li key={docente.id} onClick={() => handleSelectDocente(docente)}>
+                                                {docente.nombre} {docente.apellido} ({docente.ci})
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                    <div className="modal-footer"><button className="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

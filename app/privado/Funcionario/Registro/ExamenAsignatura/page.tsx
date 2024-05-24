@@ -8,6 +8,7 @@ import HeaderPagePrivado from "@/app/componentes/headers/headerPage-privado";
 import ExamenAsignaturaListCarrera from "@/app/componentes/funcionario/registro/examen/examenAsignaturaListCarrera";
 import ExamenAsignaturaListAsignatura from "@/app/componentes/funcionario/registro/examen/examenAsignaturaListAsignatura";
 import ExamenAsignaturaPasos from "@/app/componentes/funcionario/registro/examen/examenAsignaturaPasos";
+import { set } from "date-fns";
 
 function FuncionarioExamenAsignatura() {
     
@@ -16,6 +17,7 @@ function FuncionarioExamenAsignatura() {
     const [data, setData] = useState('');
     const [listaCarrera, setListaCarrera] = useState([]);
     const [listaAsignatura, setListaAsignatura] = useState([]);
+    const [listaDocentes, setListaDocentes] = useState([]);
     const [selectedCarreraId, setSelectedCarreraId] = useState(null);
     const [selectedAsignaturaId, setSelectedAsignaturaId] = useState(null);
     const hoy = new Date();
@@ -28,11 +30,12 @@ function FuncionarioExamenAsignatura() {
     }
     const handleAsignaturaChange = (event) => {
         const selectedId = event.target.value;
-        setSelectedAsignaturaId(selectedId);
         setFormData({
             ...formData,
             idAsignatura: selectedId
         });
+        setSelectedAsignaturaId(selectedId);
+        console.info("selectedAsignaturaId", selectedAsignaturaId)
     }
     const [estado, setEstado] = useState({
         message: "",
@@ -41,6 +44,7 @@ function FuncionarioExamenAsignatura() {
     const [periodoActivo, setPeriodoActivo] = useState({
         diaFin: "",
         diaInicio: "",
+        idPeriodo: ""
     });
     const [formData, setFormData] = useState({
         carrera: "",
@@ -49,6 +53,7 @@ function FuncionarioExamenAsignatura() {
         idDocente: "",
         anioLectivo: hoy.getFullYear().toString(),
         fechaExamen: "",
+        idDocenteDatos: "",
     });
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -69,6 +74,7 @@ function FuncionarioExamenAsignatura() {
             idDocente: "",
             anioLectivo: "",
             fechaExamen: "",
+            idDocenteDatos: "",
         });
     };
     
@@ -88,7 +94,19 @@ function FuncionarioExamenAsignatura() {
         };
     
         fetchListaCarreras();
-    }, []); // El segundo argumento [] asegura que esto se ejecute solo una vez al montar el componente
+    }, []);
+
+    useEffect(() => {
+        const fetchListaDocentes = async () => {
+            try {
+                const response = await axios.get('Funcionario/listarDocentes');
+                setListaDocentes(response.data);
+            } catch (error) {
+                console.error('Error fetching listaDocentes:', error);
+            }
+        };
+        fetchListaDocentes();
+    }, []);
    
     useEffect(() => {
         const fetchListaAsignaturas = async () => {
@@ -97,7 +115,7 @@ function FuncionarioExamenAsignatura() {
                 //const response = await axios.get('Funcionario/listarAsignatura?idCarrera=' + selectedCarreraId);
                 const response = await axios.get('Funcionario/listarAsignaturaPaginado?idCarrera=' + selectedCarreraId + '&page=1&pageSize=300');
                 setListaAsignatura(response.data.items);
-                console.info("listaAsignatura", response.data.items);
+                //console.info("listaAsignatura", response.data.items);
             } catch (error) {
                 console.error('Error fetching listaAsignatura:', error);
             }
@@ -109,12 +127,18 @@ function FuncionarioExamenAsignatura() {
         const obtenerPeriodoActivo = async () => {
             try {
                 const response = await axios.get('Funcionario/getPeriodoActivo?Aniolectivo=' + hoy.getFullYear());
+                console.log("response.data", response.data);
                 setPeriodoActivo(
                     {
                         diaFin: response.data.diaFin,
                         diaInicio: response.data.diaInicio,
+                        idPeriodo: response.data.idPeriodo
                     }
                 );
+                setFormData({
+                    ...formData,
+                    idPeriodo: response.data.idPeriodo
+                });
             } catch (error) {
                 console.error('Error fetching obtenerPeriodoActivo:', error);
             }
@@ -147,6 +171,7 @@ function FuncionarioExamenAsignatura() {
                                         handleChange={handleChange}
                                         handleSubmit={handleSubmit}
                                         periodoActivo={periodoActivo}
+                                        listaDocentes={listaDocentes}
                                         formData={formData}
                                     />
                                 )}
