@@ -115,8 +115,6 @@ function FuncionarioExamenAsignatura() {
                         diaInicio: response.data.diaInicio,
                     }
                 );
-                console.info("periodoActivo", response.data);
-                
             } catch (error) {
                 console.error('Error fetching obtenerPeriodoActivo:', error);
             }

@@ -2132,6 +2132,9 @@ progress {
     --bs-gutter-y: 9rem;
   }
 }
+.react-datepicker-wrapper {
+  display: block !important;
+}
 .table, .dataTable-table {
   --bs-table-bg: transparent;
   --bs-table-accent-bg: transparent;
