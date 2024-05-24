@@ -28,8 +28,9 @@ export default function ListarUsuarios () {
           estado: data.evento
         });
       }
-      console.info("estado", estado)
-      setData(updatedData);
+      //console.info("estado", estado)
+      //setData(updatedData);
+      setData(data)
     } catch (error) {
       console.log(error)
       setEstado({
