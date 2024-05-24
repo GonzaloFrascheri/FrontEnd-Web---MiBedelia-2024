@@ -1,7 +1,12 @@
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import {  } from '@fortawesome/free-solid-svg-icons';
+import React from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { format, parseISO } from "date-fns";
 
 export default function Index({listaAsignaturas, handleAsignaturaChange, handleChange, handleSubmit, periodoActivo, formData}) {
+    const periodoInicio = formatFecha(periodoActivo.diaInicio);
+    const periodoFin = formatFecha(periodoActivo.diaFin);
+
     function formatFecha(fecha) {
         const date = new Date(fecha);
         const year = date.getFullYear();
@@ -9,8 +14,16 @@ export default function Index({listaAsignaturas, handleAsignaturaChange, handleC
         const day = date.getDate().toString().padStart(2, '0');
         return `${year}-${month}-${day}`;
     }
-    const periodoInicio = formatFecha(periodoActivo.diaInicio);
-    const periodoFin = formatFecha(periodoActivo.diaFin);
+
+    const handleDateChange = (date) => {
+        handleChange({
+            target: {
+                name: 'fechaExamen',
+                value: date //format(date, 'yyyy-MM-dd')
+            }
+        });
+    };
+
     return (
         <div className="container-xl px-4">
             <div className="card">
@@ -20,33 +33,47 @@ export default function Index({listaAsignaturas, handleAsignaturaChange, handleC
                             <h3 className="fw-light">Registro de un exámen relacionado a una asignatura</h3>
                         </div>
                         <div className="card-body">
-                            <div className="mb-3">
-                                <label htmlFor="listaAsignatura">Lista de asignaturas</label>
-                                <select 
-                                    className="form-control" 
-                                    id="listaAsignatura"
-                                    onChange={handleAsignaturaChange}
-                                >
-                                    {listaAsignaturas.length > 0 ? (
-                                        listaAsignaturas.map((asignatura) => (
-                                            <option key={asignatura.idCarrera} value={asignatura.idCarrera}>{asignatura.nombre}</option>
-                                        ))
-                                    ) : (
-                                        <option>No se recibieron datos aún</option>
-                                    )}
-                                </select>
-                            </div>
-                            <div className="mb-3">
-                                <label htmlFor="codigo" className="form-label">Fecha exámen: <span className="badge badge-primary" >Inicio: {periodoInicio} - Fin {periodoFin}</span></label>
-                                <input
-                                type="date"
-                                id="fechaExamen"
-                                name="fechaExamen"
-                                value={formData.fechaExamen}
-                                onChange={handleChange}
-                                className="form-control"
-                                required
-                                />
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <div className="mb-3">
+                                        <label htmlFor="listaAsignatura">Lista de asignaturas</label>
+                                        <select 
+                                            className="form-control" 
+                                            id="listaAsignatura"
+                                            onChange={handleAsignaturaChange}
+                                        >
+                                            {listaAsignaturas.length > 0 ? (
+                                                listaAsignaturas.map((asignatura) => (
+                                                    <option key={asignatura.idCarrera} value={asignatura.idCarrera}>{asignatura.nombre}</option>
+                                                ))
+                                            ) : (
+                                                <option>No se recibieron datos aún</option>
+                                            )}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="mb-3">
+                                        <label 
+                                            htmlFor="fechaExamen"
+                                            className="form-label col-md-12 mb-0">
+                                                Fecha exámen:
+                                                <span className="badge bg-primary text-white ms-5">
+                                                    Inicio: {periodoInicio} - Fin {periodoFin}
+                                                </span>
+                                        </label>
+                                        <DatePicker
+                                            id="fechaExamen"
+                                            selected={formData.fechaExamen}
+                                            onChange={handleDateChange}
+                                            dateFormat="yyyy-MM-dd"
+                                            minDate={periodoInicio}
+                                            maxDate={periodoFin}
+                                            className="form-control w-100"
+                                            required
+                                        />
+                                    </div>
+                                </div>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="codigo" className="form-label">Docente:</label>

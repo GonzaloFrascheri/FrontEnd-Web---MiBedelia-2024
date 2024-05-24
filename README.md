@@ -3,25 +3,25 @@ https://mibedelia-backend-production.up.railway.app/doc/swagger-ui/index.html#/
 
 ## Tareas - Casos de uso críticos 
 - Invitado
-  - Iniciar sesión <img src="https://img.shields.io/badge/Front-Hehco-succes">
-  - Registrarse como estudiante <img src="https://img.shields.io/badge/Front-Hehco-succes">
+  - Iniciar sesión <img src="https://img.shields.io/badge/Front-Hecho-succes">
+  - Registrarse como estudiante <img src="https://img.shields.io/badge/Front-Hecho-succes">
 - Administrador
-  - Alta de Usuario <img src="https://img.shields.io/badge/Front-Hehco-succes">
-  - Baja de Usuario <img src="https://img.shields.io/badge/Front-NoIniciado-red">
-  - Listar Usuario <img src="https://img.shields.io/badge/Front-Hehco-succes">
+  - Alta de Usuario <img src="https://img.shields.io/badge/Front-Hecho-succes">
+  - Baja de Usuario <img src="https://img.shields.io/badge/Front-EnProceso-yellow">
+  - Listar Usuario <img src="https://img.shields.io/badge/Front-Hecho-succes">
 - Coordinador	
-  - Alta carrera	<img src="https://img.shields.io/badge/Front-Hehco-success">
+  - Alta carrera	<img src="https://img.shields.io/badge/Front-Hecho-success">
   - Alta Asignatura	<img src="https://img.shields.io/badge/Front-Hecho-success">
 - Estudiante	
   - Inscripción a una carrera	<img src="https://img.shields.io/badge/Front-EnProceso-yellow">
   - Inscripción a una asignatura <img src="https://img.shields.io/badge/Front-EnProceso-yellow">	
   - Inscripción a un examen <img src="https://img.shields.io/badge/Front-EnProceso-yellow">	
 - Funcionario	
-  - Generar acta fin de curso	<img src="https://img.shields.io/badge/Front-Hehco-succes"> <img src="https://img.shields.io/badge/BackEnd-EnProceso-red">
-  - Generar acta examen	<img src="https://img.shields.io/badge/Front-Hehco-succes"> <img src="https://img.shields.io/badge/BackEnd-EnProceso-red">
+  - Generar acta fin de curso	<img src="https://img.shields.io/badge/Front-Hecho-succes"> <img src="https://img.shields.io/badge/BackEnd-EnProceso-red">
+  - Generar acta examen	<img src="https://img.shields.io/badge/Front-Hecho-succes"> <img src="https://img.shields.io/badge/BackEnd-EnProceso-red">
   - Registro horario en asignatura	<img src="https://img.shields.io/badge/Front-EnProceso-yellow">	
   - Registro periodo examen <img src="https://img.shields.io/badge/Front-Hecho-success">	
-  - Registro examen relacionado a una asignatura dada	<img src="https://img.shields.io/badge/Front-Hehco-succes">
+  - Registro examen relacionado a una asignatura dada	<img src="https://img.shields.io/badge/Front-EnProceso-yellow">
   - Alta docente	<img src="https://img.shields.io/badge/Front-Hecho-success">
 
 
@@ -65,6 +65,8 @@ npm i react-native-elements
 npm install jspdf
 # instalar simple-table
 npm install react-data-table-component
+# instalar dependencia para manipular el calendario
+npm install react-datepicker date-fns
 ```
 
 # INSTALACION DE DEPENDENCIAS PARA GRAFOS

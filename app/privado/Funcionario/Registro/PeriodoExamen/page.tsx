@@ -70,7 +70,7 @@ function FuncionarioPeriodoExamen() {
         }
 
         // Validar que entre diaInicio y diaFin no hayan más de 21 días
-        const diferenciaDias = (diaFin - diaInicio) / (1000 * 60 * 60 * 24);
+        const diferenciaDias = (diaFin.getTime() - diaInicio.getTime()) / (1000 * 60 * 60 * 24);
         if (diferenciaDias > 21) {
             setError('Entre la fecha de inicio y la fecha de fin no deben haber más de 21 días.');
             return;
