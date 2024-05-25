@@ -23,10 +23,6 @@ function FuncionarioExamenAsignatura() {
     const hoy = new Date();
     const handleCarreraChange = (id) => {
         setSelectedCarreraId(id);
-        setFormData({
-            ...formData,
-            carrera: id
-        });
     }
     const handleAsignaturaChange = (event) => {
         const selectedId = event.target.value;
@@ -35,7 +31,6 @@ function FuncionarioExamenAsignatura() {
             idAsignatura: selectedId
         });
         setSelectedAsignaturaId(selectedId);
-        console.info("selectedAsignaturaId", selectedAsignaturaId)
     }
     const [estado, setEstado] = useState({
         message: "",
@@ -47,34 +42,52 @@ function FuncionarioExamenAsignatura() {
         idPeriodo: ""
     });
     const [formData, setFormData] = useState({
-        carrera: "",
         idAsignatura: "",
         idPeriodo: "",
-        idDocente: "",
+        idDoncente: "",
         anioLectivo: hoy.getFullYear().toString(),
         fechaExamen: "",
-        idDocenteDatos: "",
     });
     const handleChange = (e) => {
         const { name, value } = e.target;
+        const formattedDate = value.toISOString().split('T')[0];
         setFormData(prevState => ({
             ...prevState,
-            [name]: value
+            [name]: formattedDate
         }));
     };
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        console.warn('formData', formData);
         // Aquí puedes enviar los datos del formulario a tu backend o realizar cualquier otra acción necesaria
-        console.info("a enviar", formData);
+        try {
+            // envío datos al bk
+            const { data, status } = await axios.post('Funcionario/registrarExamenAsignaturas', formData);
+            // si la data es ok - docente fue dado de alta
+            if (status === 200) {
+                setEstado({
+                    message: data.message,
+                    estado: data.estado
+                });
+            }else{
+                setEstado({
+                  message: data.message,
+                  estado: data.status
+                });
+              }
+        } catch (error) {
+            setEstado({
+                message: error.response ? error.response.data.message : 'Error al guardar el usuario',
+                estado: error.response ? error.response.status : 500
+            });
+        }
         // Limpia el formulario después de enviar los datos
         setFormData({
-            carrera: "",
             idAsignatura: "",
             idPeriodo: "",
-            idDocente: "",
+            idDoncente: "",
             anioLectivo: "",
             fechaExamen: "",
-            idDocenteDatos: "",
         });
     };
     
@@ -127,7 +140,7 @@ function FuncionarioExamenAsignatura() {
         const obtenerPeriodoActivo = async () => {
             try {
                 const response = await axios.get('Funcionario/getPeriodoActivo?Aniolectivo=' + hoy.getFullYear());
-                console.log("response.data", response.data);
+                // console.log("response.data", response.data);
                 setPeriodoActivo(
                     {
                         diaFin: response.data.diaFin,
@@ -173,6 +186,7 @@ function FuncionarioExamenAsignatura() {
                                         periodoActivo={periodoActivo}
                                         listaDocentes={listaDocentes}
                                         formData={formData}
+                                        estado={estado}
                                     />
                                 )}
                             </main>

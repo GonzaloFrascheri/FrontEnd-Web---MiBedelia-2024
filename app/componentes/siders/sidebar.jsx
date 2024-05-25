@@ -1,11 +1,15 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDashboard, faBook, faAngleDown, faUserTie, faArrowsToCircle, faPenFancy, faGraduationCap} from '@fortawesome/free-solid-svg-icons';
+import { userAuthenticationCheck } from '@/utils/auth'
 
 export default function Sidebar({ isSidebarToggled }) {
-
+  const router = useRouter();
+  const pathname = usePathname();
   const [currentPath, setCurrentPath] = useState('');
+  const [userData, setUserData] = useState({});
 
   const [collapseAdministrador, setCollapseAdministrador] = useState(false);
   const [collapseCoordinador, setCollapseCoordinador] = useState(false);
@@ -36,6 +40,8 @@ export default function Sidebar({ isSidebarToggled }) {
 
   useEffect(() => {
     setCurrentPath(window.location.pathname);
+    const userData = userAuthenticationCheck(router, pathname);
+    setUserData(userData);
   }, []);
 
   return (
@@ -137,8 +143,8 @@ export default function Sidebar({ isSidebarToggled }) {
         </div>
         <div className="sidenav-footer">
           <div className="sidenav-footer-content">
-            <div className="sidenav-footer-subtitle">Conectado como: Wilson Arriola</div>
-            <div className="sidenav-footer-title">ADMIN</div>
+            <div className="sidenav-footer-subtitle">Conectado como: {userData?.name}</div>
+            <div className="sidenav-footer-title">{userData?.role}</div>
           </div>
         </div>
       </nav>

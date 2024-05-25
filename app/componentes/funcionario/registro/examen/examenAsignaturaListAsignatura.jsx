@@ -5,8 +5,8 @@ import { format, parseISO } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarAltm, faSearch } from "@fortawesome/free-solid-svg-icons";
 
-export default function Index({listaAsignaturas, handleAsignaturaChange, handleChange, handleSubmit, periodoActivo, listaDocentes, formData}) {
-    console.info("formdata", formData);
+export default function Index({listaAsignaturas, handleAsignaturaChange, handleChange, handleSubmit, periodoActivo, listaDocentes, formData, estado}) {
+    //console.info("formdata", formData);
     const periodoInicio = formatFecha(periodoActivo.diaInicio);
     const periodoFin = formatFecha(periodoActivo.diaFin);
 
@@ -29,7 +29,7 @@ export default function Index({listaAsignaturas, handleAsignaturaChange, handleC
     const handleSelectDocente = (docente) => {
       setSelectedDocente(docente);
       setIsPopupOpen(false);
-      formData.idDocente = docente.id;
+      formData.idDoncente = docente.id;
       //console.log('Docente seleccionado:', docente); // Aquí puedes manejar los datos del docente seleccionado
     };
 
@@ -54,110 +54,109 @@ export default function Index({listaAsignaturas, handleAsignaturaChange, handleC
         <div className="container-xl px-4">
             <div className="card">
                 <div className="card shadow-lg border-0 rounded-lg">
-                    <form onSubmit={handleSubmit}>
                         <div className="card-header justify-content-center">
                             <h3 className="fw-light">Registro de un exámen relacionado a una asignatura</h3>
                         </div>
-                        <div className="card-body">
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <div className="mb-3">
-                                        <label htmlFor="listaAsignatura">Lista de asignaturas</label>
-                                        <select 
-                                            className="form-control" 
-                                            id="listaAsignatura"
-                                            onChange={handleAsignaturaChange}
-                                        >
-                                            <option value="" disabled selected>Seleccione una asignatura</option>
-                                            {listaAsignaturas.length > 0 ? (
-                                                listaAsignaturas.map((asignatura) => (
-                                                    <option key={asignatura.id} value={asignatura.id}>{asignatura.nombre}</option>
-                                                ))
-                                            ) : (
-                                                <option>No se recibieron datos aún</option>
-                                            )}
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="col-md-6">
-                                    <div className="mb-3">
-                                        <label 
-                                            htmlFor="fechaExamen"
-                                            className="form-label col-md-12 mb-0">
-                                                Fecha exámen:
-                                                <span className="badge bg-primary text-white ms-5">
-                                                    Inicio: {periodoInicio} - Fin {periodoFin}
-                                                </span>
-                                        </label>
-                                        <DatePicker
-                                            id="fechaExamen"
-                                            selected={formData.fechaExamen}
-                                            onChange={handleDateChange}
-                                            dateFormat="yyyy-MM-dd"
-                                            minDate={periodoInicio}
-                                            maxDate={periodoFin}
-                                            className="form-control w-100"
-                                            required
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="mb-3">
-                                        <label htmlFor="codigo" className="form-label">Docente:</label>
-                                        <div className="input-group input-group-joined">
-                                            <input
-                                                type="text"
-                                                id="idDocente"
-                                                name="idDocenteDatos"
-                                                value={"[ "+selectedDocente.id+" ] " + selectedDocente.nombre + " " + selectedDocente.apellido + " ( "+selectedDocente.ci+" )"}
-                                                onChange={handleChange}
-                                                className="form-control"
-                                                disabled
-                                                required
-                                            />
-                                            <span className="input-group-text">
-                                                <FontAwesomeIcon 
-                                                    icon={faSearch} 
-                                                    onClick={handleOpenPopup}
-                                                    data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                                />
-                                            </span>
+                        { estado.message === '' ? (
+                        <form onSubmit={handleSubmit}>
+                            <div className="card-body">
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="mb-3">
+                                            <label htmlFor="listaAsignatura">Lista de asignaturas</label>
+                                            <select 
+                                                className="form-control" 
+                                                id="listaAsignatura"
+                                                onChange={handleAsignaturaChange}
+                                            >
+                                                <option value="" disabled selected>Seleccione una asignatura</option>
+                                                {listaAsignaturas.length > 0 ? (
+                                                    listaAsignaturas.map((asignatura) => (
+                                                        <option key={asignatura.id} value={asignatura.id}>{asignatura.nombre}</option>
+                                                    ))
+                                                ) : (
+                                                    <option>No se recibieron datos aún</option>
+                                                )}
+                                            </select>
                                         </div>
                                     </div>
-                                    <input
-                                        type="text"
-                                        id="idDocente"
-                                        name="idDocente"
-                                        value={selectedDocente.ci}
-                                        onChange={handleChange}
-                                        className="form-control"
-                                        disabled
-                                        required
-                                    />
+                                    <div className="col-md-6">
+                                        <div className="mb-3">
+                                            <label 
+                                                htmlFor="fechaExamen"
+                                                className="form-label col-md-12 mb-0">
+                                                    Fecha exámen:
+                                                    <span className="badge bg-primary text-white ms-5">
+                                                        Inicio: {periodoInicio} - Fin {periodoFin}
+                                                    </span>
+                                            </label>
+                                            <DatePicker
+                                                id="fechaExamen"
+                                                selected={formData.fechaExamen}
+                                                onChange={handleDateChange}
+                                                dateFormat="yyyy-MM-dd"
+                                                minDate={periodoInicio}
+                                                maxDate={periodoFin}
+                                                className="form-control w-100"
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <div className="mb-3">
+                                            <label htmlFor="codigo" className="form-label">Docente:</label>
+                                            <div className="input-group input-group-joined">
+                                                <input
+                                                    type="text"
+                                                    id="idDocente"
+                                                    name="idDocenteDatos"
+                                                    value={"[ "+selectedDocente.id+" ] " + selectedDocente.nombre + " " + selectedDocente.apellido + " ( "+selectedDocente.ci+" )"}
+                                                    onChange={handleChange}
+                                                    className="form-control"
+                                                    disabled
+                                                    required
+                                                />
+                                                <span className="input-group-text">
+                                                    <FontAwesomeIcon 
+                                                        icon={faSearch} 
+                                                        onClick={handleOpenPopup}
+                                                        data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                                    />
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    {selectedDocente && (
+                                        <div>
+                                        <h3>Docente Seleccionado:</h3>
+                                        <p>
+                                            ID: {selectedDocente.id} -
+                                            CI: {selectedDocente.ci} -
+                                            Nombre: {selectedDocente.nombre} -
+                                            Apellido: {selectedDocente.apellido}
+                                        </p>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
-                            <div>
-                                {selectedDocente && (
-                                    <div>
-                                    <h3>Docente Seleccionado:</h3>
-                                    <p>
-                                        ID: {selectedDocente.id} -
-                                        CI: {selectedDocente.ci} -
-                                        Nombre: {selectedDocente.nombre} -
-                                        Apellido: {selectedDocente.apellido}
-                                    </p>
-                                    </div>
-                                )}
+                            <div className="card-footer text-center">
+                                <button 
+                                    type="submit" 
+                                    className="btn btn-primary">Crear exámen</button>
                             </div>
-                        </div>
-                        <div className="card-footer text-center">
-                            <button 
-                                type="submit" 
-                                className="btn btn-primary">Crear exámen</button>
-                        </div>
-                    </form>
+                        </form>
+                        ) : (
+                            <div className="card-body">
+                                <div className="alert alert-danger" role="alert">
+                                    {estado.message}
+                                </div>
+                            </div>
+                        )
+                        }
 
 
                     <div className="modal fade" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
