@@ -41,7 +41,7 @@ function AltaDocentePage() {
             alert("Los campos no pueden estar vacios.");
             return;
         }
-        console.info(docenteDto)
+        // console.info(docenteDto)
 
         try {
             // envío datos al bk

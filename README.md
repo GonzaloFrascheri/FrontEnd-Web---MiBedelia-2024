@@ -3,29 +3,29 @@ https://mibedelia-backend-production.up.railway.app/doc/swagger-ui/index.html#/
 
 ## Tareas - Casos de uso críticos 
 - Invitado
-  - Iniciar sesión <img src="https://img.shields.io/badge/Front-Hecho-success">
-  - Registrarse como estudiante <img src="https://img.shields.io/badge/Front-Hecho-success">
+  - Iniciar sesión <img src="https://img.shields.io/badge/Front-Hecho-success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
+  - Registrarse como estudiante <img src="https://img.shields.io/badge/Front-Hecho-success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 - Administrador
-  - Alta de Usuario <img src="https://img.shields.io/badge/Front-Hecho-success">
-  - Baja de Usuario <img src="https://img.shields.io/badge/Front-EnProceso-yellow">
-  - Listar Usuario <img src="https://img.shields.io/badge/Front-Hecho-success">
+  - Alta de Usuario <img src="https://img.shields.io/badge/Front-Hecho-success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
+  - Baja de Usuario <img src="https://img.shields.io/badge/Front-EnProceso-success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
+  - Listar Usuario <img src="https://img.shields.io/badge/Front-Hecho-success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 - Coordinador	
-  - Alta carrera	<img src="https://img.shields.io/badge/Front-Hecho-successs">
-  - Alta Asignatura	<img src="https://img.shields.io/badge/Front-Hecho-successs">
+  - Alta carrera	<img src="https://img.shields.io/badge/Front-Hecho-successs"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
+  - Alta Asignatura	<img src="https://img.shields.io/badge/Front-Hecho-successs"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 - Estudiante	
-  - Inscripción a una carrera	<img src="https://img.shields.io/badge/Front-Hecho-successs">
+  - Inscripción a una carrera	<img src="https://img.shields.io/badge/Front-Hecho-successs"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
   - Inscripción a una asignatura <img src="https://img.shields.io/badge/Front-EnProceso-yellow">	
-  <img src="https://img.shields.io/badge/BackEnd-EnProceso-red">
+  <img src="https://img.shields.io/badge/BackEnd-Hecho-success">
   - Inscripción a un examen <img src="https://img.shields.io/badge/Front-EnProceso-yellow">	
-  <img src="https://img.shields.io/badge/BackEnd-EnProceso-red">
+  <img src="https://img.shields.io/badge/BackEnd-Hecho-success">
   
 - Funcionario	
   - Generar acta fin de curso	<img src="https://img.shields.io/badge/Front-Hecho-success"> <img src="https://img.shields.io/badge/BackEnd-EnProceso-red">
   - Generar acta examen	<img src="https://img.shields.io/badge/Front-Hecho-success"> <img src="https://img.shields.io/badge/BackEnd-EnProceso-red">
-  - Registro horario en asignatura	<img src="https://img.shields.io/badge/Front-EnProceso-yellow">	
-  - Registro periodo examen <img src="https://img.shields.io/badge/Front-Hecho-successs">	
-  - Registro examen relacionado a una asignatura dada	<img src="https://img.shields.io/badge/Front-Hecho-success">
-  - Alta docente	<img src="https://img.shields.io/badge/Front-Hecho-successs">
+  - Registro horario en asignatura	<img src="https://img.shields.io/badge/Front-EnProceso-yellow">	<img src="https://img.shields.io/badge/Backend-Hecho-success">
+  - Registro periodo examen <img src="https://img.shields.io/badge/Front-Hecho-successs">	<img src="https://img.shields.io/badge/Backend-Hecho-success">
+  - Registro examen relacionado a una asignatura dada	<img src="https://img.shields.io/badge/Front-Hecho-success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
+  - Alta docente	<img src="https://img.shields.io/badge/Front-Hecho-successs"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 
 
 # INSTALCION DEL FRONTEND

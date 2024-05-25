@@ -64,7 +64,6 @@ function LoginPage() {
 
       if (status === 200) {
         storage.setToken(data.token);
-        storage.setRole(data.role);
         router.push("/privado");
       }
 
