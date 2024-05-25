@@ -14,7 +14,7 @@ https://mibedelia-backend-production.up.railway.app/doc/swagger-ui/index.html#/
   - Alta Asignatura	<img src="https://img.shields.io/badge/Front-Hecho-successs"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 - Estudiante	
   - Inscripción a una carrera	<img src="https://img.shields.io/badge/Front-Hecho-successs"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
-  - Inscripción a una asignatura <img src="https://img.shields.io/badge/Front-EnProceso-yellow">	
+  - Inscripción a una asignatura <img src="https://img.shields.io/badge/Front-Hecho-success">	
   <img src="https://img.shields.io/badge/BackEnd-Hecho-success">
   - Inscripción a un examen <img src="https://img.shields.io/badge/Front-EnProceso-yellow">	
   <img src="https://img.shields.io/badge/BackEnd-Hecho-success">

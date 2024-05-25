@@ -105,7 +105,7 @@ function LoginPage() {
                             className="form-control form-control-solid"
                             type="text"
                             placeholder="Cedula"
-                            maxLength="8"
+                            maxLength="25"
                             value={credentials.ci}
                             onChange={handleCiChange}
                           />
