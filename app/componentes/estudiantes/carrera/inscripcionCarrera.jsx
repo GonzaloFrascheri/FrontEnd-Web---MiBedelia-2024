@@ -38,16 +38,10 @@ export default function Index ({
             <div>
               <div
                 className={`alert alert-icon ${
-                  estado.estado === 200 ? 'alert-primary' : 'alert-secondary'
+                  estado.estado === 200 ? 'alert-success' : 'alert-danger'
                 }`}
                 role='alert'
               >
-                <button
-                  className='btn-close'
-                  type='button'
-                  data-bs-dismiss='alert'
-                  aria-label='Close'
-                ></button>
                 <div className='alert-icon-aside'>
                   <i className='far fa-flag'></i>
                 </div>

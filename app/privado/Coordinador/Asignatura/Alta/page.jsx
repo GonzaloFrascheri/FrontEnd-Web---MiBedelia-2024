@@ -74,7 +74,7 @@ function CoordinadorAltaAsignatura() {
   useEffect(() => {
     const fetchListaCarreras = async () => {
       try {
-        const response = await axios.get('Funcionario/listarCarrera');
+        const response = await axios.get('/Coordinador/listarCarrera');
         const carrerasConIds = response.data.map(carrera => ({
           id: carrera.id, 
           nombre: carrera.nombre,

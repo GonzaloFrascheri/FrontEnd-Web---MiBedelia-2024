@@ -11,25 +11,29 @@ export default function InscripcionAsignaturaPasos ({
   })
 
   useEffect(() => {
-    if (selectedCareerId && !selectedSubjectId) {
-      setEstado({
-        paso1: 'step-item',
-        paso2: 'step-item active',
-        paso3: 'step-item'
-      })
-    } else if (selectedSubjectId) {
-      setEstado({
-        paso1: 'step-item',
-        paso2: 'step-item',
-        paso3: 'step-item active'
-      })
-    } else {
-      setEstado({
-        paso1: 'step-item active',
-        paso2: 'step-item',
-        paso3: 'step-item'
-      })
+    const getStepState = (careerId, subjectId) => {
+      if (careerId && !subjectId) {
+        return {
+          paso1: 'step-item',
+          paso2: 'step-item active',
+          paso3: 'step-item'
+        }
+      } else if (careerId && subjectId) {
+        return {
+          paso1: 'step-item',
+          paso2: 'step-item',
+          paso3: 'step-item active'
+        }
+      } else {
+        return {
+          paso1: 'step-item active',
+          paso2: 'step-item',
+          paso3: 'step-item'
+        }
+      }
     }
+
+    setEstado(getStepState(selectedCareerId, selectedSubjectId))
   }, [selectedCareerId, selectedSubjectId])
 
   return (
@@ -50,7 +54,9 @@ export default function InscripcionAsignaturaPasos ({
       </div>
       <div className={estado.paso3}>
         <a
-          className={`step-item-link ${!selectedSubjectId ? 'disabled' : ''}`}
+          className={`step-item-link ${
+            !selectedCareerId && !selectedSubjectId ? 'disabled' : ''
+          }`}
           href='#!'
           aria-disabled={!selectedSubjectId}
         >

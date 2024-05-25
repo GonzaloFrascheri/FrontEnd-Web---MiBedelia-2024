@@ -7,18 +7,21 @@ import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado.jsx'
 import InscripcionAsignaturaPasos from '@/app/componentes/estudiantes/asignatura/inscripcionAsignaturaPasos'
 import ListarCarreras from '@/app/componentes/reutilizables/listarCarreras'
 import ListarAsignaturas from '@/app/componentes/reutilizables/listarAsignaturas'
+import { userAuthenticationCheck } from '@/utils/auth'
+import InscripcionAsignatura from '@/app/componentes/estudiantes/asignatura/inscripcionAsignatura'
 
-export default function InscripcionAsignatura () {
+export default function EstudianteInscripcionAsignatura () {
   const breadcrumbs = ['privado', 'Estudiante', 'Asignatura']
   const [isSidebarToggled, setIsSidebarToggled] = useState(false)
   // Carreras
   const [carreers, setCareers] = useState([])
-  const [careesAreLoading, setCareesAreLoading] = useState(true)
-  const [selectedCareerId, setselectedCareerId] = useState(null)
+  const [careersAreLoading, setcareersAreLoading] = useState(true)
+  const [selectedCareerId, setSelectedCareerId] = useState('')
   // Asignaturas
   const [subjects, setSubjects] = useState([])
   const [subjectsAreLoading, setSubjectsAreLoading] = useState(true)
-  const [selectedSubjectId, setselectedSubjectId] = useState(null)
+  const [selectedSubjectId, setSelectedSubjectId] = useState('')
+  const [userData, setUserData] = useState(null)
   // Estado
   const [estado, setEstado] = useState({
     message: '',
@@ -30,21 +33,27 @@ export default function InscripcionAsignatura () {
   }
 
   const handleCareerChange = e => {
-    setselectedCareerId(e.target.value)
+    setSelectedCareerId(e.target.value)
   }
 
   const handleSubjectChange = e => {
-    setselectedSubjectId(e.target.value)
+    setSelectedSubjectId(e.target.value)
   }
 
   useEffect(() => {
+    const userData = userAuthenticationCheck()
+    setUserData(userData)
+
     const fetchCareers = async () => {
       try {
-        const response = await axios.get('/Estudiante/listarCarrera')
+        setcareersAreLoading(true)
+        const response = await axios.get(
+          `/Estudiante/getCarreraInscripto?idEstudiante=${userData.id}`
+        )
         const { status, data } = response
         if (status === 200) {
           setCareers([...data])
-          setCareesAreLoading(false)
+          setcareersAreLoading(false)
         }
       } catch (error) {
         const { status, data } = error.response
@@ -61,13 +70,20 @@ export default function InscripcionAsignatura () {
     if (selectedCareerId) {
       const fetchSubjects = async () => {
         try {
+          setSubjectsAreLoading(true)
           const response = await axios.get(
-            `/Estudiante/listarAsignatura?idCarrera=${selectedCareerId}`
+            `/Estudiante/getAsignaturasAbiertas?idCarrera=${selectedCareerId}`
           )
-          const { status, data } = response
-          if (status === 200) {
-            setSubjects([...data])
-            setSubjectsAreLoading(false)
+          const { data } = response
+
+          setSubjects([...data])
+          setSubjectsAreLoading(false)
+
+          if (!data.length) {
+            setEstado({
+              message: 'No hay asignaturas para esta carrera',
+              estado: 404
+            })
           }
         } catch (error) {
           const { status, data } = error.response
@@ -81,6 +97,41 @@ export default function InscripcionAsignatura () {
       fetchSubjects()
     }
   }, [selectedCareerId])
+
+  const handleSubmit = async e => {
+    try {
+      e.preventDefault()
+      const response = await axios.post(
+        `/Estudiante/inscripcionAsignatura?estudianteId=${userData.id}&asignaturaId=${selectedSubjectId}&carreraId=${selectedCareerId}`
+      )
+      const { status, data } = response
+
+      setEstado({
+        message: data.message,
+        estado: status
+      })
+    } catch (error) {
+      setEstado({
+        message: error.response
+          ? error.response.data.message
+          : 'Error al inscribirse a la asignatura',
+        estado: error.response ? error.response.status : 500
+      })
+    }
+  }
+
+  const resetFormStatus = () => {
+    setEstado({
+      message: '',
+      estado: ''
+    })
+    // Reset careers
+    setSelectedCareerId('')
+    setCareers(prevState => [...prevState])
+    // Reset subjects
+    setSelectedSubjectId('')
+    setSubjects(prevState => [...prevState])
+  }
 
   return (
     <body
@@ -99,48 +150,19 @@ export default function InscripcionAsignatura () {
             <div id='layoutAuthentication_content'>
               <main>
                 <HeaderPagePrivado breadcrumbs={breadcrumbs} />
-                <InscripcionAsignaturaPasos
-                  selectedCareerId={selectedCareerId}
-                  selectedSubjectId={selectedSubjectId}
+                <InscripcionAsignatura
+                  estado={estado}
+                  handleSubmit={handleSubmit}
+                  carreras={carreers}
+                  carreraSeleccionada={selectedCareerId}
+                  seleccionarCarrera={handleCareerChange}
+                  estanCargandoCarreras={careersAreLoading}
+                  asignaturas={subjects}
+                  asignaturaSeleccionada={selectedSubjectId}
+                  seleccionarAsignatura={handleSubjectChange}
+                  estanCargandoAsignaturas={subjectsAreLoading}
+                  resetearForm={resetFormStatus}
                 />
-                <div className='container-xl px-4'>
-                  <div className='card'>
-                    <div className='card shadow-lg border-0 rounded-lg'>
-                      {selectedCareerId === null ? (
-                        <>
-                          <div className='card-header justify-content-center'>
-                            <h3 className='fw-light'>Seleccionar carrera</h3>
-                          </div>{' '}
-                          <ListarCarreras
-                            carreras={carreers}
-                            estanCargandoCarreras={careesAreLoading}
-                            seleccionarCarrera={handleCareerChange}
-                          />
-                          <div className='card-footer text-center'></div>
-                        </>
-                      ) : (
-                        <>
-                          <div className='card-header justify-content-center'>
-                            <h3 className='fw-light'>Seleccionar asignatura</h3>
-                          </div>{' '}
-                          <ListarAsignaturas
-                            asignaturas={subjects}
-                            estanCargandoAsignaturas={subjectsAreLoading}
-                            seleccionarAsignatura={handleSubjectChange}
-                          />
-                          <div className='card-footer text-center'>
-                            <button
-                              disabled={!selectedCareerId || !selectedSubjectId}
-                              className='btn btn-primary'
-                            >
-                              Inscribirse
-                            </button>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                </div>
               </main>
             </div>
           </div>

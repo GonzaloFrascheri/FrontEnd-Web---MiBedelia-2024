@@ -1,7 +1,8 @@
 export default function ListarAsignaturas ({
   asignaturas,
   seleccionarAsignatura,
-  estanCargandoAsignaturas
+  estanCargandoAsignaturas,
+  asignaturaSeleccionada
 }) {
   return (
     <div className='card-body'>
@@ -15,6 +16,7 @@ export default function ListarAsignaturas ({
           id='listaDeAsignaturas'
           name='asignatura'
           required
+          value={asignaturaSeleccionada || ''}
           disabled={estanCargandoAsignaturas || asignaturas.length === 0}
         >
           {estanCargandoAsignaturas ? (
