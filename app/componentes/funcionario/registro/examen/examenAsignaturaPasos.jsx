@@ -3,8 +3,7 @@ import React, { useState, useEffect } from 'react';
 export default function ActaExamenPasos({ selectedCarreraId, selectedAsignaturaId }) {
     const [estado, setEstado] = useState({
         paso1: "step-item active",
-        paso2: "step-item",
-        paso3: "step-item"
+        paso2: "step-item"
     });
 
     useEffect(() => {
@@ -20,12 +19,6 @@ export default function ActaExamenPasos({ selectedCarreraId, selectedAsignaturaI
                 paso2: "step-item",
                 paso3: "step-item active"
             });
-        } else {
-            setEstado({
-                paso1: "step-item active",
-                paso2: "step-item",
-                paso3: "step-item"
-            });
         }
     }, [selectedCarreraId, selectedAsignaturaId]);
 
@@ -39,15 +32,7 @@ export default function ActaExamenPasos({ selectedCarreraId, selectedAsignaturaI
                     className={`step-item-link ${!selectedCarreraId ? 'disabled' : ''}`}
                     href="#!" aria-disabled="true"
                 >
-                    Elegir Asignatura
-                </a>
-            </div>
-            <div className={estado.paso3}>
-                <a
-                    className={`step-item-link ${!selectedAsignaturaId ? 'disabled' : ''}`}
-                    href="#!" aria-disabled="true"
-                >
-                    Confirmar
+                    Finalizar
                 </a>
             </div>
         </div>

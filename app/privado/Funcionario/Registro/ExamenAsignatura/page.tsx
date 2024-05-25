@@ -44,7 +44,7 @@ function FuncionarioExamenAsignatura() {
     const [formData, setFormData] = useState({
         idAsignatura: "",
         idPeriodo: "",
-        idDoncente: "",
+        idDocente: "",
         anioLectivo: hoy.getFullYear().toString(),
         fechaExamen: "",
     });
@@ -85,7 +85,7 @@ function FuncionarioExamenAsignatura() {
         setFormData({
             idAsignatura: "",
             idPeriodo: "",
-            idDoncente: "",
+            idDocente: "",
             anioLectivo: "",
             fechaExamen: "",
         });
