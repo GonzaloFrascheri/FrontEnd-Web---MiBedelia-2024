@@ -1,5 +1,5 @@
 'use client'
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "@/utils/axios";
 import storage from "@/utils/storage.js";
@@ -13,11 +13,11 @@ import ExamenAsignaturaPasos from "@/app/componentes/funcionario/registro/examen
 function FuncionarioExamenAsignatura() {
     
     const router = useRouter();
-    const token = storage.getToken();
     const breadcrumbs = ['privado', 'Funcionario', 'Registro', 'HorarioAsignatura'];
     const [data, setData] = useState('');
     const [listaCarrera, setListaCarrera] = useState([]);
     const [listaAsignatura, setListaAsignatura] = useState([]);
+    const [listaDocentes, setListaDocentes] = useState([]);
     const [selectedCarreraId, setSelectedCarreraId] = useState(null);
     const [selectedAsignaturaId, setSelectedAsignaturaId] = useState(null);
     const hoy = new Date();
@@ -25,29 +25,41 @@ function FuncionarioExamenAsignatura() {
         setSelectedCarreraId(id);
         setFormData({
             ...formData,
-            //carrera: id
         });
     }
+    // Este es el original
     const handleAsignaturaChange = (event) => {
         const selectedId = event.target.value;
-        setSelectedAsignaturaId(selectedId);
         setFormData({
             ...formData,
             idAsignatura: selectedId
         });
+        setSelectedAsignaturaId(selectedId);
     }
+    /*const handleAsignaturaChange = (event) => {
+        const selectedId = event.target.value;
+        const selectedAsignatura = listaAsignatura.find(asignatura => asignatura.id === selectedId);
+        if (selectedAsignatura) {
+            setFormData(prevState => ({
+                ...prevState,
+                idAsignatura: selectedId,
+                ciDocente: selectedAsignatura.ciDocente // Asumiendo que ciDocente es el atributo que contiene la CI del docente
+            }));
+            setSelectedAsignaturaId(selectedId);
+        }
+    }*/
+
     const [estado, setEstado] = useState({
         message: "",
         estado: ""
     });
    
     const [formData, setFormData] = useState({
-        //carrera: "",
-        gradoMateria: "",
         idAsignatura: "",
-        idDocente: "",
-        horainicio: "",
-        horafin: "",
+        ciDocente: "",
+        //diasDictados: "",
+        horarioInicio: "",
+        horarioFin: "",
     });
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -60,37 +72,36 @@ function FuncionarioExamenAsignatura() {
     
     const handleSubmit = async(e) => {
         e.preventDefault();
-
-        if (!token) {
-            storage.removeToken();  
-            router.push("/");
-          } else {
-            console.info(formData);
-
+        console.warn('formData', formData);
             try {
                 // envío datos al bk
                 const { data, status } = await axios.post('Funcionario/registroHorarioAsignatura', formData);
-                
-                if (status === 200) {
-                    setEstado({
-                        message: data.message,
-                        estado: data.estado
-                    });
-                }else{
-                    setEstado({
-                      message: data.message,
-                      estado: data.status
-                    });
-                  }
-              } catch (error) {
-                    setEstado({
-                        message: error.response ? error.response.data.message : 'Error al registrar el horario',
-                        estado: error.response ? error.response.status : 500
+                    if (status === 200) {
+                        setEstado({
+                            message: data.message,
+                            estado: data.estado
+                        });
+                    } else {
+                        setEstado({
+                            message: data.message,
+                            estado: data.status
+                        });
+                    }
+            }catch (error) {
+                setEstado({
+                    message: error.response ? error.response.data.message : 'Error al registrar el horario',
+                    estado: error.response ? error.response.status : 500
                 });
-
-                }   // Aquí puedes enviar los datos del formulario a tu backend o realizar cualquier otra acción necesaria
-                console.info("a enviar", formData);
-            };
+            }   
+            console.info("a enviar", formData);
+            // Limpia el formulario despues de enviar los datos
+            setFormData({
+                idAsignatura: "",
+                ciDocente: "",
+                //diasDictados: "",
+                horarioInicio: "",
+                horarioFin: "",
+            });
         };
     
     const [isSidebarToggled, setIsSidebarToggled] = useState(false);
@@ -110,7 +121,7 @@ function FuncionarioExamenAsignatura() {
     
         fetchListaCarreras();
     }, []); // El segundo argumento [] asegura que esto se ejecute solo una vez al montar el componente
-   
+    
     useEffect(() => {
         const fetchListaAsignaturas = async () => {
             try {
@@ -126,7 +137,17 @@ function FuncionarioExamenAsignatura() {
         fetchListaAsignaturas();
     }, [selectedCarreraId]);
 
-    
+    useEffect(() => {
+        const fetchListaDocentes = async () => {
+            try {
+                const response = await axios.get('Funcionario/listarDocentes');
+                setListaDocentes(response.data);
+            } catch (error) {
+                console.error('Error fetching listaDocentes:', error);
+            }
+        };
+        fetchListaDocentes();
+    }, []);
 
     return (
         <body className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}>
@@ -152,6 +173,8 @@ function FuncionarioExamenAsignatura() {
                                         handleAsignaturaChange={handleAsignaturaChange}
                                         handleChange={handleChange}
                                         handleSubmit={handleSubmit}
+                                        estado={estado}
+                                        listaDocentes={listaDocentes}
                                         formData={formData}
                                     />
                                 )}
