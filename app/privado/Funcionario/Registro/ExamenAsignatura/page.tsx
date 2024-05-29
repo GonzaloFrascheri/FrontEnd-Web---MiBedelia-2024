@@ -124,11 +124,8 @@ function FuncionarioExamenAsignatura() {
     useEffect(() => {
         const fetchListaAsignaturas = async () => {
             try {
-                //Funcionario/listarAsignaturaPaginado?idCarrera=1&page=1&pageSize=10
-                //const response = await axios.get('Funcionario/listarAsignatura?idCarrera=' + selectedCarreraId);
-                const response = await axios.get('Funcionario/listarAsignaturaPaginado?idCarrera=' + selectedCarreraId + '&page=1&pageSize=300');
-                setListaAsignatura(response.data.items);
-                //console.info("listaAsignatura", response.data.items);
+                const response = await axios.get('Funcionario/listarAsignatura?idCarrera=' + selectedCarreraId);
+                setListaAsignatura(response.data);
             } catch (error) {
                 console.error('Error fetching listaAsignatura:', error);
             }

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { GenerarPdfActaFinDeCurso } from "@/app/componentes/generadorPDF/actaFinDeCurso";
 
-export default function Index({ listaAsignatura, handleChangeAsignatura, selectedAsignaturaId}) {
+export default function Index({ listaAsignatura, handleChangeAsignatura, selectedAsignaturaId, examenDto}) {
 
+    const [error, setError] = useState(false);
     // Función para cargar la imagen y convertirla a base64
     console.log(selectedAsignaturaId);
     const loadImageAsBase64 = (url, callback) => {
@@ -48,8 +49,19 @@ export default function Index({ listaAsignatura, handleChangeAsignatura, selecte
                 ],
                 logo: logoBase64 // Imagen en base64
             };
-            PDFGenerador(datosPrueba);
+            if (!examenDto) {
+                console.error('examenDto es null');
+                setError(true);
+            } else {
+                console.info('examenDto', examenDto);
+                //PDFGenerador(datosPrueba);
+            }
         }
+    };
+
+    const handleChange = (event) => {
+        const selectedId = event.target.value;
+        handleChangeAsignatura(selectedId);
     };
 
     return (
@@ -68,8 +80,9 @@ export default function Index({ listaAsignatura, handleChangeAsignatura, selecte
                                 <select 
                                     className="form-control" 
                                     id="listaDeAsignaturas"
-                                    onChange={handleChangeAsignatura}
+                                    onChange={handleChange}
                                 >
+                                    <option value="" disabled selected>Seleccione una asignatura...</option>
                                     {listaAsignatura.length > 0 ? (
                                         listaAsignatura.map((Asignatura) => (
                                             <option key={Asignatura.id} value={Asignatura.id}>{Asignatura.nombre}</option>
@@ -79,6 +92,19 @@ export default function Index({ listaAsignatura, handleChangeAsignatura, selecte
                                     )}
                                 </select>
                             </div>
+                            {error && (
+                            <div className="mb-3">
+                                <div className={'alert alert-icon alert-primary'} role="alert">                                
+                                    <div className="alert-icon-aside">
+                                        <i className="far fa-flag"></i>
+                                    </div>
+                                    <div className="alert-icon-content">
+                                        <h6 className="alert-heading">Resultado</h6>
+                                        <p className="mb-0">Aún no se ha generado el Acta para el exámen seleccioando.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            )}
                             <div className="mb-3">
                                 <button 
                                     className="btn btn-primary" 
