@@ -14,12 +14,21 @@ export function GenerarPdfActaFinDeCurso() {
         // Cargar y agregar el logo
         const imgWidth = 25; // Ancho deseado para el logo
         const imgHeight = 25; // Alto deseado para el logo
-        const imgX = (doc.internal.pageSize.getWidth() - imgWidth) / 2; // Centrar horizontalmente
+        const imgX = doc.internal.pageSize.getWidth() - imgWidth - 10; // Posición a la derecha
         const imgY = 10; // Posición vertical del logo
-      
+
         doc.addImage(logo, 'PNG', imgX, imgY, imgWidth, imgHeight);
-      
-        // Título en fuente más grande y en negrita, color azul y subrayado
+
+        // Título y subtítulo en la parte izquierda
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(16);
+        doc.text('Sistema de gestión online de cursos y escolaridades', 10, imgY + 10);
+
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'normal');
+        doc.text('FIng - UDELAR - CETP - Proyecto 2024', 10, imgY + 20);
+
+        // Título principal en fuente más grande y en negrita, color azul y subrayado
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(20);
         doc.setTextColor(0, 0, 255); // Color azul
