@@ -71,9 +71,7 @@ export default function Index() {
     useEffect(() => {
         const fetchListaExamenDto = async () => {
             try {
-                console.info('selectedAsignaturaId', selectedExamenId)
                 const response = await axios.get('Funcionario/generarActaExamen?idExamen=' + selectedExamenId);
-                console.info('response.data', response.data);
                 setExamenDto(response.data);
             } catch (error) {
                 console.error('Error fetching listaAsignatura:', error);

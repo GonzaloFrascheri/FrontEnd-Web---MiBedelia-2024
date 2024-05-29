@@ -5,7 +5,6 @@ export default function Index({ listaAsignatura, handleChangeAsignatura, selecte
 
     const [error, setError] = useState(false);
     // Función para cargar la imagen y convertirla a base64
-    console.log(selectedAsignaturaId);
     const loadImageAsBase64 = (url, callback) => {
         const xhr = new XMLHttpRequest();
         xhr.onload = function() {

@@ -30,7 +30,6 @@ export default function Index() {
     };
 
     const handleChangeAsignatura = (id) => {
-        console.info('handleChangeAsignatura', id);
         setSelectedAsignaturaId(id);
     }
 
@@ -66,7 +65,6 @@ export default function Index() {
         const fetchListaFinDeCursoDto = async () => {
             try {
                 const response = await axios.get('Funcionario/generarActa?idAsignatura=' + selectedAsignaturaId);
-                console.info('response.data', response.data);
                 setFinDeCursoDto(response.data);
             } catch (error) {
                 console.error('Error fetching listaAsignatura:', error);

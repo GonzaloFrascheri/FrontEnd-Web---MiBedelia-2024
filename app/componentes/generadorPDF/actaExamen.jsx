@@ -12,21 +12,29 @@ export function GenerarPdfActaExamen() {
         const doc = new jsPDF();
 
         // Cargar y agregar el logo
-        const imgWidth = 50; // Ancho deseado para el logo
-        const imgHeight = 50; // Alto deseado para el logo
+        const imgWidth = 25; // Ancho deseado para el logo
+        const imgHeight = 25; // Alto deseado para el logo
         const imgX = (doc.internal.pageSize.getWidth() - imgWidth) / 2; // Centrar horizontalmente
         const imgY = 10; // Posición vertical del logo
 
         doc.addImage(logo, 'PNG', imgX, imgY, imgWidth, imgHeight);
 
-        // Título en fuente más grande y en negrita
+        // Título en fuente más grande y en negrita, color azul y subrayado
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(20);
+        doc.setTextColor(0, 0, 255); // Color azul
         doc.text('Acta de Examen', 105, imgY + imgHeight + 10, null, null, 'center');
+
+        // Añadir subrayado al título
+        const textWidth = doc.getTextWidth('Acta de Fin de Curso');
+        const startX = 105 - textWidth / 2;
+        doc.setDrawColor(0, 0, 255); // Color azul
+        doc.line(startX, imgY + imgHeight + 12, startX + textWidth, imgY + imgHeight + 12); // Línea subrayada
 
         // Subtítulos en negrita
         doc.setFontSize(12);
         doc.setFont('helvetica', 'bold');
+        doc.setTextColor(0, 0, 0); // Color negro para los subtítulos
 
         // Información del encabezado en forma de tabla
         doc.autoTable({
