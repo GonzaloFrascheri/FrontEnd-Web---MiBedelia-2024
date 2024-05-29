@@ -19,7 +19,7 @@ export default function Index() {
     const [listaAsignatura, setListaAsignatura] = useState([]);
     const [selectedCarreraId, setSelectedCarreraId] = useState(null);
     const [selectedAsignaturaId, setSelectedAsignaturaId] = useState(null);
-    const [examenDto, setExamenDto] = useState([]);
+    const [finDeCursoDto, setFinDeCursoDto] = useState([]);
 
     const toggleSidebar = () => {
         setIsSidebarToggled(!isSidebarToggled);
@@ -61,19 +61,18 @@ export default function Index() {
         fetchListaAsignatura();
     }, [selectedCarreraId]);
 
-    // Fetch examenDto
+    // Fetch FinDeCursoDto
     useEffect(() => {
-        const fetchListaExamenDto = async () => {
+        const fetchListaFinDeCursoDto = async () => {
             try {
-                console.info('selectedAsignaturaId', selectedAsignaturaId)
                 const response = await axios.get('Funcionario/generarActa?idAsignatura=' + selectedAsignaturaId);
                 console.info('response.data', response.data);
-                setExamenDto(response.data);
+                setFinDeCursoDto(response.data);
             } catch (error) {
                 console.error('Error fetching listaAsignatura:', error);
             }
         };
-        fetchListaExamenDto();
+        fetchListaFinDeCursoDto();
     }, [selectedAsignaturaId]);
 
     return (
@@ -92,7 +91,7 @@ export default function Index() {
                                 {selectedCarreraId === null ? (
                                     <ActaFinDeCursoListCarrera listaCarrera={listaCarrera} onCarreraChange={handleCarreraChange} />
                                 ) : (
-                                    <ActaFinDeCursoListAsignatura listaAsignatura={listaAsignatura} handleChangeAsignatura={handleChangeAsignatura} selectedAsignaturaId={selectedAsignaturaId} ExamenDto={examenDto} />
+                                    <ActaFinDeCursoListAsignatura listaAsignatura={listaAsignatura} handleChangeAsignatura={handleChangeAsignatura} selectedAsignaturaId={selectedAsignaturaId} FinDeCursoDto={finDeCursoDto} />
                                 )}
                             </main>
                         </div>
