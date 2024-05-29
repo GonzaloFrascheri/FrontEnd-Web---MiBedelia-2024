@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { GenerarPdfActaExamen } from "@/app/componentes/generadorPDF/actaExamen";
 
-export default function Index({ listaExamen, handleChangeExamen, selectedExamenId}) {
+export default function Index({ listaExamen, handleChangeExamen, selectedExamenId, ExamenDto}) {
 
+    const [error, setError] = useState(false);
     // Función para cargar la imagen y convertirla a base64
     const loadImageAsBase64 = (url, callback) => {
         const xhr = new XMLHttpRequest();
@@ -32,26 +33,29 @@ export default function Index({ listaExamen, handleChangeExamen, selectedExamenI
 
     const generarPDF = () => {
         if (logoBase64) {
-            const datosPrueba = {
-                examen: {
-                    nombre: "Matemáticas II"
-                },
-                docente: {
-                    nombre: "Juan",
-                    apellido: "Pérez"
-                },
-                fecha: "2024-05-20",
-                hora: "10:00 AM",
-                aula: "101",
-                estudiantes: [
-                    { nombre: "Carlos", apellido: "García" },
-                    { nombre: "María", apellido: "Rodríguez" },
-                    { nombre: "Ana", apellido: "Martínez" }
-                ],
-                logo: logoBase64 // Imagen en base64
-            };
-            PDFGenerador(datosPrueba);
+            if (!ExamenDto) {
+                console.error('ExamenDto es null');
+                setError(true);
+            } else {
+                const fecha = new Date(ExamenDto.fechaExamen);
+                const datosPrueba = {
+                    examen: ExamenDto.nombreAsignatura,
+                    docente: ExamenDto.nombreDocente,
+                    fecha: fecha.toISOString().split('T')[0],
+                    año: ExamenDto.anioLectivo,
+                    hora: "__:__",
+                    aula: "___",
+                    estudiantes: ExamenDto.estudiantes,
+                    logo: logoBase64 // Imagen en base64
+                };
+                PDFGenerador(datosPrueba);
+            }
         }
+    };
+
+    const handleChange = (event) => {
+        const selectedId = event.target.value;
+        handleChangeExamen(selectedId);
     };
 
     return (
@@ -70,8 +74,9 @@ export default function Index({ listaExamen, handleChangeExamen, selectedExamenI
                                 <select 
                                     className="form-control" 
                                     id="listaDeExamenes"
-                                    onChange={handleChangeExamen}
+                                    onChange={handleChange}
                                 >
+                                    <option value="" disabled selected>Seleccione un examen...</option>
                                     {listaExamen.length > 0 ? (
                                         listaExamen.map((examen) => (
                                             <option key={examen.id} value={examen.id}>{examen.nombre}</option>
@@ -81,6 +86,19 @@ export default function Index({ listaExamen, handleChangeExamen, selectedExamenI
                                     )}
                                 </select>
                             </div>
+                            {error && (
+                            <div className="mb-3">
+                                <div className={'alert alert-icon alert-primary'} role="alert">                                
+                                    <div className="alert-icon-aside">
+                                        <i className="far fa-flag"></i>
+                                    </div>
+                                    <div className="alert-icon-content">
+                                        <h6 className="alert-heading">Resultado</h6>
+                                        <p className="mb-0">Aún no se ha generado el Acta para el exámen seleccioando.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            )}
                             <div className="mb-3">
                                 <button 
                                     className="btn btn-primary" 

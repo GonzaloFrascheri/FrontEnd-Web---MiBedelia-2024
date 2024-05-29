@@ -19,6 +19,7 @@ export default function Index() {
     const [selectedCarreraId, setSelectedCarreraId] = useState(null);
     const [listaExamen, setListaExamen] = useState([]);
     const [selectedExamenId, setSelectedExamenId] = useState(null);
+    const [examenDto, setExamenDto] = useState([]);
 
     const toggleSidebar = () => {
         setIsSidebarToggled(!isSidebarToggled);
@@ -32,54 +33,54 @@ export default function Index() {
         setSelectedExamenId(id);
     }
 
+    // Fetch lista de carreras
+    useEffect(() => {
+        const fetchListaCarreras = async () => {
+            try {
+                const response = await axios.get('Funcionario/listarCarrera');
+                setListaCarrera(response.data);
+            } catch (error) {
+                console.error('Error fetching listaCarreras:', error);
+            }
+        };
+
+        fetchListaCarreras();
+    }, []);
+
+    // Fetch lista de examenes
     useEffect(() => {
         const fetchListaExamenes = async () => {
             try {
-                const response = await axios.get('/listaExamenes', {
-                    params: {
-                        carreraId: selectedCarreraId
-                    }
-                });
+                const response = await axios.get('funcionario/listaExamenes?idCarrera=' + selectedCarreraId);
                 setListaExamen(response.data);
             } catch (error) {
                 // Simulando la respuesta del servidor con una lista de Examenes
                 const simulatedResponse = [
-                    { id: 0, nombre: 'Elegir una' },
                     { id: 1, nombre: 'Examen #1' },
                     { id: 2, nombre: 'Examen #2' },
                     { id: 3, nombre: 'Examen #3' },
-                    { id: 4, nombre: 'Examen #4' },
-                    { id: 5, nombre: 'Examen #5' },
                 ];
                 setListaExamen(simulatedResponse);
                 console.error('Error fetching listaExamenes:', error);
             }
         };
         fetchListaExamenes();
-    }, []);
+    }, [selectedCarreraId]);
 
+    // Fetch examenDto
     useEffect(() => {
-        const fetchListaCarreras = async () => {
+        const fetchListaExamenDto = async () => {
             try {
-                const response = await axios.get('/listaCarreras');
-                setListaCarrera(response.data);
+                console.info('selectedAsignaturaId', selectedExamenId)
+                const response = await axios.get('Funcionario/generarActaExamen?idExamen=' + selectedExamenId);
+                console.info('response.data', response.data);
+                setExamenDto(response.data);
             } catch (error) {
-                // Simulando la respuesta del servidor con una lista de carreras
-                const simulatedResponse = [
-                    { id: 0, nombre: 'Elegir una' },
-                    { id: 1, nombre: 'Carrera #1' },
-                    { id: 2, nombre: 'Carrera #2' },
-                    { id: 3, nombre: 'Carrera #3' },
-                    { id: 4, nombre: 'Carrera #4' },
-                    { id: 5, nombre: 'Carrera #5' },
-                ];
-                setListaCarrera(simulatedResponse);
-                console.error('Error fetching listaCarreras:', error);
+                console.error('Error fetching listaAsignatura:', error);
             }
         };
-
-        fetchListaCarreras();
-    }, []); // El segundo argumento [] asegura que esto se ejecute solo una vez al montar el componente
+        fetchListaExamenDto();
+    }, [selectedExamenId]);
 
     return (
         <body className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}>
@@ -97,7 +98,7 @@ export default function Index() {
                                 {selectedCarreraId === null ? (
                                     <ActaExamenListCarrera listaCarrera={listaCarrera} onCarreraChange={handleCarreraChange} />
                                 ) : (
-                                    <ActaExamenListExamen listaExamen={listaExamen} handleChangeExamen={handleChangeExamen} selectedExamenId={selectedExamenId} />
+                                    <ActaExamenListExamen listaExamen={listaExamen} handleChangeExamen={handleChangeExamen} selectedExamenId={selectedExamenId} ExamenDto={examenDto} />
                                 )}
                             </main>
                         </div>

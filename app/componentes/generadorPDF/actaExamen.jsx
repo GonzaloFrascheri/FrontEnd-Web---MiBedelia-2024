@@ -1,12 +1,13 @@
 'use client';
 import jsPDF from "jspdf";
+import 'jspdf-autotable';
 
 export function GenerarPdfActaExamen() {
 
 
     const PDFGenerador = (tmp) => {
 
-        const { examen, docente, fecha, hora, aula, estudiantes, logo } = tmp;
+        const { examen, docente, fecha, año, hora, aula, estudiantes, logo } = tmp;
 
         const doc = new jsPDF();
 
@@ -26,26 +27,48 @@ export function GenerarPdfActaExamen() {
         // Subtítulos en negrita
         doc.setFontSize(12);
         doc.setFont('helvetica', 'bold');
-        doc.text(`Examen: ${examen.nombre}`, 50, imgY + imgHeight + 20, null, null, 'center');
-        doc.text(`Docente: ${docente.nombre} ${docente.apellido}`, 120, imgY + imgHeight + 20);
 
-        // Detalles del examen con fuente normal
-        doc.setFont('helvetica', 'normal');
-        doc.text(`Fecha: ${fecha}`, 10, imgY + imgHeight + 30);
-        doc.text(`Hora: ${hora}`, 80, imgY + imgHeight + 30);
-        doc.text(`Aula: ${aula}`, 145, imgY + imgHeight + 30);
-
-        // Subtítulo para la lista de estudiantes en negrita
-        doc.setFont('helvetica', 'bold');
-        doc.text(`## - Estudiantes:`, 10, imgY + imgHeight + 40);
-
-        // Lista de estudiantes con fuente normal
-        doc.setFont('helvetica', 'normal');
-        estudiantes.forEach((estudiante, index) => {
-            doc.text(`${index + 1} - ${estudiante.nombre} ${estudiante.apellido}`, 10, imgY + imgHeight + 50 + index * 10);
+        // Información del encabezado en forma de tabla
+        doc.autoTable({
+            startY: imgY + imgHeight + 20,
+            head: [['Examen', 'Docente', 'Fecha', 'Año Lectivo', 'Hora', 'Aula']],
+            body: [[examen, docente, fecha, año, hora, aula]],
+            theme: 'grid',
+            headStyles: { fillColor: [200, 200, 200] }, // color de fondo para los títulos
+            styles: { halign: 'center' },
         });
 
-        doc.save("acta-examen.pdf");
+        // Posicionar la tabla de estudiantes después de la tabla de encabezado
+        const startY = doc.autoTable.previous.finalY + 10;
+
+        if (estudiantes.length === 0) {
+            // Añadir mensaje si no hay estudiantes
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(12);
+            doc.text('No hay estudiantes registrados para esta asignatura.', 14, startY);
+        } else {
+            // Crear la tabla de estudiantes
+            doc.autoTable({
+                startY: startY, // posición Y inicial para la tabla
+                head: [['#', 'Nombre', 'Apellido', 'CI', 'Teléfono', 'Email']], // títulos de las columnas
+                body: estudiantes.map((estudiante, index) => [
+                    index + 1,
+                    estudiante.nombre,
+                    estudiante.apellido,
+                    estudiante.ci,
+                    estudiante.telefono,
+                    estudiante.email,
+                ]), // datos de los estudiantes
+                styles: { fillColor: [255, 255, 255] }, // color de fondo blanco por defecto
+                alternateRowStyles: { fillColor: [240, 240, 240] }, // color de fondo alterno
+                headStyles: { fillColor: [200, 200, 200] }, // color de fondo para los títulos
+            });
+        }
+
+        // Mostrar el PDF en una nueva pestaña del navegador
+        const pdfBlob = doc.output("blob");
+        const pdfUrl = URL.createObjectURL(pdfBlob);
+        window.open(pdfUrl);
 
     };
 
