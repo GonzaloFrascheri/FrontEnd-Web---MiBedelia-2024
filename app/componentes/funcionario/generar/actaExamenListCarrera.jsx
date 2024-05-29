@@ -21,6 +21,7 @@ export default function Index({ listaCarrera, onCarreraChange }) {
                                     id="listaDeCarrera"
                                     onChange={handleChange}
                                 >
+                                    <option value="" disabled selected>Seleccione una carrera...</option>
                                     {listaCarrera.length > 0 ? (
                                         listaCarrera.map((carrera) => (
                                             <option key={carrera.id} value={carrera.id}>{carrera.nombre}</option>

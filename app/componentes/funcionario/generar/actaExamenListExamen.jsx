@@ -72,6 +72,7 @@ export default function Index({ listaExamen, handleChangeExamen, selectedExamenI
                                     id="listaDeExamenes"
                                     onChange={handleChangeExamen}
                                 >
+                                    <option value="" disabled selected>Seleccione un examen...</option>
                                     {listaExamen.length > 0 ? (
                                         listaExamen.map((examen) => (
                                             <option key={examen.id} value={examen.id}>{examen.nombre}</option>
