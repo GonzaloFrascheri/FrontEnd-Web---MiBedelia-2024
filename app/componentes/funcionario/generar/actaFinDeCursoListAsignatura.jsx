@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { GenerarPdfActaFinDeCurso } from "@/app/componentes/generadorPDF/actaFinDeCurso";
 
-export default function Index({ listaAsignatura, handleChangeAsignatura, selectedAsignaturaId, ExamenDto}) {
+export default function Index({ listaAsignatura, handleChangeAsignatura, selectedAsignaturaId, FinDeCursoDto}) {
 
     const [error, setError] = useState(false);
     // Función para cargar la imagen y convertirla a base64
@@ -34,21 +34,21 @@ export default function Index({ listaAsignatura, handleChangeAsignatura, selecte
 
     const generarPDF = () => {
         if (logoBase64) {
-            if (!ExamenDto) {
-                console.error('ExamenDto es null');
+            if (!FinDeCursoDto) {
+                console.error('FinDeCursoDto es null');
                 setError(true);
             } else {
-                const fecha = new Date(ExamenDto.fechaExamen);
+                const fecha = new Date(FinDeCursoDto.fechaExamen);
                 const datosPrueba = {
-                    asignatura: ExamenDto.nombreAsignatura,
-                    semestre: ExamenDto.semestre,
+                    asignatura: FinDeCursoDto.nombreAsignatura,
+                    semestre: FinDeCursoDto.semestre,
                     //fechaExamen: fecha.toISOString().split('T')[0],
-                    año: ExamenDto.anioLectivo,
+                    año: FinDeCursoDto.anioLectivo,
                     docente: {
-                        nombre: ExamenDto.nombreDocente,
+                        nombre: FinDeCursoDto.nombreDocente,
                     },
                     estudiantes: 
-                        ExamenDto.estudiantes,
+                        FinDeCursoDto.estudiantes,
                     logo: logoBase64 // Imagen en base64
                 };
                 PDFGenerador(datosPrueba);
