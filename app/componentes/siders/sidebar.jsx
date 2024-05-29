@@ -83,6 +83,7 @@ export default function Sidebar({ isSidebarToggled }) {
                     <nav className="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
                         <a className="nav-link" href="/privado/Coordinador/Carrera/Alta">Alta Carrera</a>
                         <a className="nav-link" href="/privado/Coordinador/Asignatura/Alta">Alta Asignatura</a>
+                        <a className="nav-link" href="/privado/Coordinador/Asignatura/Listar">Listar asignaturas por carreras</a>
                     </nav>
                 </div>
               </>
