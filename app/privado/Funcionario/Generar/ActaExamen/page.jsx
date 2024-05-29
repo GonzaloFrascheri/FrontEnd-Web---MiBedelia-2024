@@ -98,7 +98,7 @@ export default function Index() {
                                 {selectedCarreraId === null ? (
                                     <ActaExamenListCarrera listaCarrera={listaCarrera} onCarreraChange={handleCarreraChange} />
                                 ) : (
-                                    <ActaExamenListExamen listaExamen={listaExamen} handleChangeExamen={handleChangeExamen} selectedExamenId={selectedExamenId} />
+                                    <ActaExamenListExamen listaExamen={listaExamen} handleChangeExamen={handleChangeExamen} selectedExamenId={selectedExamenId} ExamenDto={examenDto} />
                                 )}
                             </main>
                         </div>
