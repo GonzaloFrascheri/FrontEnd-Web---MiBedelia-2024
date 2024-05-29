@@ -6,7 +6,8 @@ export default function Index ({
   examenes,
   estanCargandoExamenes,
   seleccionarExamen,
-  examenSeleccionado
+  examenSeleccionado,
+  resetearForm
 }) {
   return (
     <div className='container-xl px-4 mt-n10'>
@@ -19,6 +20,7 @@ export default function Index ({
                   <h3 className='fw-light'>Inscripción a Exámen</h3>
                 </div>
                 <ListarExamenes
+                  examenSeleccionado={examenSeleccionado}
                   seleccionarExamen={seleccionarExamen}
                   estanCargandoExamenes={estanCargandoExamenes}
                   examenes={examenes}
@@ -37,17 +39,11 @@ export default function Index ({
           ) : (
             <div>
               <div
-                className={
-                  'alert alert-icon ${estado.estado === 200 ? "alert-primary" : "alert-secondary"}'
-                }
+                className={`alert alert-icon ${
+                  estado.estado === 200 ? 'alert-success' : 'alert-danger'
+                }`}
                 role='alert'
               >
-                <button
-                  className='btn-close'
-                  type='button'
-                  data-bs-dismiss='alert'
-                  aria-label='Close'
-                ></button>
                 <div className='alert-icon-aside'>
                   <i className='far fa-flag'></i>
                 </div>
@@ -58,7 +54,13 @@ export default function Index ({
               </div>
               <div className='card-footer text-center'>
                 <div className='small'>
-                  <a href='/privado'>Volver al inicio</a>
+                  <a
+                    style={{ cursor: 'pointer' }}
+                    className='link-primary'
+                    onClick={resetearForm}
+                  >
+                    Reintentar
+                  </a>
                 </div>
               </div>
             </div>

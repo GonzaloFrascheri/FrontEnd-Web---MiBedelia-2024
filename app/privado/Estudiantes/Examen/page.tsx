@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import NavPrivado from "@/app/componentes/navs/nav-privado";
 import Sidebar from "@/app/componentes/siders/sidebar";
@@ -47,8 +46,25 @@ function EstudianteInscripcionExamen() {
   }, [router, pathname]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    // Make request
+    try {
+      e.preventDefault();
+      const response = await axios.post(
+        `/Estudiante/inscripcionExamen?examenId=${selectedExam}&estudianteId=${userData.id}`
+      );
+      const { status, data } = response;
+
+      setEstado({
+        message: data.message,
+        estado: status.toString(10),
+      });
+    } catch (error) {
+      setEstado({
+        message: error.response
+          ? error.response.data.message
+          : "Error al inscribirse al examen",
+        estado: error.response ? error.response.status : 500,
+      });
+    }
   };
 
   const [isSidebarToggled, setIsSidebarToggled] = useState(false);
@@ -58,6 +74,16 @@ function EstudianteInscripcionExamen() {
 
   const onExamChange = (e) => {
     setSelectedExam(e.target.value);
+  };
+
+  // If failed, reset form status
+  const resetFormStatus = () => {
+    setEstado({
+      message: "",
+      estado: "",
+    });
+    setSelectedExam("");
+    setExams((prevState) => [...prevState]);
   };
 
   return (
@@ -78,6 +104,7 @@ function EstudianteInscripcionExamen() {
               <main>
                 <HeaderPagePrivado breadcrumbs={breadcrumbs} />
                 <InscripcionExamen
+                  resetearForm={resetFormStatus}
                   examenSeleccionado={selectedExam}
                   estanCargandoExamenes={examsAreLoading}
                   examenes={exams}

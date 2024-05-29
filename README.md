@@ -1,4 +1,4 @@
-# swagger
+# Swagger
 https://mibedelia-backend-production.up.railway.app/doc/swagger-ui/index.html#/
 
 ## Tareas - Casos de uso críticos 
@@ -16,7 +16,7 @@ https://mibedelia-backend-production.up.railway.app/doc/swagger-ui/index.html#/
   - Inscripción a una carrera	<img src="https://img.shields.io/badge/Front-Hecho-successs"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
   - Inscripción a una asignatura <img src="https://img.shields.io/badge/Front-Hecho-success">	
   <img src="https://img.shields.io/badge/BackEnd-Hecho-success">
-  - Inscripción a un examen <img src="https://img.shields.io/badge/Front-EnProceso-yellow">	
+  - Inscripción a un examen <img src="https://img.shields.io/badge/Front-Hecho-success">	
   <img src="https://img.shields.io/badge/BackEnd-Hecho-success">
   
 - Funcionario	
@@ -28,7 +28,7 @@ https://mibedelia-backend-production.up.railway.app/doc/swagger-ui/index.html#/
   - Alta docente	<img src="https://img.shields.io/badge/Front-Hecho-successs"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 
 
-# INSTALCION DEL FRONTEND
+# INSTALACIÓN DEL FRONTEND
 ```bash
 # instalar next
 npm i next
@@ -52,7 +52,7 @@ npm run
 npm run dev
 ```
 
-# INSTALACION DE DEPENDENCIAS
+# INSTALACIÓN DE DEPENDENCIAS
 ```bash
 ### instalar dependencias faltantes
 npm i @
@@ -72,7 +72,7 @@ npm install react-data-table-component
 npm install react-datepicker date-fns
 ```
 
-# INSTALACION DE DEPENDENCIAS PARA GRAFOS
+# INSTALACIÓN DE DEPENDENCIAS PARA GRAFOS
 ```bash
 # ejemplos
 # https://visjs.github.io/vis-network/examples/

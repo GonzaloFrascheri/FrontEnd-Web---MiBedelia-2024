@@ -1,7 +1,8 @@
 export default function ListarExamenes ({
   examenes,
   seleccionarExamen,
-  estanCargandoExamenes
+  estanCargandoExamenes,
+  examenSeleccionado
 }) {
   return (
     <div className='card-body'>
@@ -16,6 +17,7 @@ export default function ListarExamenes ({
           name='examen'
           required
           disabled={estanCargandoExamenes || examenes.length === 0}
+          value={examenSeleccionado || ''}
         >
           {estanCargandoExamenes ? (
             <option>Cargando exámenes...</option>
@@ -26,7 +28,7 @@ export default function ListarExamenes ({
               </option>
               {examenes.map(examen => (
                 <option key={examen.id} value={examen.id}>
-                  {examen.nombre}
+                  {examen.nombreAsignatura}
                 </option>
               ))}
             </>
