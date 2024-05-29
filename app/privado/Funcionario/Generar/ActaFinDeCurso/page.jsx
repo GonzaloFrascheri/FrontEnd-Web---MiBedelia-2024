@@ -16,9 +16,10 @@ export default function Index() {
     const [data, setData] = useState('');
     const [isSidebarToggled, setIsSidebarToggled] = useState(false);
     const [listaCarrera, setListaCarrera] = useState([]);
-    const [selectedCarreraId, setSelectedCarreraId] = useState(null);
     const [listaAsignatura, setListaAsignatura] = useState([]);
+    const [selectedCarreraId, setSelectedCarreraId] = useState(null);
     const [selectedAsignaturaId, setSelectedAsignaturaId] = useState(null);
+    const [examenDto, setExamenDto] = useState([]);
 
     const toggleSidebar = () => {
         setIsSidebarToggled(!isSidebarToggled);
@@ -29,57 +30,51 @@ export default function Index() {
     };
 
     const handleChangeAsignatura = (id) => {
+        console.info('handleChangeAsignatura', id);
         setSelectedAsignaturaId(id);
     }
 
-    useEffect(() => {
-        const fetchListaAsignatura = async () => {
-            try {
-                const response = await axios.get('/listaAsignatura', {
-                    params: {
-                        carreraId: selectedCarreraId
-                    }
-                });
-                setListaAsignatura(response.data);
-            } catch (error) {
-                // Simulando la respuesta del servidor con una lista de Asignatura
-                const simulatedResponse = [
-                    { id: 0, nombre: 'Elegir una' },
-                    { id: 1, nombre: 'Asignatura #1' },
-                    { id: 2, nombre: 'Asignatura #2' },
-                    { id: 3, nombre: 'Asignatura #3' },
-                    { id: 4, nombre: 'Asignatura #4' },
-                    { id: 5, nombre: 'Asignatura #5' },
-                ];
-                setListaAsignatura(simulatedResponse);
-                console.error('Error fetching listaAsignatura:', error);
-            }
-        };
-        fetchListaAsignatura();
-    }, []);
-
+    // Fetch lista de carreras
     useEffect(() => {
         const fetchListaCarreras = async () => {
             try {
-                const response = await axios.get('/listaCarreras');
+                const response = await axios.get('Funcionario/listarCarrera');
                 setListaCarrera(response.data);
             } catch (error) {
-                // Simulando la respuesta del servidor con una lista de carreras
-                const simulatedResponse = [
-                    { id: 0, nombre: 'Elegir una' },
-                    { id: 1, nombre: 'Carrera #1' },
-                    { id: 2, nombre: 'Carrera #2' },
-                    { id: 3, nombre: 'Carrera #3' },
-                    { id: 4, nombre: 'Carrera #4' },
-                    { id: 5, nombre: 'Carrera #5' },
-                ];
-                setListaCarrera(simulatedResponse);
                 console.error('Error fetching listaCarreras:', error);
             }
         };
 
         fetchListaCarreras();
-    }, []); // El segundo argumento [] asegura que esto se ejecute solo una vez al montar el componente
+    }, []);
+
+    // Fetch lista de asignaturas
+    useEffect(() => {
+        const fetchListaAsignatura = async () => {
+            try {
+                const response = await axios.get('Funcionario/listarAsignatura?idCarrera=' + selectedCarreraId);
+                setListaAsignatura(response.data);
+            } catch (error) {
+                console.error('Error fetching listaAsignatura:', error);
+            }
+        };
+        fetchListaAsignatura();
+    }, [selectedCarreraId]);
+
+    // Fetch examenDto
+    useEffect(() => {
+        const fetchListaExamenDto = async () => {
+            try {
+                console.info('selectedAsignaturaId', selectedAsignaturaId)
+                const response = await axios.get('Funcionario/generarActa?idAsignatura=' + selectedAsignaturaId);
+                console.info('response.data', response.data);
+                setExamenDto(response.data);
+            } catch (error) {
+                console.error('Error fetching listaAsignatura:', error);
+            }
+        };
+        fetchListaExamenDto();
+    }, [selectedAsignaturaId]);
 
     return (
         <body className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}>
@@ -97,7 +92,7 @@ export default function Index() {
                                 {selectedCarreraId === null ? (
                                     <ActaFinDeCursoListCarrera listaCarrera={listaCarrera} onCarreraChange={handleCarreraChange} />
                                 ) : (
-                                    <ActaFinDeCursoListAsignatura listaAsignatura={listaAsignatura} handleChangeAsignatura={handleChangeAsignatura} selectedAsignaturaId={selectedAsignaturaId} />
+                                    <ActaFinDeCursoListAsignatura listaAsignatura={listaAsignatura} handleChangeAsignatura={handleChangeAsignatura} selectedAsignaturaId={selectedAsignaturaId} ExamenDto={examenDto} />
                                 )}
                             </main>
                         </div>

@@ -66,6 +66,7 @@ npm i react-native-vector-icons
 npm i react-native-elements
 # dependencia para crear pdf
 npm install jspdf
+npm install jspdf jspdf-autotable
 # instalar simple-table
 npm install react-data-table-component
 # instalar dependencia para manipular el calendario
