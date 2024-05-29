@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { GenerarPdfActaFinDeCurso } from "@/app/componentes/generadorPDF/actaFinDeCurso";
 
-export default function Index({ listaAsignatura, handleChangeAsignatura, selectedAsignaturaId, examenDto}) {
+export default function Index({ listaAsignatura, handleChangeAsignatura, selectedAsignaturaId, ExamenDto}) {
 
     const [error, setError] = useState(false);
     // Función para cargar la imagen y convertirla a base64
@@ -34,27 +34,24 @@ export default function Index({ listaAsignatura, handleChangeAsignatura, selecte
 
     const generarPDF = () => {
         if (logoBase64) {
-            const datosPrueba = {
-                asignatura: "Matemáticas II",
-                semestre: "Impar",
-                año: "2024",
-                docente: {
-                    nombre: "Juan",
-                    apellido: "Pérez"
-                },
-                estudiantes: [
-                    { nombre: "Carlos", apellido: "García" },
-                    { nombre: "María", apellido: "Rodríguez" },
-                    { nombre: "Ana", apellido: "Martínez" }
-                ],
-                logo: logoBase64 // Imagen en base64
-            };
-            if (!examenDto) {
-                console.error('examenDto es null');
+            if (!ExamenDto) {
+                console.error('ExamenDto es null');
                 setError(true);
             } else {
-                console.info('examenDto', examenDto);
-                //PDFGenerador(datosPrueba);
+                const fecha = new Date(ExamenDto.fechaExamen);
+                const datosPrueba = {
+                    asignatura: ExamenDto.nombreAsignatura,
+                    semestre: ExamenDto.semestre,
+                    //fechaExamen: fecha.toISOString().split('T')[0],
+                    año: ExamenDto.anioLectivo,
+                    docente: {
+                        nombre: ExamenDto.nombreDocente,
+                    },
+                    estudiantes: 
+                        ExamenDto.estudiantes,
+                    logo: logoBase64 // Imagen en base64
+                };
+                PDFGenerador(datosPrueba);
             }
         }
     };

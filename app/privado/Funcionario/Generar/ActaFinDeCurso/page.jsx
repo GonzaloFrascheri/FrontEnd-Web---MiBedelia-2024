@@ -34,6 +34,7 @@ export default function Index() {
         setSelectedAsignaturaId(id);
     }
 
+    // Fetch lista de carreras
     useEffect(() => {
         const fetchListaCarreras = async () => {
             try {
@@ -47,6 +48,7 @@ export default function Index() {
         fetchListaCarreras();
     }, []);
 
+    // Fetch lista de asignaturas
     useEffect(() => {
         const fetchListaAsignatura = async () => {
             try {
@@ -59,17 +61,19 @@ export default function Index() {
         fetchListaAsignatura();
     }, [selectedCarreraId]);
 
+    // Fetch examenDto
     useEffect(() => {
-        const fetchListaAsignatura = async () => {
+        const fetchListaExamenDto = async () => {
             try {
                 console.info('selectedAsignaturaId', selectedAsignaturaId)
-                const response = await axios.get('Funcionario/generarActaExamen?idExamen=' + selectedAsignaturaId);
-                examenDto(response.data);
+                const response = await axios.get('Funcionario/generarActa?idAsignatura=' + selectedAsignaturaId);
+                console.info('response.data', response.data);
+                setExamenDto(response.data);
             } catch (error) {
                 console.error('Error fetching listaAsignatura:', error);
             }
         };
-        fetchListaAsignatura();
+        fetchListaExamenDto();
     }, [selectedAsignaturaId]);
 
     return (
@@ -88,7 +92,7 @@ export default function Index() {
                                 {selectedCarreraId === null ? (
                                     <ActaFinDeCursoListCarrera listaCarrera={listaCarrera} onCarreraChange={handleCarreraChange} />
                                 ) : (
-                                    <ActaFinDeCursoListAsignatura listaAsignatura={listaAsignatura} handleChangeAsignatura={handleChangeAsignatura} selectedAsignaturaId={selectedAsignaturaId} examenDto={examenDto} />
+                                    <ActaFinDeCursoListAsignatura listaAsignatura={listaAsignatura} handleChangeAsignatura={handleChangeAsignatura} selectedAsignaturaId={selectedAsignaturaId} ExamenDto={examenDto} />
                                 )}
                             </main>
                         </div>
