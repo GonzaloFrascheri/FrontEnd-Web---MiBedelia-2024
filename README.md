@@ -27,6 +27,27 @@ https://mibedelia-backend-production.up.railway.app/doc/swagger-ui/index.html#/
   - Registro examen relacionado a una asignatura dada	<img src="https://img.shields.io/badge/Front-Hecho-success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
   - Alta docente	<img src="https://img.shields.io/badge/Front-Hecho-successs"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 
+## Tareas - Casos de uso no críticos 
+- Invitado
+  - Recuperar contraseña <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
+  - Cerrar sesión <img src="https://img.shields.io/badge/Front-Hecho-success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
+  - Editar perfil <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
+- Administrador
+  - Buscar usuarios <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
+  - Resumen de actividad <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
+- Coordinador
+  - Registrar previaturas <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
+  - Listar previas por asignatura <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
+  - Listar asignaturas por carrera <img src="https://img.shields.io/badge/Front-Hecho-success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
+- Funcionario
+  - Modificar horario de una asignatura <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
+  - Modificar horario de un exámen <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
+  - Listar estudiantes inscriptos en asignatura <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
+  - Listar exámenes a tomar en período <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
+- Estudiantes
+  - Generar escolaridad <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
+  - Listado de asignaturas aprobadas <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
+  - Listado de asignaturas pendientes <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
 
 # INSTALACIÓN DEL FRONTEND
 ```bash
