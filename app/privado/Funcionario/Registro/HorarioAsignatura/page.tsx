@@ -8,7 +8,7 @@ import NavPrivado from "@/app/componentes/navs/nav-privado";
 import HeaderPagePrivado from "@/app/componentes/headers/headerPage-privado";
 import HorarioAsignaturaListCarrera from "@/app/componentes/funcionario/registro/horario/horarioAsignaturaListCarrera";
 import HorarioAsignaturaListAsignatura from "@/app/componentes/funcionario/registro/horario/horarioAsignaturaListAsignatura";
-import ExamenAsignaturaPasos from "@/app/componentes/funcionario/registro/examen/examenAsignaturaPasos";
+import HorarioAsignaturaPasos from "../../../../componentes/funcionario/registro/horario/horarioAsignaturaPasos";
 
 function FuncionarioExamenAsignatura() {
     
@@ -161,7 +161,7 @@ function FuncionarioExamenAsignatura() {
                         <div id="layoutAuthentication_content">
                             <main>
                                 <HeaderPagePrivado breadcrumbs={breadcrumbs}/>
-                                <ExamenAsignaturaPasos selectedCarreraId={selectedCarreraId} selectedAsignaturaId={selectedAsignaturaId} />
+                                <HorarioAsignaturaPasos selectedCarreraId={selectedCarreraId} selectedAsignaturaId={selectedAsignaturaId} />
                                 {selectedCarreraId === null ? (
                                     <HorarioAsignaturaListCarrera 
                                         listaCarrera={listaCarrera}

@@ -173,10 +173,9 @@ export default function Index({listaAsignaturas, listaDocentes ,handleAsignatura
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="card-footer text-center">
-                                        <button 
-                                            type="submit" 
-                                            className="btn btn-primary">Crear horario</button>
+                                    <div className="card-footer text-center" style={{ position: 'relative' }}>
+                                        <a href="/privado/Funcionario/Registro/HorarioAsignatura" className="btn btn-link" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)' }}>Volver</a>
+                                        <button type="submit" className="btn btn-primary">Crear horario</button>
                                     </div>
                                 </form>
                             ) : (
