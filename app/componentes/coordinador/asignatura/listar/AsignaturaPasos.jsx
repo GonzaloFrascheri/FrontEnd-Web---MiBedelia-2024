@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-export default function ActaExamenPasos({ selectedCarreraId, selectedAsignaturaId }) {
+export default function AsignaturaListarPasos({ selectedCarreraId, selectedAsignaturaId }) {
     const [estado, setEstado] = useState({
         paso1: "step-item active",
         paso2: "step-item",
-        paso3: "step-item"
     });
 
     useEffect(() => {
@@ -26,17 +25,14 @@ export default function ActaExamenPasos({ selectedCarreraId, selectedAsignaturaI
     return (
         <div className="step step-warning py-4 mt-n15">
             <div className={estado.paso1}>
-                <a className="step-item-link" href="/privado/Funcionario/Registro/ExamenAsignatura">Elegir Carrera</a>
+                <a className="step-item-link" href="/privado/Coordinador/Asignatura/Listar">Elegir Carrera</a>
             </div>
             <div className={estado.paso2}>
-                <a className="step-item-link" href="/privado/Funcionario/Registro/ExamenAsignatura">Elegir Asignatura</a>
-            </div>
-            <div className={estado.paso3}>
                 <a
                     className={`step-item-link ${!selectedCarreraId ? 'disabled' : ''}`}
                     href="#!" aria-disabled="true"
                 >
-                    Listado
+                    Finalizar
                 </a>
             </div>
         </div>

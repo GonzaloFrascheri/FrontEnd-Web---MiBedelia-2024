@@ -8,9 +8,9 @@ import NavPrivado from "@/app/componentes/navs/nav-privado";
 import HeaderPagePrivado from "@/app/componentes/headers/headerPage-privado";
 import AsignaturaListAsignatura from "../../../../componentes/coordinador/asignatura/listar/AsignaturaListAsignatura";
 import AsignaturaListCarrera from "../../../../componentes/coordinador/asignatura/listar/AsignaturaListCarrera";
-import ExamenAsignaturaPasos from "@/app/componentes/funcionario/registro/examen/examenAsignaturaPasos";
+import AsignaturaListarPasos from "../../../../componentes/coordinador/asignatura/listar/AsignaturaPasos";
 
-function FuncionarioExamenAsignatura() {
+function CoordinadorListarAsignatura() {
     
     const router = useRouter();
     const breadcrumbs = ['privado', 'Coordinador', 'Asignatura', 'Listar'];
@@ -52,44 +52,6 @@ function FuncionarioExamenAsignatura() {
             [name]: value
         }));
     };
-
-    /*
-    const handleSubmit = async(e) => {
-        e.preventDefault();
-        console.warn('formData', formData);
-            try {
-                // envío datos al bk
-                const { data, status } = await axios.post('Funcionario/registroHorarioAsignatura', formData);
-                    if (status === 200) {
-                        setEstado({
-                            message: data.message,
-                            estado: data.estado
-                        });
-                    } else {
-                        setEstado({
-                            message: data.message,
-                            estado: data.status
-                        });
-                    }
-            }catch (error) {
-                setEstado({
-                    message: error.response ? error.response.data.message : 'Error al registrar el horario',
-                    estado: error.response ? error.response.status : 500
-                });
-            }   
-            console.info("a enviar", formData);
-            // Limpia el formulario despues de enviar los datos
-            setFormData({
-                idAsignatura: "",
-                ciDocente: "",
-                //diasDictados: "",
-                horarioInicio: "",
-                horarioFin: "",
-            });
-        };
-        */
-
-    
     
     const [isSidebarToggled, setIsSidebarToggled] = useState(false);
     const toggleSidebar = () => {
@@ -136,7 +98,7 @@ function FuncionarioExamenAsignatura() {
                         <div id="layoutAuthentication_content">
                             <main>
                                 <HeaderPagePrivado breadcrumbs={breadcrumbs}/>
-                                <ExamenAsignaturaPasos selectedCarreraId={selectedCarreraId} selectedAsignaturaId={selectedAsignaturaId} />
+                                <AsignaturaListarPasos selectedCarreraId={selectedCarreraId} selectedAsignaturaId={selectedAsignaturaId} />
                                 {selectedCarreraId === null ? (
                                     <AsignaturaListCarrera
                                         listaCarrera={listaCarrera}
@@ -160,4 +122,4 @@ function FuncionarioExamenAsignatura() {
     );
 }
 
-export default FuncionarioExamenAsignatura;
+export default CoordinadorListarAsignatura;
