@@ -167,13 +167,16 @@ export default function Sidebar({ isSidebarToggled }) {
                         <a className="nav-link" href="/privado/Funcionario/Generar/ActaFinDeCurso">
                           Generar acta fin de curso
                         </a>
+                        <a className="nav-link" href="/privado/Funcionario/Registro/ActaFinDeCurso">
+                          Registrar acta de fin de curso
+                        </a>
                         <a className="nav-link" href="/privado/Funcionario/Registro/HorarioAsignatura">
                           Registro de horario a asignatura
                         </a>
                         <a className="nav-link" href="/privado/Funcionario/Registro/PeriodoExamen">
                           Registro periodo de examen
                         </a>
-                        <a className="nav-link" href="/privado/Funcionario/Registro/ExamenAsignatura">
+                        <a className="nav-link" href="/privado/Funcionario/Registro/AltaExamen">
                           Alta de exámen
                         </a>
                         <a className="nav-link" href="/privado/Funcionario/AltaDocente">

@@ -14,7 +14,7 @@ function FuncionarioExamenAsignatura() {
     "privado",
     "Funcionario",
     "Registro",
-    "ExamenAsignatura",
+    "AltaExamen",
   ];
   const [listaCarrera, setListaCarrera] = useState([]);
   const [listaAsignatura, setListaAsignatura] = useState([]);
