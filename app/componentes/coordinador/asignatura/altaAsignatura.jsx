@@ -1,6 +1,11 @@
 import React from 'react';
 
 export default function Index({ estado, formData, handleChange, handleSubmit, listaCarrera }) {
+    const handleCancelar = (e) => {
+        e.preventDefault();
+        window.location.href = "/privado";
+    };
+    
     return (
         <div className="container-xl px-4 mt-n10">
             <div className="card">
@@ -60,9 +65,10 @@ export default function Index({ estado, formData, handleChange, handleSubmit, li
                                     </div>
                                 </div>
                                 <div className="card-footer text-center">
+                                    <button type="cancel" className='btn btn-secondary' onClick={handleCancelar}>Cancelar</button>
                                     <button
                                         type="submit"
-                                        className="btn btn-primary">Guardar
+                                        className="btn btn-primary mx-1">Guardar
                                     </button>
                                 </div>
                             </form>

@@ -52,11 +52,12 @@ export default function ListarUsuarios () {
       width: '100px',
     }
   ];
-  const getProduct=async()=>{
+  const getListUsuarios=async()=>{
     try{
         const {data, status } = await axios.get('/Administrador/listarUsuario?page=1&pageSize=300');
-        setData(data.items);
-        setFilter(data.items);
+        const filteredItems = data.items.filter(item => item.status === true);
+        setData(filteredItems);
+        setFilter(filteredItems);
     } catch(error){
       console.log(error);
       setEstado({
@@ -66,7 +67,7 @@ export default function ListarUsuarios () {
     }
   }
   useEffect(()=>{
-      getProduct();
+      getListUsuarios();
   }, []);
   useEffect(()=>{
       const result= data.filter((item)=>{
@@ -91,11 +92,11 @@ export default function ListarUsuarios () {
     <div className='container-xl px-4 mt-n10'>
       <div className='card'>
         <div className='card shadow-lg border-0 rounded-lg'>
+          <div className='card-header justify-content-center'>
+            <h3 className='fw-light text-center'>Listado de Usuarios</h3>
+          </div>
           {estado.message === '' ? (
             <>
-              <div className='card-header justify-content-center'>
-                <h3 className='fw-light text-center'>Listado de Usuarios</h3>
-              </div>
               <div className='card-body'>
                 <div className='row gx-3 justify-content-center'>
                   <DataTable
@@ -124,24 +125,26 @@ export default function ListarUsuarios () {
             </>
           ) : (
             <div>
-              <div
-                className={`alert alert-icon ${
-                  estado.estado === 200 ? 'alert-primary' : 'alert-secondary'
-                }`}
-                role='alert'
-              >
-                <button
-                  className='btn-close'
-                  type='button'
-                  data-bs-dismiss='alert'
-                  aria-label='Close'
-                ></button>
-                <div className='alert-icon-aside'>
-                  <i className='far fa-flag'></i>
-                </div>
-                <div className='alert-icon-content'>
-                  <h6 className='alert-heading'>Resultado</h6>
-                  {estado.message}!
+              <div className='card-body'>
+                <div
+                  className={`alert alert-icon ${
+                    estado.estado === 200 ? 'alert-primary' : 'alert-secondary'
+                  }`}
+                  role='alert'
+                >
+                  <button
+                    className='btn-close'
+                    type='button'
+                    data-bs-dismiss='alert'
+                    aria-label='Close'
+                  ></button>
+                  <div className='alert-icon-aside'>
+                    <i className='far fa-flag'></i>
+                  </div>
+                  <div className='alert-icon-content'>
+                    <h6 className='alert-heading'>Resultado</h6>
+                    {estado.message}!
+                  </div>
                 </div>
               </div>
               <div className='card-footer text-center'>

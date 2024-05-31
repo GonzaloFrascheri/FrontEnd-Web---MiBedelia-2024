@@ -79,7 +79,7 @@ export default function Index({ listaExamen, handleChangeExamen, selectedExamenI
                                     <option value="" disabled selected>Seleccione un examen...</option>
                                     {listaExamen.length > 0 ? (
                                         listaExamen.map((examen) => (
-                                            <option key={examen.id} value={examen.id}>{examen.nombre}</option>
+                                            <option key={examen.id} value={examen.id}>{examen.nombreAsignatura} - {examen.nombreDocente}</option>
                                         ))
                                     ) : (
                                         <option>No se recibieron datos aún</option>

@@ -48,6 +48,7 @@ export default function Index({estado, formData, handleChange, handleSubmit}) {
                                                                 name="ci" 
                                                                 type="number"
                                                                 maxLength="8"
+                                                                minLength="7"
                                                                 id="ci"
                                                                 onChange={handleChange}
                                                                 required />

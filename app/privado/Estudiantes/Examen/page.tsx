@@ -10,7 +10,7 @@ import axios from "@/utils/axios";
 function EstudianteInscripcionExamen() {
   const router = useRouter();
   const pathname = usePathname();
-  const breadcrumbs = ["privado", "Estudiantes", "Exámen"];
+  const breadcrumbs = ["privado", "Estudiantes", "Examen"];
   const [userData, setUserData] = useState(null);
   const [estado, setEstado] = useState({
     message: "",
@@ -38,7 +38,7 @@ function EstudianteInscripcionExamen() {
         const { status, data } = error.response;
         setEstado({
           estado: status,
-          message: data.message,
+          message: data.message || "Error al cargar los exámenes",
         });
       }
     };

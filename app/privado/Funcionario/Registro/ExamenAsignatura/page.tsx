@@ -34,7 +34,8 @@ function FuncionarioExamenAsignatura() {
     }
     const [estado, setEstado] = useState({
         message: "",
-        estado: ""
+        estado: "",
+        continuar: false
     });
     const [periodoActivo, setPeriodoActivo] = useState({
         diaFin: "",
@@ -58,37 +59,39 @@ function FuncionarioExamenAsignatura() {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.warn('formData', formData);
-        // Aquí puedes enviar los datos del formulario a tu backend o realizar cualquier otra acción necesaria
+        console.info("formData", formData);
         try {
             // envío datos al bk
             const { data, status } = await axios.post('Funcionario/registrarExamenAsignaturas', formData);
-            // si la data es ok - docente fue dado de alta
+            // si la data es ok - examen fue dado de alta
             if (status === 200) {
                 setEstado({
                     message: data.message,
-                    estado: data.estado
+                    estado: data.estado,
+                    continuar: true
+                });
+                // Limpia el formulario después de enviar los datos
+                setFormData({
+                    idAsignatura: "",
+                    idPeriodo: "",
+                    idDocente: "",
+                    anioLectivo: "",
+                    fechaExamen: "",
                 });
             }else{
                 setEstado({
                   message: data.message,
-                  estado: data.status
+                  estado: data.status,
+                  continuar: false
                 });
               }
         } catch (error) {
             setEstado({
-                message: error.response ? error.response.data.message : 'Error al guardar el usuario',
-                estado: error.response ? error.response.status : 500
+                message: error.response ? error.response.data.message : 'Error al guardar el examen. Intente nuevamente.',
+                estado: error.response ? error.response.status : 500,
+                continuar: false
             });
         }
-        // Limpia el formulario después de enviar los datos
-        setFormData({
-            idAsignatura: "",
-            idPeriodo: "",
-            idDocente: "",
-            anioLectivo: "",
-            fechaExamen: "",
-        });
     };
     
     const [isSidebarToggled, setIsSidebarToggled] = useState(false);

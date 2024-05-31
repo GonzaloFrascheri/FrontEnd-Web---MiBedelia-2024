@@ -51,16 +51,9 @@ export default function Index() {
     useEffect(() => {
         const fetchListaExamenes = async () => {
             try {
-                const response = await axios.get('funcionario/listaExamenes?idCarrera=' + selectedCarreraId);
+                const response = await axios.get('Funcionario/listarExamenesPeriodo?idCarrera=' + selectedCarreraId);
                 setListaExamen(response.data);
             } catch (error) {
-                // Simulando la respuesta del servidor con una lista de Examenes
-                const simulatedResponse = [
-                    { id: 1, nombre: 'Examen #1' },
-                    { id: 2, nombre: 'Examen #2' },
-                    { id: 3, nombre: 'Examen #3' },
-                ];
-                setListaExamen(simulatedResponse);
                 console.error('Error fetching listaExamenes:', error);
             }
         };

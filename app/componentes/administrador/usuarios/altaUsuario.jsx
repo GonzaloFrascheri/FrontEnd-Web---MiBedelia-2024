@@ -32,12 +32,12 @@ export default function Index ({
     <div className='conatiner-xl px-4 mt-n10'>
       <div className='card'>
         <div className='card shadow-lg border-0 rounded-lg'>
+          <div className='card-header justify-content-center'>
+            <h3 className='fw-light'>Alta de Usuario</h3>
+          </div>
           {estado.message === '' ? (
             <>
               <form onSubmit={handleSubmit}>
-                <div className='card-header justify-content-center'>
-                  <h3 className='fw-light'>Alta de Usuario</h3>
-                </div>
                 <div className='card-body'>
                   <div className='row gx-3'>
                     <div className='col-md-6'>
@@ -202,18 +202,20 @@ export default function Index ({
             </>
           ) : (
             <div>
-              <div
-                className={`alert alert-icon ${
-                  estado.estado === 200 ? 'alert-primary' : 'alert-secondary'
-                }`}
-                role='alert'
-              >
-                <div className='alert-icon-aside'>
-                  <i className='far fa-flag'></i>
-                </div>
-                <div className='alert-icon-content'>
-                  <h6 className='alert-heading'>Resultado</h6>
-                  {estado.message}!
+              <div className='card-body'>
+                <div
+                  className={`alert alert-icon ${
+                    estado.estado === 200 ? 'alert-primary' : 'alert-secondary'
+                  }`}
+                  role='alert'
+                >
+                  <div className='alert-icon-aside'>
+                    <i className='far fa-flag'></i>
+                  </div>
+                  <div className='alert-icon-content'>
+                    <h6 className='alert-heading'>Resultado</h6>
+                    {estado.message}!
+                  </div>
                 </div>
               </div>
               <div className='card-footer text-center'>
