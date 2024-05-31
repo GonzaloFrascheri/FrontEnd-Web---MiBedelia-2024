@@ -12,3 +12,17 @@ export async function hashPassword (password) {
 
   return hashHex
 }
+
+// yyyy-mm-dd
+export function parseDateToISO (dateString) {
+  const date = new Date(dateString)
+  const isoDate = date.toISOString().split('T')[0]
+  return isoDate
+}
+
+// Para el date picker, ajustando el timezone
+export function createLocalDateFromString (dateString) {
+  // Crear una fecha con el tiempo local basado en una cadena en formato yyyy-mm-dd
+  const [year, month, day] = dateString.split('-').map(Number)
+  return new Date(year, month - 1, day) // El mes se ajusta porque va de 0 a 11
+}
