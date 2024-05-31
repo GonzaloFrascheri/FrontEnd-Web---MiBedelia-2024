@@ -179,6 +179,9 @@ export default function Sidebar({ isSidebarToggled }) {
                         <a className="nav-link" href="/privado/Funcionario/AltaDocente">
                           Alta docente
                         </a>
+                        <a className="nav-link" href="/privado/Funcionario/Listar">
+                          Listar estudiantes inscriptos en asignatura
+                        </a>
                       </nav>
                     </div>
                   </>
