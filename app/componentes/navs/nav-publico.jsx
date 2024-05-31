@@ -1,6 +1,4 @@
 "use client"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoffee, faUserPlus, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 
 function NavPublico() {

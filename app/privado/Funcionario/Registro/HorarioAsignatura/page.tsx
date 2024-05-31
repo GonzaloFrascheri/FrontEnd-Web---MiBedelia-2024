@@ -1,26 +1,20 @@
 'use client'
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import axios from "@/utils/axios";
-import storage from "@/utils/storage.js";
 import Sidebar from "@/app/componentes/siders/sidebar";
 import NavPrivado from "@/app/componentes/navs/nav-privado";
 import HeaderPagePrivado from "@/app/componentes/headers/headerPage-privado";
 import HorarioAsignaturaListCarrera from "@/app/componentes/funcionario/registro/horario/horarioAsignaturaListCarrera";
 import HorarioAsignaturaListAsignatura from "@/app/componentes/funcionario/registro/horario/horarioAsignaturaListAsignatura";
-import HorarioAsignaturaPasos from "../../../../componentes/funcionario/registro/horario/horarioAsignaturaPasos";
+import HorarioAsignaturaPasos from "@/app/componentes/funcionario/registro/horario/horarioAsignaturaPasos";
 
 function FuncionarioExamenAsignatura() {
-    
-    const router = useRouter();
     const breadcrumbs = ['privado', 'Funcionario', 'Registro', 'HorarioAsignatura'];
-    const [data, setData] = useState('');
     const [listaCarrera, setListaCarrera] = useState([]);
     const [listaAsignatura, setListaAsignatura] = useState([]);
     const [listaDocentes, setListaDocentes] = useState([]);
     const [selectedCarreraId, setSelectedCarreraId] = useState(null);
     const [selectedAsignaturaId, setSelectedAsignaturaId] = useState(null);
-    const hoy = new Date();
     const handleCarreraChange = (id) => {
         setSelectedCarreraId(id);
         setFormData({

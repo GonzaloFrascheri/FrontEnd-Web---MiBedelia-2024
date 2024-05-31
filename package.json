@@ -38,7 +38,6 @@
     "react-native-elements": "^3.4.3",
     "react-native-vector-icons": "^10.1.0",
     "react-router-dom": "^6.22.3",
-    "react-text-mask": "^5.5.0",
     "simple-datatables": "^9.0.0",
     "vis-network": "^9.1.9"
   },

@@ -1,18 +1,14 @@
 'use client'
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import axios from "@/utils/axios";
-import storage from "@/utils/storage.js";
 import Sidebar from "@/app/componentes/siders/sidebar";
 import NavPrivado from "@/app/componentes/navs/nav-privado";
 import HeaderPagePrivado from "@/app/componentes/headers/headerPage-privado";
-import AsignaturaListAsignatura from "../../../../componentes/coordinador/asignatura/listar/AsignaturaListAsignatura";
-import AsignaturaListCarrera from "../../../../componentes/coordinador/asignatura/listar/AsignaturaListCarrera";
-import AsignaturaListarPasos from "../../../../componentes/coordinador/asignatura/listar/AsignaturaPasos";
+import AsignaturaListAsignatura from "@/app/componentes/coordinador/asignatura/listar/AsignaturaListAsignatura";
+import AsignaturaListCarrera from "@/app/componentes/coordinador/asignatura/listar/AsignaturaListCarrera";
+import AsignaturaListarPasos from "@/app/componentes/coordinador/asignatura/listar/AsignaturaPasos";
 
 function CoordinadorListarAsignatura() {
-    
-    const router = useRouter();
     const breadcrumbs = ['privado', 'Coordinador', 'Asignatura', 'Listar'];
     const [data, setData] = useState('');
     const [listaCarrera, setListaCarrera] = useState([]);

@@ -1,61 +1,58 @@
-"use client";
-import NavPrivado from "@/app/componentes/navs/nav-privado.jsx";
-import Sidebar from "@/app/componentes/siders/sidebar.jsx";
-import TablaConContenido from "@/app/componentes/tablas/tablas-lista-cursos.jsx";
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { usePathname } from "next/navigation";
-import { userAuthenticationCheck } from "@/utils/auth";
+'use client'
+import NavPrivado from '@/app/componentes/navs/nav-privado.jsx'
+import Sidebar from '@/app/componentes/siders/sidebar.jsx'
+import TablaConContenido from '@/app/componentes/tablas/tablas-lista-cursos.jsx'
+import React, { useEffect, useState } from 'react'
+import { useAuth } from '@/context/AuthProvider'
 
 const ListarCursos = () => {
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const [cursos, setCursos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [controlError, setControlError] = useState("Cargando...");
-  const [data, setData] = useState("");
+  const authData = useAuth()
+  const [cursos, setCursos] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [controlError, setControlError] = useState('Cargando...')
+  const [data, setData] = useState('')
 
   useEffect(() => {
-    const userData = userAuthenticationCheck(router, pathname);
-    setData(userData);
-  }, [router, pathname]);
-
+    if (authData && !data) {
+      setData(authData)
+    }
+  }, [authData, data])
+  
   useEffect(() => {
-    fetch("http://localhost:8080/metadata/getDataGrafo?idCarrera=1")
-      .then((response) => {
-        console.log("Respuesta: ", response.status);
+    fetch('http://localhost:8080/metadata/getDataGrafo?idCarrera=1')
+      .then(response => {
+        console.log('Respuesta: ', response.status)
         if (response.status !== 200) {
-          setControlError("Error al cargar los datos");
-          return "true";
+          setControlError('Error al cargar los datos')
+          return 'true'
         }
-        return response.json();
+        return response.json()
       })
-      .then((result) => {
-        console.log("Resultado: ", result);
+      .then(result => {
+        console.log('Resultado: ', result)
 
-        const hayDatos = result === "true" ? result : false;
+        const hayDatos = result === 'true' ? result : false
         //const cursosArray = Array.isArray(result) ? result : [result];
-        setCursos(result);
-        setLoading(hayDatos);
-      });
-  }, []);
+        setCursos(result)
+        setLoading(hayDatos)
+      })
+  }, [])
 
   return (
     <>
       <NavPrivado />
-      <div id="layoutSidenav">
-        <div id="layoutSidenav_nav">
+      <div id='layoutSidenav'>
+        <div id='layoutSidenav_nav'>
           <Sidebar />
         </div>
-        <div id="layoutSidenav_content">
+        <div id='layoutSidenav_content'>
           <main>
-            <header className="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
-              <div className="container-xl px-4">
-                <div className="page-header-content pt-4">
-                  <div className="row align-items-center justify-content-between">
-                    <div className="col-auto mt-4">
-                      <div className="page-header-subtitle">
+            <header className='page-header page-header-dark bg-gradient-primary-to-secondary pb-10'>
+              <div className='container-xl px-4'>
+                <div className='page-header-content pt-4'>
+                  <div className='row align-items-center justify-content-between'>
+                    <div className='col-auto mt-4'>
+                      <div className='page-header-subtitle'>
                         Listado de cursos
                       </div>
                     </div>
@@ -63,11 +60,11 @@ const ListarCursos = () => {
                 </div>
               </div>
             </header>
-            <div className="container-xl px-4 mt-n10">
+            <div className='container-xl px-4 mt-n10'>
               {loading ? (
-                <div className="card mb-4">
-                  <div className="card-header">Extended DataTables</div>
-                  <div className="card-body">
+                <div className='card mb-4'>
+                  <div className='card-header'>Extended DataTables</div>
+                  <div className='card-body'>
                     <p>{controlError}</p>
                   </div>
                 </div>
@@ -79,7 +76,7 @@ const ListarCursos = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ListarCursos;
+export default ListarCursos

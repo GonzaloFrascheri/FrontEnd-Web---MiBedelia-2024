@@ -1,19 +1,13 @@
 'use client'
-
 import React, { useEffect, useState } from "react";
-import Sidebar from "../../../../componentes/siders/sidebar.jsx";
-import NavPrivado from '../../../../componentes/navs/nav-privado.jsx';
-import HeaderPagePrivado from '../../../../componentes/headers/headerPage-privado.jsx';
-import AltaAsignatura from '../../../../componentes/coordinador/asignatura/altaAsignatura.jsx';
-import storage from "@/utils/storage.js";
+import Sidebar from "@/app/componentes/siders/sidebar.jsx";
+import NavPrivado from '@/app/componentes/navs/nav-privado.jsx';
+import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado.jsx';
+import AltaAsignatura from '@/app/componentes/coordinador/asignatura/altaAsignatura.jsx'
 import axios from "@/utils/axios";
-import { useRouter } from "next/navigation.js";
 
 function CoordinadorAltaAsignatura() {
-  const router = useRouter();
-  const token = storage.getToken();
   const breadcrumbs = ['privado', 'Coordinador', 'Asignatura', 'Alta'];
-  const [data, setData] = useState('');
   const [listaCarrera, setListaCarrera] = useState([]);
   const [estado, setEstado] = useState({
     message: "",
@@ -35,12 +29,6 @@ function CoordinadorAltaAsignatura() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!token) {
-      storage.removeToken();  
-      router.push("/");
-    } else {
-      console.info(formData);
-
       try {
         // envío datos al bk
         const { data, status } = await axios.post('Coordinador/altaAsignatura', formData);
@@ -61,9 +49,7 @@ function CoordinadorAltaAsignatura() {
             message: error.response ? error.response.data.message : 'Error al guardar el usuario',
             estado: error.response ? error.response.status : 500
         });
-      }
-
-    }
+      }    
   };
 
   const [isSidebarToggled, setIsSidebarToggled] = useState(false);

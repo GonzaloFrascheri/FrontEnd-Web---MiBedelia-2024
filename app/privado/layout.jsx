@@ -1,18 +1,13 @@
-import React from "react";
+'use client'
+import { AuthProvider } from '@/context/AuthProvider'
+import React from 'react'
 
-export const metadata = {
-  title: "Dashboard privado",
-  description: "Zona privada.",
-};
- 
-export default function PrivadoLayout({ children }) {
-
+export default function PrivadoLayout ({ children }) {
   return (
-    <html lang="es">
-      <body className="nav-fixed sidenav-toggled">
-        {children}
-      </body>
+    <html lang='es'>
+      <AuthProvider>
+        <body className='nav-fixed sidenav-toggled'>{children}</body>
+      </AuthProvider>
     </html>
-  );
+  )
 }
-  

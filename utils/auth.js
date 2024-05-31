@@ -35,7 +35,7 @@ function navigateToRoot (router, pathname) {
   if (!['', '/', '/login'].includes(pathname)) router.push('/')
 }
 
-function isTokenExpired (expiryDate) {
+export function isTokenExpired (expiryDate) {
   const currentTime = Math.floor(Date.now() / 1000) // Current time in seconds
   return currentTime > expiryDate
 }

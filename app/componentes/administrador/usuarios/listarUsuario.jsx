@@ -1,7 +1,6 @@
 'use client'
 import { useEffect, useState, useRef } from 'react'
 import axios from '@/utils/axios'
-import { userAuthenticationCheck } from '@/utils/auth'
 import { useRouter, usePathname } from 'next/navigation'
 import DataTable from 'react-data-table-component'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

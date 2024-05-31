@@ -1,16 +1,14 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import validators from "@/utils/validators";
 import axios from "@/utils/axios";
 import storage from "@/utils/storage";
 import { hashPassword } from "@/utils/utils"
-import { userAuthenticationCheck } from "@/utils/auth";
 import Footer from '@/app/componentes/main/footer';
 
 function LoginPage() {
   const router = useRouter();
-  const pathname = usePathname();
   
   // constantes para el login
   const [credentials, setCredentials] = useState({
@@ -20,10 +18,6 @@ function LoginPage() {
 
   const [errorU, setErrorU] = useState(true);
   const [errorP, setErrorP] = useState(true);
-
-  useEffect(()=> {
-    userAuthenticationCheck(router, pathname);
-  },[pathname, router])
 
   // Campo cedula
   const handleCiChange = (e) => {

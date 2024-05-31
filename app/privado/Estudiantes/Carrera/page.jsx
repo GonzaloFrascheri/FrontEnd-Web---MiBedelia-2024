@@ -5,13 +5,10 @@ import Sidebar from '@/app/componentes/siders/sidebar'
 import InscripcionCarrera from '@/app/componentes/estudiantes/carrera/inscripcionCarrera'
 import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado'
 import axios from '@/utils/axios'
-import { userAuthenticationCheck } from '@/utils/auth'
-import { useRouter } from 'next/navigation'
-import { usePathname } from 'next/navigation'
+import { useAuth } from '@/context/AuthProvider'
 
 function EstudianteInscripcionCarrera () {
-  const router = useRouter()
-  const pathname = usePathname()
+  const authData = useAuth()
   const breadcrumbs = ['privado', 'Estudiantes', 'Carrera']
   const [estado, setEstado] = useState({
     message: '',
@@ -23,27 +20,32 @@ function EstudianteInscripcionCarrera () {
   const [selectedCareer, setSelectedCareer] = useState('')
 
   useEffect(() => {
-    const userData = userAuthenticationCheck(router, pathname)
-    setUserData(userData)
-
-    const fetchCareers = async () => {
-      try {
-        const response = await axios.get('/Estudiante/listarCarrera')
-        const { status, data } = response
-        if (status === 200) {
-          setCareers([...data])
-          setCareesAreLoading(false)
-        }
-      } catch (error) {
-        const { status, data } = error.response
-        setEstado({
-          estado: status,
-          message: data.message
-        })
-      }
+    if (authData && !userData) {
+      setUserData(authData)
     }
-    fetchCareers()
-  }, [router, pathname])
+  }, [authData, userData])
+
+  useEffect(() => {
+    if (userData) {
+      const fetchCareers = async () => {
+        try {
+          const response = await axios.get('/Estudiante/listarCarrera')
+          const { status, data } = response
+          if (status === 200) {
+            setCareers([...data])
+            setCareesAreLoading(false)
+          }
+        } catch (error) {
+          const { status, data } = error.response
+          setEstado({
+            estado: status,
+            message: data.message
+          })
+        }
+      }
+      fetchCareers()
+    }
+  }, [userData])
 
   const handleSubmit = async e => {
     try {

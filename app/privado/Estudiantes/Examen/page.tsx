@@ -3,13 +3,11 @@ import React, { useEffect, useState } from "react";
 import NavPrivado from "@/app/componentes/navs/nav-privado";
 import Sidebar from "@/app/componentes/siders/sidebar";
 import InscripcionExamen from "@/app/componentes/estudiantes/examen/inscripcionExamen";
-import { usePathname, useRouter } from "next/navigation";
 import HeaderPagePrivado from "@/app/componentes/headers/headerPage-privado";
-import { userAuthenticationCheck } from "@/utils/auth";
 import axios from "@/utils/axios";
+import { useAuth } from "@/context/AuthProvider";
 function EstudianteInscripcionExamen() {
-  const router = useRouter();
-  const pathname = usePathname();
+  const authData = useAuth();
   const breadcrumbs = ["privado", "Estudiantes", "Examen"];
   const [userData, setUserData] = useState(null);
   const [estado, setEstado] = useState({
@@ -21,29 +19,34 @@ function EstudianteInscripcionExamen() {
   const [examsAreLoading, setExamsAreLoading] = useState(true);
 
   useEffect(() => {
-    const userData = userAuthenticationCheck(router, pathname);
-    setUserData(userData);
+    if (authData && !userData) {
+      setUserData(authData);
+    }
+  }, [authData, userData]);
 
-    const fetchExams = async () => {
-      try {
-        const response = await axios.get(
-          `/Estudiante/listarExamenesDisponibles?estudianteId=${userData.id}`
-        );
-        const { status, data } = response;
-        if (status === 200) {
-          setExams([...data]);
-          setExamsAreLoading(false);
+  useEffect(() => {
+    if (userData) {
+      const fetchExams = async () => {
+        try {
+          const response = await axios.get(
+            `/Estudiante/listarExamenesDisponibles?estudianteId=${userData.id}`
+          );
+          const { status, data } = response;
+          if (status === 200) {
+            setExams([...data]);
+            setExamsAreLoading(false);
+          }
+        } catch (error) {
+          const { status, data } = error.response;
+          setEstado({
+            estado: status,
+            message: data.message || "Error al cargar los exámenes",
+          });
         }
-      } catch (error) {
-        const { status, data } = error.response;
-        setEstado({
-          estado: status,
-          message: data.message || "Error al cargar los exámenes",
-        });
-      }
-    };
-    fetchExams();
-  }, [router, pathname]);
+      };
+      fetchExams();
+    }
+  }, [userData]);
 
   const handleSubmit = async (e) => {
     try {

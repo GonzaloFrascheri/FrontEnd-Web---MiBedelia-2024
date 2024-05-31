@@ -6,20 +6,18 @@ import {
   faSignOutAlt
 } from '@fortawesome/free-solid-svg-icons'
 import React, { useEffect, useState } from 'react'
-import { userAuthenticationCheck } from '@/utils/auth'
-import { useRouter } from 'next/navigation'
-import { usePathname } from 'next/navigation'
+import { useAuth } from '@/context/AuthProvider'
 
 function NavPrivado ({ isSidebarToggled, toggleSidebar }) {
-  const router = useRouter()
-  const pathname = usePathname()
+  const authData = useAuth()
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    const userData = userAuthenticationCheck(router, pathname)
-    setUser(userData)
-  }, [router, pathname])
+    if (authData && !user) {
+      setUser(authData)
+    }
+  }, [authData, user])
 
   const toggleDropdown = () => {
     setDropdownOpen(prevState => !prevState)

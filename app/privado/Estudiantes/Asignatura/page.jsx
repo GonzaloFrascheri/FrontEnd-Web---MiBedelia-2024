@@ -4,13 +4,11 @@ import axios from '@/utils/axios'
 import Sidebar from '@/app/componentes/siders/sidebar.jsx'
 import NavPrivado from '@/app/componentes/navs/nav-privado.jsx'
 import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado.jsx'
-import InscripcionAsignaturaPasos from '@/app/componentes/estudiantes/asignatura/inscripcionAsignaturaPasos'
-import ListarCarreras from '@/app/componentes/reutilizables/listarCarreras'
-import ListarAsignaturas from '@/app/componentes/reutilizables/listarAsignaturas'
-import { userAuthenticationCheck } from '@/utils/auth'
 import InscripcionAsignatura from '@/app/componentes/estudiantes/asignatura/inscripcionAsignatura'
+import { useAuth } from '@/context/AuthProvider'
 
 export default function EstudianteInscripcionAsignatura () {
+  const authData = useAuth()
   const breadcrumbs = ['privado', 'Estudiante', 'Asignatura']
   const [isSidebarToggled, setIsSidebarToggled] = useState(false)
   // Carreras
@@ -41,30 +39,35 @@ export default function EstudianteInscripcionAsignatura () {
   }
 
   useEffect(() => {
-    const userData = userAuthenticationCheck()
-    setUserData(userData)
-
-    const fetchCareers = async () => {
-      try {
-        setcareersAreLoading(true)
-        const response = await axios.get(
-          `/Estudiante/getCarreraInscripto?idEstudiante=${userData.id}`
-        )
-        const { status, data } = response
-        if (status === 200) {
-          setCareers([...data])
-          setcareersAreLoading(false)
-        }
-      } catch (error) {
-        const { status, data } = error.response
-        setEstado({
-          estado: status,
-          message: data.message
-        })
-      }
+    if (authData && !userData) {
+      setUserData(authData)
     }
-    fetchCareers()
-  }, [])
+  }, [authData, userData])
+
+  useEffect(() => {
+    if (userData) {
+      const fetchCareers = async () => {
+        try {
+          setcareersAreLoading(true)
+          const response = await axios.get(
+            `/Estudiante/getCarreraInscripto?idEstudiante=${userData.id}`
+          )
+          const { status, data } = response
+          if (status === 200) {
+            setCareers([...data])
+            setcareersAreLoading(false)
+          }
+        } catch (error) {
+          const { status, data } = error.response
+          setEstado({
+            estado: status,
+            message: data.message
+          })
+        }
+      }
+      fetchCareers()
+    }
+  }, [userData])
 
   useEffect(() => {
     if (selectedCareerId) {
