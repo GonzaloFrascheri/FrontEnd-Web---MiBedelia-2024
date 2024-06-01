@@ -26,3 +26,7 @@ export function createLocalDateFromString (dateString) {
   const [year, month, day] = dateString.split('-').map(Number)
   return new Date(year, month - 1, day) // El mes se ajusta porque va de 0 a 11
 }
+
+export function crearSecuencia(n) {
+  return Array.from({ length: 2 * n }, (_, i) => i + 1);
+}

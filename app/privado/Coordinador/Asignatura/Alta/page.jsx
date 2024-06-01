@@ -5,6 +5,7 @@ import NavPrivado from '@/app/componentes/navs/nav-privado.jsx';
 import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado.jsx';
 import AltaAsignatura from '@/app/componentes/coordinador/asignatura/altaAsignatura.jsx'
 import axios from "@/utils/axios";
+import { crearSecuencia } from "@/utils/utils";
 
 function CoordinadorAltaAsignatura() {
   const breadcrumbs = ['privado', 'Coordinador', 'Asignatura', 'Alta'];
@@ -18,9 +19,17 @@ function CoordinadorAltaAsignatura() {
     idCarrera: "",
     gradoMateria: "",
   });
+  const [opcionesSemestre, setOpcionesSemestre] = useState([]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    // Cambiar la cantidad de semestres dependiendo de la carrera seleccionada
+    if (name === "idCarrera") {
+      const carrera = listaCarrera.find(carrera => carrera.id === Number(value));
+      const semestres = crearSecuencia(carrera.duracion)
+      setOpcionesSemestre(semestres);
+    }
     setFormData(prevState => ({
       ...prevState,
       [name]: value
@@ -61,11 +70,7 @@ function CoordinadorAltaAsignatura() {
     const fetchListaCarreras = async () => {
       try {
         const response = await axios.get('/Coordinador/listarCarrera');
-        const carrerasConIds = response.data.map(carrera => ({
-          id: carrera.id, 
-          nombre: carrera.nombre,
-        }));
-        setListaCarrera(carrerasConIds);
+        setListaCarrera(response.data);
       } catch (error) {
         console.error('Error fetching listaCarreras:', error);
       }
@@ -91,6 +96,7 @@ function CoordinadorAltaAsignatura() {
               <main>
                 <HeaderPagePrivado breadcrumbs={breadcrumbs}/>
                 <AltaAsignatura 
+                  semestresDisponibles={opcionesSemestre} 
                   listaCarrera={listaCarrera} 
                   formData={formData} 
                   estado={estado} 
