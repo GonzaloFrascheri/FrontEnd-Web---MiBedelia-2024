@@ -40,7 +40,8 @@
     "react-router-dom": "^6.22.3",
     "react-text-mask": "^5.5.0",
     "simple-datatables": "^9.0.0",
-    "vis-network": "^9.1.9"
+    "vis-network": "^9.1.9",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/react": "18.3.2",

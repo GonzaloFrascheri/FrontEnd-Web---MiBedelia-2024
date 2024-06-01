@@ -92,6 +92,8 @@ npm install jspdf jspdf-autotable
 npm install react-data-table-component
 # instalar dependencia para manipular el calendario
 npm install react-datepicker date-fns
+# instalar dependencia para creacion de excell
+npm install xlsx
 ```
 
 # INSTALACIÓN DE DEPENDENCIAS PARA GRAFOS
