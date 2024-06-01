@@ -5,8 +5,7 @@ import NavPrivado from '@/app/componentes/navs/nav-privado.jsx'
 import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado.jsx'
 import AltaUsuario from '@/app/componentes/administrador/usuarios/altaUsuario.jsx'
 import axios from '@/utils/axios'
-import { hashPassword } from '@/utils/utils'
-import validators from '@/utils/validators'
+import { hashPassword, handleRegisterFormValidation, isFormValid } from '@/utils/utils'
 
 function RegistrarPage () {
   const breadcrumbs = ['privado', 'Administrador', 'Usuarios', 'Alta']
@@ -34,34 +33,13 @@ function RegistrarPage () {
     setIsSidebarToggled(!isSidebarToggled)
   }
 
-  const isFormValid = () => {
-    return (
-      Object.values(errors).every(error => error === '') &&
-      Object.values(formData).every(value => value !== '')
-    )
+  const handleFormValidation = () => {
+    return isFormValid(errors, formData)
   }
 
-  const handleValidation = (name, value) => {
-    let error = ''
 
-    if (name === 'ci') {
-      error = validators.validateRequired(value)
-      if (!error) {
-        error = validators.validateCi(value)
-      }
-    } else if (name === 'password') {
-      error = validators.validateRequired(value)
-      if (!error) {
-        error = validators.validatePassword(value)
-      }
-    } else if (name === 'email') {
-      error = validators.validateRequired(value)
-      if (!error) {
-        error = validators.validateEmail(value)
-      }
-    } else {
-      error = validators.validateRequired(value)
-    }
+  const handleValidation = (name, value) => {
+    const error = handleRegisterFormValidation(name, value)
 
     setErrors(prevState => ({
       ...prevState,
@@ -83,7 +61,7 @@ function RegistrarPage () {
   const handleSubmit = async e => {
     e.preventDefault()
 
-    if (!isFormValid()) {
+    if (!handleFormValidation(errors,formData)) {
       return
     }
 
@@ -134,7 +112,7 @@ function RegistrarPage () {
                   handleChange={handleChange}
                   handleSubmit={handleSubmit}
                   errors={errors}
-                  isFormValid={isFormValid}
+                  isFormValid={handleFormValidation}
                 />
               </main>
             </div>

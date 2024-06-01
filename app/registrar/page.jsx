@@ -1,61 +1,77 @@
-"use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import RegistroBasico from '@/app/componentes/registro/registroBasico.jsx';
-import axios from "@/utils/axios";
-import { hashPassword } from "@/utils/utils"
+'use client'
+import { useState } from 'react'
+import RegistroBasico from '@/app/componentes/registro/registroBasico.jsx'
+import axios from '@/utils/axios'
+import { hashPassword, handleRegisterFormValidation, isFormValid } from '@/utils/utils'
 
-function RegistrarPage() {
-
-  const router = useRouter();
+function RegistrarPage () {
   const [estado, setEstado] = useState({
-    message: "",
-    estado: ""
-  });
+    message: '',
+    estado: ''
+  })
   const [formData, setformData] = useState({
-    nombre: "",
-    apellido: "",
-    ci: "",
-    email: "",
-    telefono: "",
-    password: ""
-  });
+    nombre: '',
+    apellido: '',
+    ci: '',
+    email: '',
+    telefono: '',
+    password: ''
+  })
 
-  const handleChange = (e) => {
-    setformData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+  const [errors, setErrors] = useState({
+    nombre: null,
+    apellido: null,
+    ci: null,
+    email: null,
+    telefono: null,
+    password: null
+  })
+
+  const handleFormValidation = () => {
+    return isFormValid(errors, formData)
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleValidation = (name, value) => {
+    const error = handleRegisterFormValidation(name, value)
+    setErrors(prevState => ({
+      ...prevState,
+      [name]: error
+    }))
+  }
 
-    // Verifying that the form fields are not empty
-    const emptyFields = Object.values(formData).some(value => value === "");
-    if (emptyFields) {
+  const handleChange = e => {
+    const { name, value } = e.target
 
-      alert("Los campos no pueden estar vacios.");
+    setformData({
+      ...formData,
+      [name]: value
+    })
 
-      console.error("Los campos no pueden estar vacios.");
-      return;
+    handleValidation(name, value)
+  }
+
+  const handleSubmit = async e => {
+    e.preventDefault()
+
+    if (!handleFormValidation()) {
+      return
     }
 
     try {
-      const hashedPassword = await hashPassword(formData.password);
+      const hashedPassword = await hashPassword(formData.password)
       const updatedFormData = {
         ...formData,
-        password: hashedPassword,
-      };
-      const { data, status } = await axios.post("/register", updatedFormData);
+        password: hashedPassword
+      }
+      const { data, status } = await axios.post('/register', updatedFormData)
       if (status === 200) {
         setEstado({
           message: data.message,
           estado: status
-        });
+        })
       }
     } catch (error) {
-      console.error("Error during form submission", error);
+      console.error('Error during form submission', error)
       /*
       const { data, status } = error.response;
       setEstado({
@@ -64,13 +80,20 @@ function RegistrarPage() {
       });
       */
     }
-  };
+  }
 
   return (
     <>
-      <RegistroBasico estado={estado} formData={formData} handleChange={handleChange} handleSubmit={handleSubmit} />
+      <RegistroBasico
+        estado={estado}
+        formData={formData}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        errors={errors}
+        isFormValid={handleFormValidation}
+      />
     </>
-  );
+  )
 }
 
-export default RegistrarPage;
+export default RegistrarPage

@@ -250,9 +250,9 @@ export default function Index({
               <div className="card-footer text-center">
                 <div className="small">
                   <a
-                    style={{ cursor: "pointer" }}
-                    className="link-primary"
-                    href="/privado/Funcionario/Registro/ExamenAsignatura"
+                    style={{ cursor: 'pointer' }}
+                    className='link-primary'
+                    href='/privado/Funcionario/Registro/AltaExamen'
                   >
                     Reintentar
                   </a>

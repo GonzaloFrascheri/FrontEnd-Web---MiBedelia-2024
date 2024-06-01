@@ -1,3 +1,5 @@
+import validators from './validators'
+
 export async function hashPassword (password) {
   // Convert the password string to an ArrayBuffer
   const encoder = new TextEncoder()
@@ -25,4 +27,53 @@ export function createLocalDateFromString (dateString) {
   // Crear una fecha con el tiempo local basado en una cadena en formato yyyy-mm-dd
   const [year, month, day] = dateString.split('-').map(Number)
   return new Date(year, month - 1, day) // El mes se ajusta porque va de 0 a 11
+}
+
+export function crearSecuencia (n) {
+  return Array.from({ length: 2 * n }, (_, i) => i + 1)
+}
+
+export function handleRegisterFormValidation (name, value) {
+  let error = ''
+
+  if (name === 'ci') {
+    error = validators.validateRequired(value)
+    if (!error) {
+      error = validators.validateCi(value)
+    }
+  } else if (name === 'password') {
+    error = validators.validateRequired(value)
+    if (!error) {
+      error = validators.validatePassword(value)
+    }
+  } else if (name === 'email') {
+    error = validators.validateRequired(value)
+    if (!error) {
+      error = validators.validateEmail(value)
+    }
+  } else {
+    error = validators.validateRequired(value)
+  }
+
+  return error
+}
+
+export function isFormValid (errors, formData) {
+  return (
+    Object.values(errors).every(error => error === '') &&
+    Object.values(formData).every(value => value !== '')
+  )
+}
+
+export function compararDias (a, b) {
+  const diasOrdenados = ['LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES']
+  return diasOrdenados.indexOf(a) - diasOrdenados.indexOf(b)
+}
+
+export function compararHoras (a, b) {
+  // Parsear las horas a objetos Date
+  const horaA = new Date(`2000-01-01T${a}`)
+  const horaB = new Date(`2000-01-01T${b}`)
+
+  return horaA > horaB
 }

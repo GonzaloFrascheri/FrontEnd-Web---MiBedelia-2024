@@ -16,10 +16,16 @@ const validators = {
     return value.trim().length > 0 ? '' : 'Este campo es requerido.'
   },
 
-  validateEmail:  email => {
+  validateEmail: email => {
     return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
-     ? ''
+      ? ''
       : 'El correo electrónico no es válido.'
+  },
+
+  validateTime: time => {
+    return /^(?:[01][0-9]|2[0-3]):[0-5][0-9]$/.test(time)
+      ? ''
+      : 'El formato de hora es incorrecto.'
   }
 }
 
