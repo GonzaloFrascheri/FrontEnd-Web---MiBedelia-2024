@@ -39,6 +39,31 @@ export default function Index ({
                     />
                   </div>
                   <div className='mb-3'>
+                    <label htmlFor='listaDeCarrera'>Lista de carreras</label>
+                    <select
+                      className='form-control'
+                      id='listaDeCarrera'
+                      name='idCarrera'
+                      value={formData.idCarrera}
+                      onChange={handleChange}
+                      required
+                    >
+                      <option value='' disabled selected>
+                        Seleccione una carrera
+                      </option>
+                      {listaCarrera.length > 0 ? (
+                        listaCarrera.map(carrera => (
+                          <option key={carrera.id} value={carrera.id}>
+                            {carrera.nombre}
+                          </option>
+                        ))
+                      ) : (
+                        <option>No se recibieron datos aún</option>
+                      )}
+                    </select>
+                  </div>
+
+                  <div className='mb-3'>
                     <label htmlFor='gradoMateria' className='form-label'>
                       Semestre:
                     </label>
@@ -61,30 +86,6 @@ export default function Index ({
                           </option>
                         )
                       })}
-                    </select>
-                  </div>
-                  <div className='mb-3'>
-                    <label htmlFor='listaDeCarrera'>Lista de carreras</label>
-                    <select
-                      className='form-control'
-                      id='listaDeCarrera'
-                      name='idCarrera'
-                      value={formData.idCarrera}
-                      onChange={handleChange}
-                      required
-                    >
-                      <option value='' disabled selected>
-                        Seleccione una carrera
-                      </option>
-                      {listaCarrera.length > 0 ? (
-                        listaCarrera.map(carrera => (
-                          <option key={carrera.id} value={carrera.id}>
-                            {carrera.nombre}
-                          </option>
-                        ))
-                      ) : (
-                        <option>No se recibieron datos aún</option>
-                      )}
                     </select>
                   </div>
                 </div>

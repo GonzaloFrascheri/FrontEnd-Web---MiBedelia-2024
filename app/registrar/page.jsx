@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import RegistroBasico from '@/app/componentes/registro/registroBasico.jsx'
 import axios from '@/utils/axios'
-import { hashPassword, handleRegisterFormValidation } from '@/utils/utils'
+import { hashPassword, handleRegisterFormValidation, isFormValid } from '@/utils/utils'
 
 function RegistrarPage () {
   const [estado, setEstado] = useState({
@@ -27,11 +27,8 @@ function RegistrarPage () {
     password: null
   })
 
-  const isFormValid = () => {
-    return (
-      Object.values(errors).every(error => error === '') &&
-      Object.values(formData).every(value => value !== '')
-    )
+  const handleFormValidation = () => {
+    return isFormValid(errors, formData)
   }
 
   const handleValidation = (name, value) => {
@@ -56,7 +53,7 @@ function RegistrarPage () {
   const handleSubmit = async e => {
     e.preventDefault()
 
-    if (!isFormValid()) {
+    if (!handleFormValidation()) {
       return
     }
 
@@ -93,7 +90,7 @@ function RegistrarPage () {
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         errors={errors}
-        isFormValid={isFormValid}
+        isFormValid={handleFormValidation}
       />
     </>
   )

@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import DatePicker from 'react-datepicker'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner, faSearch } from '@fortawesome/free-solid-svg-icons'
 import DataTable from 'react-data-table-component'
+import MaskedInput from 'react-text-mask'
 import 'react-datepicker/dist/react-datepicker.css'
+import { compararDias } from '@/utils/utils'
+
+const posiblesDias = ['LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES']
 
 export default function Index ({
   listaAsignaturas,
@@ -12,7 +15,10 @@ export default function Index ({
   handleChange,
   handleSubmit,
   formData,
-  estado
+  estado,
+  errors,
+  isFormValid,
+  handleRemoveDay
 }) {
   const [selectedDocente, setSelectedDocente] = useState({
     id: null,
@@ -22,6 +28,7 @@ export default function Index ({
   })
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState(listaDocentes)
+  const [diasDisponibles, setDiasDisponibles] = useState(posiblesDias)
   const columnas = [
     {
       name: 'id',
@@ -46,15 +53,6 @@ export default function Index ({
     }
   ]
 
-  const handleDateChange = date => {
-    handleChange({
-      target: {
-        name: 'Horario',
-        value: date //format(date, 'yyyy-MM-dd')
-      }
-    })
-  }
-
   function Loader () {
     return (
       <div className='text-center'>
@@ -74,9 +72,25 @@ export default function Index ({
 
   const handleSelectDocente = docente => {
     setSelectedDocente(docente)
-    formData.ciDocente = docente.ci
+    const docenteData = {
+      target: {
+        name: 'ciDocente',
+        value: docente.ci
+      }
+    }
+    handleChange(docenteData)
     // Cerrar el modal
     document.querySelector('#docenteModal .btn-close').click()
+  }
+
+  const removerDia = dia => {
+    handleRemoveDay(dia)
+    setDiasDisponibles(prevState => [...prevState, dia])
+  }
+
+  const seleccionarDia = e => {
+    handleChange(e)
+    setDiasDisponibles(prevState => prevState.filter(item => item !== e.target.value))
   }
 
   const tableHeaderstyle = {
@@ -100,7 +114,7 @@ export default function Index ({
             <form onSubmit={handleSubmit}>
               <div className='card-body'>
                 <div className='row'>
-                  <div className='col-md-6'>
+                  <div>
                     <div className='mb-3'>
                       <label htmlFor='listaAsignatura'>
                         Lista de asignaturas
@@ -123,26 +137,53 @@ export default function Index ({
                           <option>No se recibieron datos aún</option>
                         )}
                       </select>
+                      {errors.idAsignatura && errors.idAsignatura !== '' && (
+                        <span className='text-danger text-xs'>
+                          {errors.idAsignatura}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
-                {/*<div className="mb-3">
-                                            <label htmlFor="diasDictados" className="form-label">Dias dictados:</label>
-                                            <input
-                                                type="text"
-                                                id="diasDictados"
-                                                name="diasDictados"
-                                                value={formData.diasDictados}
-                                                onChange={handleChange}
-                                                className="form-control"
-                                                required
-                                            />
-                                        </div>*/}
+                <div className='mb-3'>
+                  <label htmlFor='diasDictados' className='form-label'>
+                    Días dictados:
+                  </label>
+                  <select
+                    id='diasDictados'
+                    name='diasDictados'
+                    value={''}
+                    onChange={seleccionarDia}
+                    className='form-control'
+                  >
+                    <option value='' disabled>
+                      Seleccione un día
+                    </option>
+                    {diasDisponibles.sort(compararDias).map(dia => (
+                      <option key={dia} value={dia}>
+                        {dia}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className='mb-3'>
+                  {formData.diasDictados.map(dia => (
+                    <span
+                      key={dia}
+                      className='badge bg-primary me-2 mb-2'
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => removerDia(dia)}
+                    >
+                      {dia}
+                    </span>
+                  ))}
+                </div>
                 <div className='mb-3'>
                   <label htmlFor='horarioInicio' className='form-label'>
                     Hora inicio:
                   </label>
-                  <input
+                  <MaskedInput
+                    mask={[/^([0-2])/, /([0-9])/, ':', /[0-5]/, /[0-9]/]}
                     type='string'
                     id='horarioInicio'
                     name='horarioInicio'
@@ -151,13 +192,20 @@ export default function Index ({
                     className='form-control'
                     required
                   />
+                  {errors.horarioInicio && errors.horarioInicio !== '' && (
+                    <span className='text-danger text-xs'>
+                      {errors.horarioInicio}
+                    </span>
+                  )}
                 </div>
                 <div className='mb-3'>
                   <label htmlFor='horarioFin' className='form-label'>
                     Hora fin:
                   </label>
-                  <input
+
+                  <MaskedInput
                     type='string'
+                    mask={[/^([0-2])/, /([0-9])/, ':', /[0-5]/, /[0-9]/]}
                     id='horarioFin'
                     name='horarioFin'
                     value={formData.horarioFin}
@@ -165,6 +213,12 @@ export default function Index ({
                     className='form-control'
                     required
                   />
+
+                  {errors.horarioFin && errors.horarioFin !== '' && (
+                    <span className='text-danger text-xs'>
+                      {errors.horarioFin}
+                    </span>
+                  )}
                 </div>
                 <div className='mb-3'>
                   <label htmlFor='codigo' className='form-label'>
@@ -199,6 +253,11 @@ export default function Index ({
                       <FontAwesomeIcon icon={faSearch} />
                     </span>
                   </div>
+                  {errors.ciDocente && errors.ciDocente !== '' && (
+                    <span className='text-danger text-xs'>
+                      {errors.ciDocente}
+                    </span>
+                  )}
                 </div>
               </div>
               <div
@@ -217,7 +276,11 @@ export default function Index ({
                 >
                   Volver
                 </a>
-                <button type='submit' className='btn btn-primary'>
+                <button
+                  disabled={!isFormValid()}
+                  type='submit'
+                  className='btn btn-primary'
+                >
                   Crear horario
                 </button>
               </div>

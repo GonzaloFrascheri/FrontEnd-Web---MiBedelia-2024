@@ -1,4 +1,4 @@
-import validators from "./validators"
+import validators from './validators'
 
 export async function hashPassword (password) {
   // Convert the password string to an ArrayBuffer
@@ -54,6 +54,26 @@ export function handleRegisterFormValidation (name, value) {
   } else {
     error = validators.validateRequired(value)
   }
-  
+
   return error
+}
+
+export function isFormValid (errors, formData) {
+  return (
+    Object.values(errors).every(error => error === '') &&
+    Object.values(formData).every(value => value !== '')
+  )
+}
+
+export function compararDias (a, b) {
+  const diasOrdenados = ['LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES']
+  return diasOrdenados.indexOf(a) - diasOrdenados.indexOf(b)
+}
+
+export function compararHoras (a, b) {
+  // Parsear las horas a objetos Date
+  const horaA = new Date(`2000-01-01T${a}`)
+  const horaB = new Date(`2000-01-01T${b}`)
+
+  return horaA > horaB
 }
