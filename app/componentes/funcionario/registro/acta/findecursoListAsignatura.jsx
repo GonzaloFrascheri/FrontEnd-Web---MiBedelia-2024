@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 export default function FinDeCursoListAsignatura({
+    selectedCarreraNombre,
     listaAsignaturas,
     handleAsignaturaChange,
     handleSubmit,
@@ -14,73 +15,45 @@ export default function FinDeCursoListAsignatura({
             <div className="card shadow-lg border-0 rounded-lg">
                 <div className="card-header justify-content-center">
                     <h3 className="fw-light">
-                        Registro de un exámen relacionado a una asignatura
+                        Elegir Asignatura 
+                        <span className="badge bg-primary text-white ms-5">
+                            carrera seleccionada: <b>{selectedCarreraNombre}</b>
+                        </span>
                     </h3>
                 </div>
                 {estado.message === "" || estado.continuar === false ? (
-                    <form onSubmit={handleSubmit} enctype="multipart/form-data">
-                        <div className="card-body">
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="mb-3">
-                                        <label htmlFor="listaAsignatura">
-                                            Lista de asignaturas
-                                        </label>
-                                        <select
-                                            className="form-control"
-                                            id="listaAsignatura"
-                                            selected={formData?.idAsignatura || ""}
-                                            onChange={handleAsignaturaChange}
-                                            >
-                                            <option value="" disabled selected>
-                                                Seleccione una asignatura
-                                            </option>
-                                            {listaAsignaturas.length > 0 ? (
-                                                listaAsignaturas.map((asignatura) => (
-                                                    <option
-                                                        key={asignatura.id}
-                                                        value={asignatura.id}>
-                                                        {asignatura.nombre}
-                                                    </option>
-                                                ))
-                                            ) : (
-                                                <option>No se recibieron datos aún</option>
-                                            )}
-                                        </select>
-                                    </div>
-                                    <div className="col-md-12">
-                                        <div className="mb-3">
-                                            <label htmlFor="subirExcell">
-                                                Cargar Archivo Excell
-                                            </label>
-                                        </div>
-                                        <input
-                                            type="file"
-                                            className="form-control"
-                                            id="subirExcell"
-                                            name="subirExcell"
-                                            required
-                                        />
-                                    </div>
+                    <div className="card-body">
+                        <div className="row">
+                            <div className="col-md-12">
+                                <div className="mb-3">
+                                    <label htmlFor="listaAsignatura">
+                                        Lista de asignaturas
+                                    </label>
+                                    <select
+                                        className="form-control"
+                                        id="listaAsignatura"
+                                        selected={formData?.idAsignatura || ""}
+                                        onChange={handleAsignaturaChange}
+                                        >
+                                        <option value="" disabled selected>
+                                            Seleccione una asignatura
+                                        </option>
+                                        {listaAsignaturas.length > 0 ? (
+                                            listaAsignaturas.map((asignatura) => (
+                                                <option
+                                                    key={asignatura.id}
+                                                    value={asignatura.id}>
+                                                    {asignatura.nombre}
+                                                </option>
+                                            ))
+                                        ) : (
+                                            <option>No se recibieron datos aún</option>
+                                        )}
+                                    </select>
                                 </div>
                             </div>
                         </div>
-                        <div className="card-footer  d-flex align-items-center justify-content-between">
-                            <button
-                                type="button"
-                                className="btn btn-secondary"
-                            >
-                                Descargar Planilla en Excell
-                            </button>
-                            <button
-                                disabled={!isFormValid()}
-                                type="submit"
-                                className="btn btn-primary"
-                            >
-                                Crear exámen
-                            </button>
-                        </div>
-                    </form>
+                    </div>
                 ) : (
                     <>
                         <div className="card-body">

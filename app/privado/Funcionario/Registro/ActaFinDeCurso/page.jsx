@@ -7,6 +7,7 @@ import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado.jsx'
 import FinDeCursoPasos from '@/app/componentes/funcionario/registro/acta/findecursoPasos.jsx'
 import FinDeCursoListCarrera from '@/app/componentes/funcionario/registro/acta/findecursoListCarrera.jsx'
 import FinDeCursoListAsignatura from '@/app/componentes/funcionario/registro/acta/findecursoListAsignatura.jsx'
+import FinDeCursoRegistrarExamen from '@/app/componentes/funcionario/registro/acta/findecursoRegistrarExamen.jsx'
 import { useAuth } from '@/context/AuthProvider'
 
 export default function FuncionarioActaFinDeCurso () {
@@ -16,6 +17,14 @@ export default function FuncionarioActaFinDeCurso () {
     const [estado, setEstado] = useState({
         message: '',
         estado: ''
+    });
+    // formData
+    const [formData, setFormData] = useState({
+        idCarrera: null,
+        nombreCarrera: '',
+        idAsignatura: null,
+        nombreAsignatura: '',
+        archivoExcell: null,
     });
     const authData = useAuth();
     useEffect(() => {
@@ -28,11 +37,14 @@ export default function FuncionarioActaFinDeCurso () {
     const toggleSidebar = () => {
         setIsSidebarToggled(!isSidebarToggled)
     }
+    const [finDeCursoDto, setFinDeCursoDto] = useState([]);
     // Carreras
     const [listaCarrera, setListaCarrera] = useState([]);
     const [selectedCarreraId, setSelectedCarreraId] = useState(null);
-    const handleCarreraChange = (id) => {
-        setSelectedCarreraId(id);
+    const [selectedCarreraNombre, setSelectedCarreraNombre] = useState('');
+    const handleCarreraChange = (selectedCarrera) => {
+        setSelectedCarreraId(selectedCarrera.id);
+        setSelectedCarreraNombre(selectedCarrera.nombre);
     };
     // Fetch lista de carreras
     useEffect(() => {
@@ -50,13 +62,19 @@ export default function FuncionarioActaFinDeCurso () {
     // Asignaturas
     const [listaAsignatura, setListaAsignatura] = useState([]);
     const [selectedAsignaturaId, setSelectedAsignaturaId] = useState(null);
+    const [selectedAsignaturaNombre, setSelectedAsignaturaNombre] = useState('');
     const handleAsignaturaChange = (event) => {
-        const selectedId = event.target.value;
+        const selectedId = Number(event.target.value);
+        const selectedAsignatura = listaAsignatura.find(asignatura => asignatura.id === selectedId);
+        setSelectedAsignaturaId(selectedAsignatura.id);
+        setSelectedAsignaturaNombre(selectedAsignatura.nombre);
         setFormData({
-          ...formData,
-          idAsignatura: selectedId,
+            ...formData,
+            idCarrera: selectedCarreraId,
+            nombreCarrera: selectedCarreraNombre,
+            idAsignatura: selectedAsignatura.id,
+            nombreAsignatura: selectedAsignatura.nombre,
         });
-        setSelectedAsignaturaId(selectedId);
     };
     // Fetch lista de asignaturas
     useEffect(() => {
@@ -73,15 +91,22 @@ export default function FuncionarioActaFinDeCurso () {
         fetchListaAsignaturas();
     }, [selectedCarreraId]);
 
-    // formData
-    const [formData, setFormData] = useState({
-        idAsignatura: null,
-        idCarrera: null,
-        archivoExcell: null,
-    });
+    // Fetch FinDeCursoDto
+    useEffect(() => {
+        const fetchListaFinDeCursoDto = async () => {
+            try {
+                const response = await axios.get('Funcionario/generarActa?idAsignatura=' + selectedAsignaturaId);
+                setFinDeCursoDto(response.data);
+            } catch (error) {
+                console.error('Error fetching listaAsignatura:', error);
+            }
+        };
+        fetchListaFinDeCursoDto();
+    }, [selectedAsignaturaId]);
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
-    
+        /*
         // Crear un objeto FormData para manejar los datos del formulario
         const formDataToSend = new FormData();
     
@@ -107,9 +132,10 @@ export default function FuncionarioActaFinDeCurso () {
         } catch (error) {
             console.error('Error en la solicitud:', error);
         }
+        */
     };
     const isFormValid = () =>
-        Object.values(formData).every((value) => value !== "");
+        Object.values(formData).every((value) => value !== null);
 
     return (
         <body className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}>
@@ -130,15 +156,25 @@ export default function FuncionarioActaFinDeCurso () {
                                         onCarreraChange={handleCarreraChange}
                                     />
                                 ) : (
-                                    <FinDeCursoListAsignatura
-                                        listaAsignaturas={listaAsignatura}
-                                        handleAsignaturaChange={handleAsignaturaChange}
-                                        handleSubmit={handleSubmit}
-                                        formData={formData}
-                                        estado={estado}
-                                        isFormValid={isFormValid}
-                                    />
-                                )}
+                                    selectedAsignaturaId === null ? (
+                                        <FinDeCursoListAsignatura
+                                            selectedCarreraNombre={selectedCarreraNombre}
+                                            listaAsignaturas={listaAsignatura}
+                                            handleAsignaturaChange={handleAsignaturaChange}
+                                            handleSubmit={handleSubmit}
+                                            formData={formData}
+                                            estado={estado}
+                                            isFormValid={isFormValid}
+                                        />
+                                    ) : (
+                                        <FinDeCursoRegistrarExamen 
+                                            handleSubmit={handleSubmit}
+                                            formData={formData}
+                                            isFormValid={isFormValid}
+                                            FinDeCursoDto={finDeCursoDto}
+                                        />
+                                    )
+                                )};
                             </main>
                         </div>
                     </div>

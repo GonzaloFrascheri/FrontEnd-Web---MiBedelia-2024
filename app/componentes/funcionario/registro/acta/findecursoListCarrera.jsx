@@ -1,8 +1,13 @@
 export default function FinDeCursoListCarrera ({ listaCarrera, onCarreraChange }) {
     
     const handleChange = (event) => {
-        const selectedId = event.target.value;
-        onCarreraChange(selectedId);
+        const selectedId = Number(event.target.value);
+        const selectedCarrera = listaCarrera.find(
+            (carrera) => carrera.id === selectedId
+        );
+        if (selectedCarrera) {
+            onCarreraChange({ id: selectedId, nombre: selectedCarrera.nombre });
+        }
     };
     
     return (
