@@ -1,3 +1,5 @@
+import validators from "./validators"
+
 export async function hashPassword (password) {
   // Convert the password string to an ArrayBuffer
   const encoder = new TextEncoder()
@@ -27,6 +29,31 @@ export function createLocalDateFromString (dateString) {
   return new Date(year, month - 1, day) // El mes se ajusta porque va de 0 a 11
 }
 
-export function crearSecuencia(n) {
-  return Array.from({ length: 2 * n }, (_, i) => i + 1);
+export function crearSecuencia (n) {
+  return Array.from({ length: 2 * n }, (_, i) => i + 1)
+}
+
+export function handleRegisterFormValidation (name, value) {
+  let error = ''
+
+  if (name === 'ci') {
+    error = validators.validateRequired(value)
+    if (!error) {
+      error = validators.validateCi(value)
+    }
+  } else if (name === 'password') {
+    error = validators.validateRequired(value)
+    if (!error) {
+      error = validators.validatePassword(value)
+    }
+  } else if (name === 'email') {
+    error = validators.validateRequired(value)
+    if (!error) {
+      error = validators.validateEmail(value)
+    }
+  } else {
+    error = validators.validateRequired(value)
+  }
+  
+  return error
 }

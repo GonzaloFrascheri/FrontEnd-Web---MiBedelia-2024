@@ -252,7 +252,7 @@ export default function Index ({
                   <a
                     style={{ cursor: 'pointer' }}
                     className='link-primary'
-                    href='/privado/Funcionario/Registro/ExamenAsignatura'
+                    href='/privado/Funcionario/Registro/AltaExamen'
                   >
                     Reintentar
                   </a>
