@@ -55,8 +55,18 @@ export function GenerarPdfActaFinDeCurso() {
           styles: { halign: 'center' },
         });
       
-        // Posicionar la tabla de estudiantes después de la tabla de encabezado
-        const startY = doc.autoTable.previous.finalY + 10;
+        // Posicionar la leyenda después de la tabla de encabezado
+        const legendY = doc.autoTable.previous.finalY + 10;
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(10);
+        const legendText = '* Las notas posibles son: Exonerado, A examen, Recursa';
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const legendX = pageWidth - doc.getTextWidth(legendText) - 10; // Ajustar al margen derecho con un margen de 10 unidades
+
+        doc.text(legendText, legendX, legendY);
+    
+        // Posicionar la tabla de estudiantes después de la leyenda
+        const startY = legendY + 10;
 
         if (estudiantes.length === 0) {
             // Añadir mensaje si no hay estudiantes
@@ -67,7 +77,7 @@ export function GenerarPdfActaFinDeCurso() {
             // Crear la tabla de estudiantes
             doc.autoTable({
                 startY: startY, // posición Y inicial para la tabla
-                head: [['#', 'Nombre', 'Apellido', 'CI', 'Teléfono', 'Email']], // títulos de las columnas
+                head: [['#', 'Nombre', 'Apellido', 'CI', 'Teléfono', 'Email', 'Nota']], // títulos de las columnas
                 body: estudiantes.map((estudiante, index) => [
                     index + 1,
                     estudiante.nombre,
@@ -75,6 +85,7 @@ export function GenerarPdfActaFinDeCurso() {
                     estudiante.ci,
                     estudiante.telefono,
                     estudiante.email,
+                    '' // nota vacía: Exnonerado, A examen, Recursa
                 ]), // datos de los estudiantes
                 styles: { fillColor: [255, 255, 255] }, // color de fondo blanco por defecto
                 alternateRowStyles: { fillColor: [240, 240, 240] }, // color de fondo alterno
