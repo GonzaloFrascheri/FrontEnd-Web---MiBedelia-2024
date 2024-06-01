@@ -32,7 +32,7 @@ export default function FinDeCursoPasos({ selectedCarreraId, selectedAsignaturaI
     return (
         <div className="step step-warning py-4 mt-n15">
             <div className={estado.paso1}>
-                <a className="step-item-link" href="/privado/Funcionario/Generar/ActaFinDeCurso">Elegir Carrera</a>
+                <a className="step-item-link" href="/privado/Funcionario/Registro/ActaFinDeCurso">Elegir Carrera</a>
             </div>
             <div className={estado.paso2}>
                 <a

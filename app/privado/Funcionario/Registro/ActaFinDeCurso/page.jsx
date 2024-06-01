@@ -10,13 +10,27 @@ import FinDeCursoListAsignatura from '@/app/componentes/funcionario/registro/act
 import { useAuth } from '@/context/AuthProvider'
 
 export default function FuncionarioActaFinDeCurso () {
-
-    const authData = useAuth()
+    
+    // Estado
+    const [userData, setUserData] = useState(null)
+    const [estado, setEstado] = useState({
+        message: '',
+        estado: ''
+    });
+    const authData = useAuth();
+    useEffect(() => {
+        if (authData && !userData) {
+        setUserData(authData)
+        }
+    }, [authData, userData]);
     const breadcrumbs = ['privado', 'Funcionario', 'Registro', 'ActaFinDeCurso']
     const [isSidebarToggled, setIsSidebarToggled] = useState(false)
-    const [userData, setUserData] = useState(null)
+    const toggleSidebar = () => {
+        setIsSidebarToggled(!isSidebarToggled)
+    }
     // Carreras
     const [listaCarrera, setListaCarrera] = useState([]);
+    const [selectedCarreraId, setSelectedCarreraId] = useState(null);
     const handleCarreraChange = (id) => {
         setSelectedCarreraId(id);
     };
@@ -30,26 +44,72 @@ export default function FuncionarioActaFinDeCurso () {
                 console.error('Error fetching listaCarreras:', error);
             }
         };
-
         fetchListaCarreras();
     }, []);
 
-    // Estado
-    const [estado, setEstado] = useState({
-        message: '',
-        estado: ''
-    })
-    
-    const toggleSidebar = () => {
-        setIsSidebarToggled(!isSidebarToggled)
-    }
-    
+    // Asignaturas
+    const [listaAsignatura, setListaAsignatura] = useState([]);
+    const [selectedAsignaturaId, setSelectedAsignaturaId] = useState(null);
+    const handleAsignaturaChange = (event) => {
+        const selectedId = event.target.value;
+        setFormData({
+          ...formData,
+          idAsignatura: selectedId,
+        });
+        setSelectedAsignaturaId(selectedId);
+    };
+    // Fetch lista de asignaturas
     useEffect(() => {
-        if (authData && !userData) {
-        setUserData(authData)
-        }
-    }, [authData, userData])
+        const fetchListaAsignaturas = async () => {
+            try {
+              const response = await axios.get(
+                "Funcionario/listarAsignatura?idCarrera=" + selectedCarreraId
+              );
+              setListaAsignatura(response.data);
+            } catch (error) {
+              console.error("Error fetching listaAsignatura:", error);
+            }
+        };
+        fetchListaAsignaturas();
+    }, [selectedCarreraId]);
+
+    // formData
+    const [formData, setFormData] = useState({
+        idAsignatura: null,
+        idCarrera: null,
+        archivoExcell: null,
+    });
+    const handleSubmit = async (event) => {
+        event.preventDefault();
     
+        // Crear un objeto FormData para manejar los datos del formulario
+        const formDataToSend = new FormData();
+    
+        // Agregar los datos del estado formData al FormData
+        formDataToSend.append('idAsignatura', formData.idAsignatura);
+        formDataToSend.append('archivoExcell', formData.archivoExcell);
+    
+        try {
+            // Enviar los datos al backend
+            const response = await fetch('/tu-endpoint', {
+                method: 'POST',
+                body: formDataToSend
+            });
+    
+            if (response.ok) {
+                // Manejar la respuesta del backend
+                const result = await response.json();
+                console.log('Success:', result);
+                // Aquí puedes agregar lógica adicional después del éxito del envío
+            } else {
+                console.error('Error en la solicitud:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error en la solicitud:', error);
+        }
+    };
+    const isFormValid = () =>
+        Object.values(formData).every((value) => value !== "");
 
     return (
         <body className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}>
@@ -65,9 +125,19 @@ export default function FuncionarioActaFinDeCurso () {
                                 <HeaderPagePrivado breadcrumbs={breadcrumbs}/>
                                 <FinDeCursoPasos selectedCarreraId={selectedCarreraId} selectedAsignaturaId={selectedAsignaturaId} />
                                 {selectedCarreraId === null ? (
-                                    <FinDeCursoListCarrera listaCarrera={listaCarrera} onCarreraChange={handleCarreraChange} />
+                                    <FinDeCursoListCarrera 
+                                        listaCarrera={listaCarrera}
+                                        onCarreraChange={handleCarreraChange}
+                                    />
                                 ) : (
-                                    <FinDeCursoListAsignatura listaAsignatura={listaAsignatura} handleChangeAsignatura={handleChangeAsignatura} selectedAsignaturaId={selectedAsignaturaId} FinDeCursoDto={finDeCursoDto} />
+                                    <FinDeCursoListAsignatura
+                                        listaAsignaturas={listaAsignatura}
+                                        handleAsignaturaChange={handleAsignaturaChange}
+                                        handleSubmit={handleSubmit}
+                                        formData={formData}
+                                        estado={estado}
+                                        isFormValid={isFormValid}
+                                    />
                                 )}
                             </main>
                         </div>

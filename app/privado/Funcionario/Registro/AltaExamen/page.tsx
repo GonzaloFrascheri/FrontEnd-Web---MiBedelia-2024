@@ -16,34 +16,32 @@ function FuncionarioExamenAsignatura() {
     "Registro",
     "AltaExamen",
   ];
+  const [isSidebarToggled, setIsSidebarToggled] = useState(false);
+  const toggleSidebar = () => {
+    setIsSidebarToggled(!isSidebarToggled);
+  };
+  // Carreras
   const [listaCarrera, setListaCarrera] = useState([]);
-  const [listaAsignatura, setListaAsignatura] = useState([]);
-  const [listaDocentes, setListaDocentes] = useState([]);
   const [selectedCarreraId, setSelectedCarreraId] = useState(null);
-  const [selectedAsignaturaId, setSelectedAsignaturaId] = useState(null);
-  const hoy = new Date();
-  const [estado, setEstado] = useState({
-    message: "",
-    estado: "",
-    continuar: false,
-  });
-  const [periodoActivo, setPeriodoActivo] = useState({
-    diaFin: "",
-    diaInicio: "",
-    idPeriodo: "",
-  });
-  const [formData, setFormData] = useState({
-    idAsignatura: "",
-    idPeriodo: "",
-    idDocente: "",
-    anioLectivo: hoy.getFullYear().toString(),
-    fechaExamen: "",
-  });
-
   const handleCarreraChange = (id) => {
     setSelectedCarreraId(id);
   };
+  useEffect(() => {
+    const fetchListaCarreras = async () => {
+      try {
+        const response = await axios.get("Funcionario/listarCarrera");
+        setListaCarrera(response.data);
+      } catch (error) {
+        console.error("Error fetching listaCarreras:", error);
+      }
+    };
 
+    fetchListaCarreras();
+  }, []);
+
+  // Asignaturas
+  const [listaAsignatura, setListaAsignatura] = useState([]);
+  const [selectedAsignaturaId, setSelectedAsignaturaId] = useState(null);
   const handleAsignaturaChange = (event) => {
     const selectedId = event.target.value;
     setFormData({
@@ -52,7 +50,30 @@ function FuncionarioExamenAsignatura() {
     });
     setSelectedAsignaturaId(selectedId);
   };
-
+  useEffect(() => {
+    const fetchListaAsignaturas = async () => {
+      try {
+        const response = await axios.get(
+          "Funcionario/listarAsignatura?idCarrera=" + selectedCarreraId
+        );
+        setListaAsignatura(response.data);
+      } catch (error) {
+        console.error("Error fetching listaAsignatura:", error);
+      }
+    };
+    fetchListaAsignaturas();
+  }, [selectedCarreraId]);
+  
+  // Docentes
+  const [listaDocentes, setListaDocentes] = useState([]);
+  
+  // Fechas
+  const hoy = new Date();
+  const [periodoActivo, setPeriodoActivo] = useState({
+    diaFin: "",
+    diaInicio: "",
+    idPeriodo: "",
+  });
   const handleChange = (e) => {
     const { name, value } = e.target;
     const formattedDate = parseDateToISO(value);
@@ -62,6 +83,19 @@ function FuncionarioExamenAsignatura() {
     }));
   };
 
+
+  const [estado, setEstado] = useState({
+    message: "",
+    estado: "",
+    continuar: false,
+  });
+  const [formData, setFormData] = useState({
+    idAsignatura: "",
+    idPeriodo: "",
+    idDocente: "",
+    anioLectivo: hoy.getFullYear().toString(),
+    fechaExamen: "",
+  });
   const isFormValid = () =>
     Object.values(formData).every((value) => value !== "");
 
@@ -107,24 +141,6 @@ function FuncionarioExamenAsignatura() {
     }
   };
 
-  const [isSidebarToggled, setIsSidebarToggled] = useState(false);
-  const toggleSidebar = () => {
-    setIsSidebarToggled(!isSidebarToggled);
-  };
-
-  useEffect(() => {
-    const fetchListaCarreras = async () => {
-      try {
-        const response = await axios.get("Funcionario/listarCarrera");
-        setListaCarrera(response.data);
-      } catch (error) {
-        console.error("Error fetching listaCarreras:", error);
-      }
-    };
-
-    fetchListaCarreras();
-  }, []);
-
   useEffect(() => {
     const fetchListaDocentes = async () => {
       try {
@@ -136,20 +152,6 @@ function FuncionarioExamenAsignatura() {
     };
     fetchListaDocentes();
   }, []);
-
-  useEffect(() => {
-    const fetchListaAsignaturas = async () => {
-      try {
-        const response = await axios.get(
-          "Funcionario/listarAsignatura?idCarrera=" + selectedCarreraId
-        );
-        setListaAsignatura(response.data);
-      } catch (error) {
-        console.error("Error fetching listaAsignatura:", error);
-      }
-    };
-    fetchListaAsignaturas();
-  }, [selectedCarreraId]);
 
   useEffect(() => {
     const obtenerPeriodoActivo = async () => {
