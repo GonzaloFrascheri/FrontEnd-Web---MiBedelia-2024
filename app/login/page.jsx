@@ -52,7 +52,8 @@ function LoginPage() {
         ...credentials,
         password: await hashPassword(credentials.password),
       };
-
+      storage.clearToken();//evita que si se cerro mal la seccion te tire unautorice
+      
       // Send request to server
       const { data, status } = await axios.post("/login", formData);
 
@@ -147,18 +148,21 @@ function LoginPage() {
                         </div>
                       </form>
                     </div>
-                    <hr className="my-0" />
-                    <div className="card-body px-5 py-4">
-                      <div className="small text-center">
-                        ¿Eres nuevo aquí?
-                        <a className="ms-2" href="./registrar">Regístrate!</a>
-                      </div>
+                   <hr className="my-0" />
+                  <div className="card-body px-5 py-4">
+                    <div className="small text-center">
+                      <a href="./recuperar" className="ms-2">¿Olvidaste tu contraseña?</a>
                     </div>
-                    <div className="card-footer text-center">
-                      <div className="small">
-                        <a href="./">Volver al inicio</a>
-                      </div>
+                    <div className="small text-center">
+                      ¿Eres nuevo aquí?
+                      <a className="ms-2" href="./registrar">Regístrate!</a>
                     </div>
+                  </div>
+                  <div className="card-footer text-center">
+                    <div className="small">
+                      <a href="./">Volver al inicio</a>
+                    </div>
+                  </div>
                   </div>
                 </div>
               </div>
