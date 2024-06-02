@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import DataTable from 'react-data-table-component'
 
-export default function FinDeCursoRegistrarExamen({
+export default function FinDeCursoRegistrar({
     formData,
     setFormData,
     estado,

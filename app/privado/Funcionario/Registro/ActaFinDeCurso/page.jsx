@@ -7,7 +7,7 @@ import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado.jsx'
 import FinDeCursoPasos from '@/app/componentes/funcionario/registro/acta/findecursoPasos.jsx'
 import FinDeCursoListCarrera from '@/app/componentes/funcionario/registro/acta/findecursoListCarrera.jsx'
 import FinDeCursoListAsignatura from '@/app/componentes/funcionario/registro/acta/findecursoListAsignatura.jsx'
-import FinDeCursoRegistrarExamen from '@/app/componentes/funcionario/registro/acta/findecursoRegistrarExamen.jsx'
+import FinDeCursoRegistrar from '@/app/componentes/funcionario/registro/acta/findecursoRegistrar.jsx'
 import { useAuth } from '@/context/AuthProvider'
 
 export default function FuncionarioActaFinDeCurso () {
@@ -147,7 +147,7 @@ export default function FuncionarioActaFinDeCurso () {
                                             isFormValid={isFormValid}
                                         />
                                     ) : (
-                                        <FinDeCursoRegistrarExamen 
+                                        <FinDeCursoRegistrar 
                                             setFormData={setFormData}
                                             estado={estado}
                                             setEstado={setEstado}
