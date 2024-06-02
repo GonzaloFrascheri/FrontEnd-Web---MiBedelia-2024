@@ -16,7 +16,12 @@ export default function FuncionarioActaFinDeCurso () {
     const [userData, setUserData] = useState(null)
     const [estado, setEstado] = useState({
         message: '',
-        estado: ''
+        estado: '',
+        paso: 1,
+        paso1: "step-item active",
+        paso2: "step-item",
+        paso3: "step-item",
+        paso4: "step-item"
     });
     // formData
     const [formData, setFormData] = useState({
@@ -24,7 +29,7 @@ export default function FuncionarioActaFinDeCurso () {
         nombreCarrera: '',
         idAsignatura: null,
         nombreAsignatura: '',
-        archivoExcell: null,
+        archivoExcel: null,
     });
     const authData = useAuth();
     useEffect(() => {
@@ -80,12 +85,14 @@ export default function FuncionarioActaFinDeCurso () {
     useEffect(() => {
         const fetchListaAsignaturas = async () => {
             try {
-              const response = await axios.get(
-                "Funcionario/listarAsignatura?idCarrera=" + selectedCarreraId
-              );
-              setListaAsignatura(response.data);
+                const response = await axios.get("Funcionario/listarAsignatura?idCarrera=" + selectedCarreraId);
+                setEstado({
+                    ...estado,
+                    paso: 2,
+                });
+                setListaAsignatura(response.data);
             } catch (error) {
-              console.error("Error fetching listaAsignatura:", error);
+                console.error("Error fetching listaAsignatura:", error);
             }
         };
         fetchListaAsignaturas();
@@ -96,6 +103,10 @@ export default function FuncionarioActaFinDeCurso () {
         const fetchListaFinDeCursoDto = async () => {
             try {
                 const response = await axios.get('Funcionario/generarActa?idAsignatura=' + selectedAsignaturaId);
+                setEstado({
+                    ...estado,
+                    paso: 3,
+                });
                 setFinDeCursoDto(response.data);
             } catch (error) {
                 console.error('Error fetching listaAsignatura:', error);
@@ -104,36 +115,6 @@ export default function FuncionarioActaFinDeCurso () {
         fetchListaFinDeCursoDto();
     }, [selectedAsignaturaId]);
     
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        /*
-        // Crear un objeto FormData para manejar los datos del formulario
-        const formDataToSend = new FormData();
-    
-        // Agregar los datos del estado formData al FormData
-        formDataToSend.append('idAsignatura', formData.idAsignatura);
-        formDataToSend.append('archivoExcell', formData.archivoExcell);
-    
-        try {
-            // Enviar los datos al backend
-            const response = await fetch('/tu-endpoint', {
-                method: 'POST',
-                body: formDataToSend
-            });
-    
-            if (response.ok) {
-                // Manejar la respuesta del backend
-                const result = await response.json();
-                console.log('Success:', result);
-                // Aquí puedes agregar lógica adicional después del éxito del envío
-            } else {
-                console.error('Error en la solicitud:', response.statusText);
-            }
-        } catch (error) {
-            console.error('Error en la solicitud:', error);
-        }
-        */
-    };
     const isFormValid = () =>
         Object.values(formData).every((value) => value !== null);
 
@@ -149,7 +130,7 @@ export default function FuncionarioActaFinDeCurso () {
                         <div id="layoutAuthentication_content">
                             <main>
                                 <HeaderPagePrivado breadcrumbs={breadcrumbs}/>
-                                <FinDeCursoPasos selectedCarreraId={selectedCarreraId} selectedAsignaturaId={selectedAsignaturaId} />
+                                <FinDeCursoPasos estado={estado} setEstado={setEstado} />
                                 {selectedCarreraId === null ? (
                                     <FinDeCursoListCarrera 
                                         listaCarrera={listaCarrera}
@@ -161,14 +142,15 @@ export default function FuncionarioActaFinDeCurso () {
                                             selectedCarreraNombre={selectedCarreraNombre}
                                             listaAsignaturas={listaAsignatura}
                                             handleAsignaturaChange={handleAsignaturaChange}
-                                            handleSubmit={handleSubmit}
                                             formData={formData}
                                             estado={estado}
                                             isFormValid={isFormValid}
                                         />
                                     ) : (
                                         <FinDeCursoRegistrarExamen 
-                                            handleSubmit={handleSubmit}
+                                            setFormData={setFormData}
+                                            estado={estado}
+                                            setEstado={setEstado}
                                             formData={formData}
                                             isFormValid={isFormValid}
                                             FinDeCursoDto={finDeCursoDto}

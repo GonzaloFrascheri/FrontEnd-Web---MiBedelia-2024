@@ -1,33 +1,41 @@
 import React, { useState, useEffect } from 'react';
 
-export default function FinDeCursoPasos({ selectedCarreraId, selectedAsignaturaId }) {
-    const [estado, setEstado] = useState({
-        paso1: "step-item active",
-        paso2: "step-item",
-        paso3: "step-item"
-    });
-
+export default function FinDeCursoPasos({estado, setEstado}) {
     useEffect(() => {
-        if (selectedCarreraId !== null && selectedAsignaturaId === null) {
+        if (estado.paso === 2) {
             setEstado({
+                ...estado,
                 paso1: "step-item",
                 paso2: "step-item active",
-                paso3: "step-item"
+                paso3: "step-item",
+                paso4: "step-item"
             });
-        } else if (selectedAsignaturaId !== null) {
+        } else if (estado.paso === 3) {
             setEstado({
+                ...estado,
                 paso1: "step-item",
                 paso2: "step-item",
-                paso3: "step-item active"
+                paso3: "step-item active",
+                paso4: "step-item"
+            });
+        } else if (estado.paso === 4) {
+            setEstado({
+                ...estado,
+                paso1: "step-item",
+                paso2: "step-item",
+                paso3: "step-item",
+                paso4: "step-item  active"
             });
         } else {
             setEstado({
+                ...estado,
                 paso1: "step-item active",
                 paso2: "step-item",
-                paso3: "step-item"
+                paso3: "step-item",
+                paso4: "step-item"
             });
         }
-    }, [selectedCarreraId, selectedAsignaturaId]);
+    }, [estado.paso]);
 
     return (
         <div className="step step-warning py-4 mt-n15">
@@ -36,7 +44,7 @@ export default function FinDeCursoPasos({ selectedCarreraId, selectedAsignaturaI
             </div>
             <div className={estado.paso2}>
                 <a
-                    className={`step-item-link ${!selectedCarreraId ? 'disabled' : ''}`}
+                    className={`step-item-link ${!estado.paso === 2 ? 'disabled' : ''}`}
                     href="#!" aria-disabled="true"
                 >
                     Elegir Asignatura
@@ -44,7 +52,15 @@ export default function FinDeCursoPasos({ selectedCarreraId, selectedAsignaturaI
             </div>
             <div className={estado.paso3}>
                 <a
-                    className={`step-item-link ${!selectedAsignaturaId ? 'disabled' : ''}`}
+                    className={`step-item-link ${!estado.paso === 3 ? 'disabled' : ''}`}
+                    href="#!" aria-disabled="true"
+                >
+                    Analizar archivo
+                </a>
+            </div>
+            <div className={estado.paso3}>
+                <a
+                    className={`step-item-link ${!estado.paso === 4 ? 'disabled' : ''}`}
                     href="#!" aria-disabled="true"
                 >
                     Confirmar

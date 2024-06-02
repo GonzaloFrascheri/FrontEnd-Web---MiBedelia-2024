@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
 export default function FinDeCursoListAsignatura({
     selectedCarreraNombre,
     listaAsignaturas,
     handleAsignaturaChange,
-    handleSubmit,
     formData,
     estado,
     isFormValid,
@@ -50,6 +51,19 @@ export default function FinDeCursoListAsignatura({
                                             <option>No se recibieron datos aún</option>
                                         )}
                                     </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card card-icon">
+                            <div class="row no-gutters">
+                                <div class="col-auto card-icon-aside bg-primary">
+                                    <i data-feather="layers"> <FontAwesomeIcon icon={faQuestionCircle} /> </i>
+                                </div>
+                                <div class="col">
+                                    <div class="card-body py-5">
+                                        <h5 class="card-title">Paso 2: Seleccionar una asignatura</h5>
+                                        <p class="card-text">Utilice el selector: "Lista de asignaturas", despliéguelo y seleccione la asignatura correspondiente.</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>

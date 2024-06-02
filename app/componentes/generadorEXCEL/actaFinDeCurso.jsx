@@ -1,9 +1,9 @@
 import React from 'react';
 import * as XLSX from 'xlsx';
 
-export function GenerarExcellActaFinDeCurso() {
+export function GenerarExcelActaFinDeCurso() {
 
-    const EXCELLGenerador = (tmp) => {
+    const EXCELGenerador = (tmp) => {
 
         const { asignatura, semestre, año, docente, estudiantes, logo } = tmp;
     
@@ -30,7 +30,7 @@ export function GenerarExcellActaFinDeCurso() {
             ws_data.push(["No hay estudiantes registrados para esta asignatura."]);
         } else {
             // Añadir encabezados de la tabla de estudiantes
-            ws_data.push(["#", "Nombre", "Apellido", "CI", "Teléfono", "Email", "Nota"]);
+            ws_data.push(["#", "Nombre", "Apellido", "CI", "Teléfono", "Email", "Nota", "id", "idInscripcion"]);
     
             // Añadir datos de los estudiantes
             estudiantes.forEach((estudiante, index) => {
@@ -41,7 +41,9 @@ export function GenerarExcellActaFinDeCurso() {
                     estudiante.ci,
                     estudiante.telefono,
                     estudiante.email,
-                    '' // nota vacía: Exonerado, A examen, Recursa
+                    '', // nota vacía: Exonerado, A examen, Recursa
+                    estudiante.id,
+                    estudiante.idInscripcion
                 ]);
             });
         }
@@ -75,5 +77,5 @@ export function GenerarExcellActaFinDeCurso() {
         document.body.removeChild(link);
     };
 
-    return { EXCELLGenerador };
+    return { EXCELGenerador };
 }

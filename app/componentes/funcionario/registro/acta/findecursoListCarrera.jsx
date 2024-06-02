@@ -1,3 +1,6 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
+
 export default function FinDeCursoListCarrera ({ listaCarrera, onCarreraChange }) {
     
     const handleChange = (event) => {
@@ -34,6 +37,19 @@ export default function FinDeCursoListCarrera ({ listaCarrera, onCarreraChange }
                                     <option>No se recibieron datos aún</option>
                                 )}
                             </select>
+                        </div>
+                        <div class="card card-icon">
+                            <div class="row no-gutters">
+                                <div class="col-auto card-icon-aside bg-primary">
+                                    <i data-feather="layers"> <FontAwesomeIcon icon={faQuestionCircle} /> </i>
+                                </div>
+                                <div class="col">
+                                    <div class="card-body py-5">
+                                        <h5 class="card-title">Paso 1: Seleccionar una carrera</h5>
+                                        <p class="card-text">Utilice el selector: "Lista de carreras", despliéguelo y seleccione la carrera.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
