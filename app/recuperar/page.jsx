@@ -6,6 +6,7 @@ import Footer from '@/app/componentes/main/footer';
 function RecuperarPage() {
   const [ci, setCi] = useState("");
   const [message, setMessage] = useState("");
+  const [status, setStatus] = useState("");
 
   const handleCiChange = (e) => {
     setCi(e.target.value);
@@ -20,9 +21,11 @@ function RecuperarPage() {
       };
       const { data,status } = await axios.post("/solicitudRecuperacion", formData);
       setMessage(data.message);
+      setStatus(status);
     } catch (error) {
       console.error("Hubo un problema al enviar la solicitud:", error);
       setMessage("Hubo un problema al enviar la solicitud.");
+      setStatus(status);
     }
   };
 
@@ -57,19 +60,20 @@ function RecuperarPage() {
                     </form>
                     {message && (
                       <div className="mt-3">
-                        <div className="alert alert-info">{message}</div>
+                        <div 
+                          className={`alert ${status === 200 ? 'alert-primary' : 'alert-secondary'}`}
+                        >
+                          {message}
+                        </div>
                       </div>
                     )}
                   </div>
-                  <hr className="my-0" />
-                  <div className="card-body px-5 py-4">
-                    <div className="small text-center">
-                      <a className="ms-2" href="./login">Volver al Login</a>
-                    </div>
-                  </div>
-                  <div className="card-footer text-center">
+                  <div className="card-footer justify-content-between">
                     <div className="small">
                       <a href="./">Volver al inicio</a>
+                    </div>
+                    <div className="small">
+                      <a href="./login">Volver al Login</a>
                     </div>
                   </div>
                 </div>
