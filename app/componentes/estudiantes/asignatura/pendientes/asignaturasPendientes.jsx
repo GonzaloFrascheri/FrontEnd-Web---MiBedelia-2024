@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import ListarCarreras from '@/app/componentes/reutilizables/listarCarreras'
 
 export default function AsignaturasPendientes({
   resetearForm,
   carreraSeleccionada,
   estanCargandoCarreras,
   estado,
+  carreras,
+  seleccionarCarrera,
   obtenerAsignaturasPendientes
 }) {
   const [asignaturasPendientes, setAsignaturasPendientes] = useState([]);
@@ -25,22 +28,58 @@ export default function AsignaturasPendientes({
       <div className='card'>
         <div className='card shadow-lg border-0 rounded-lg'>
           {estado.message === '' ? (
-            <div>
-              <div className='card-header justify-content-center'>
-                <h3 className='fw-light'>Listado de asignaturas pendientes</h3>
+            <>
+              <div>
+                <div className='card-header justify-content-center'>
+                  <h3 className='fw-light'>Listado de asignaturas pendientes</h3>
+                </div>
+                {/* ListarCarreras y otros componentes necesarios */}
+                {!carreraSeleccionada ? (
+                  <>
+                    <div className='card-header justify-content-center'>
+                      <h4 className='fw-light'>Seleccionar carrera</h4>
+                    </div>{' '}
+                    <ListarCarreras
+                      carreraSeleccionada={carreraSeleccionada}
+                      carreras={carreras}
+                      estanCargandoCarreras={estanCargandoCarreras}
+                      seleccionarCarrera={seleccionarCarrera}
+                    />
+                    <div className='card-footer text-center'></div>
+                  </>
+                ) : (
+                  <>
+                    <div className='card-footer text-center'>
+                      <button
+                        disabled={!carreraSeleccionada}
+                        onClick={handleVerAsignaturas}
+                        type='button'
+                        className='btn btn-primary'
+                      >
+                        Ver asignaturas pendientes
+                      </button>
+                    </div>
+                    {asignaturasPendientes.length > 0 && (
+                      <div className='card-body'>
+                        <h5>Asignaturas Pendientes:</h5>
+                        <ul>
+                          {asignaturasPendientes.map((asignatura, index) => (
+                            <li key={index}>{asignatura.nombre}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    <br></br>
+                    <a 
+                        href="/privado/Estudiantes/Asignatura/Pendiente" 
+                        className="btn btn-link" 
+                        style={{ position: 'absolute', left: '10px', bottom: '10px' }}>
+                            Volver
+                    </a>
+                  </>
+                )}
               </div>
-              {/* ListarCarreras y otros componentes necesarios */}
-              <div className='card-footer text-center'>
-                <button
-                  disabled={!carreraSeleccionada}
-                  onClick={handleVerAsignaturas}
-                  type='button'
-                  className='btn btn-primary'
-                >
-                  Ver asignaturas pendientes
-                </button>
-              </div>
-            </div>
+            </>
           ) : (
             <div>
               {/* Mensaje de error o éxito */}
@@ -55,17 +94,6 @@ export default function AsignaturasPendientes({
                   </a>
                 </div>
               </div>
-            </div>
-          )}
-          {/* Aquí deberías mostrar la tabla de asignaturas pendientes */}
-          {asignaturasPendientes.length > 0 && (
-            <div className='card-body'>
-              <h5>Asignaturas Pendientes:</h5>
-              <ul>
-                {asignaturasPendientes.map((asignatura, index) => (
-                  <li key={index}>{asignatura.nombre}</li>
-                ))}
-              </ul>
             </div>
           )}
         </div>

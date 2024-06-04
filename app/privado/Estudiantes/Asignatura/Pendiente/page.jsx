@@ -17,7 +17,7 @@ function EstudianteAignaturasPendientes () {
     estado: ''
   })
   const [userData, setUserData] = useState('')
-  const [careers, setCareers] = useState([])
+  const [carreers, setCareers] = useState([])
   const [careesAreLoading, setCareesAreLoading] = useState(true)
   const [selectedCareer, setSelectedCareer] = useState('')
   const { isSidebarToggled } = useSidebar()
@@ -97,22 +97,23 @@ function EstudianteAignaturasPendientes () {
             <div id='layoutAuthentication_content'>
               <main>
                 <HeaderPagePrivado breadcrumbs={breadcrumbs} />
-                <AsignaturasPendientes
-                  resetearForm={resetFormStatus}
-                  carreraSeleccionada={selectedCareer}
-                  estanCargandoCarreras={careesAreLoading}
-                  estado={estado}
-                  obtenerAsignaturasPendientes={obtenerAsignaturasPendientes}
-                />
-                {/* Selector de carrera */}
-                <select value={selectedCareer} onChange={handleCareerChange}>
+                {/*<select value={selectedCareer} onChange={handleCareerChange}>
                   <option value=''>Selecciona una carrera</option>
                   {careers.map((career, index) => (
                     <option key={index} value={career.id}>
                       {career.nombre}
                     </option>
                   ))}
-                </select>
+                </select>*/}
+                <AsignaturasPendientes
+                  estado={estado}
+                  resetearForm={resetFormStatus}
+                  carreras={carreers}
+                  carreraSeleccionada={selectedCareer}
+                  seleccionarCarrera={handleCareerChange}
+                  estanCargandoCarreras={careesAreLoading}
+                  obtenerAsignaturasPendientes={obtenerAsignaturasPendientes}
+                />
               </main>
             </div>
           </div>
