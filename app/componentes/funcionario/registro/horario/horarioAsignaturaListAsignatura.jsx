@@ -109,8 +109,11 @@ export default function Index ({
     <div className='container-xl px-4'>
       <div className='card'>
         <div className='card shadow-lg border-0 rounded-lg'>
-          <div className='card-header justify-content-center'>
+          <div className='card-header d-flex align-items-center justify-content-between'>
             <h3 className='fw-light'>Registro horario de una asignatura</h3>
+            <div className="small">
+                <a href="/privado/Funcionario/Registro/HorarioAsignatura">Volver</a>
+            </div>
           </div>
           {estado.message === '' ? (
             <form onSubmit={handleSubmit}>
@@ -271,18 +274,6 @@ export default function Index ({
                 className='card-footer text-center'
                 style={{ position: 'relative' }}
               >
-                <a
-                  href='/privado/Funcionario/Registro/HorarioAsignatura'
-                  className='btn btn-link'
-                  style={{
-                    position: 'absolute',
-                    left: '10px',
-                    top: '50%',
-                    transform: 'translateY(-50%)'
-                  }}
-                >
-                  Volver
-                </a>
                 <button
                   disabled={!isFormValid()}
                   type='submit'
