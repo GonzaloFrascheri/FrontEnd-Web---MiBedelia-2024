@@ -90,7 +90,9 @@ export default function Index ({
 
   const seleccionarDia = e => {
     handleChange(e)
-    setDiasDisponibles(prevState => prevState.filter(item => item !== e.target.value))
+    setDiasDisponibles(prevState =>
+      prevState.filter(item => item !== e.target.value)
+    )
   }
 
   const tableHeaderstyle = {
@@ -165,6 +167,11 @@ export default function Index ({
                       </option>
                     ))}
                   </select>
+                  {errors.diasDictados && errors.diasDictados !== '' && (
+                    <span className='text-danger text-xs'>
+                      {errors.diasDictados}
+                    </span>
+                  )}
                 </div>
                 <div className='mb-3'>
                   {formData.diasDictados.map(dia => (

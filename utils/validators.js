@@ -26,6 +26,10 @@ const validators = {
     return /^(?:[01][0-9]|2[0-3]):[0-5][0-9]$/.test(time)
       ? ''
       : 'El formato de hora es incorrecto.'
+  },
+
+  validateClassDays: days => {
+    return days.length > 0 ? '' : 'Es necesario ingresar al menos un día.'
   }
 }
 
