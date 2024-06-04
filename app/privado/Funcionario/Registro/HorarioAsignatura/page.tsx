@@ -55,6 +55,8 @@ function FuncionarioExamenAsignatura() {
       if (!error) {
         error = validators.validateTime(value);
       }
+    } else if (name === "diasDictados") {
+      error = validators.validateClassDays(value);
     } else {
       error = validators.validateRequired(value);
     }
@@ -142,7 +144,10 @@ function FuncionarioExamenAsignatura() {
         [name]: value,
       }));
 
-    handleErrors(name, value);
+    const errorToEvaluate =
+      name === "diasDictados" ? [...formData.diasDictados, value] : value;
+
+    handleErrors(name, errorToEvaluate);
   };
 
   const handleRemoveDay = (dayToRemove) => {
@@ -150,6 +155,9 @@ function FuncionarioExamenAsignatura() {
       ...prevState,
       diasDictados: prevState.diasDictados.filter((day) => day !== dayToRemove),
     }));
+    handleErrors("diasDictados", [
+      ...formData.diasDictados.filter((day) => day !== dayToRemove),
+    ]);
   };
 
   const handleSubmit = async (e) => {
