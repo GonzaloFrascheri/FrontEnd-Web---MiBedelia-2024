@@ -29,25 +29,25 @@ https://mibedelia-backend-production.up.railway.app/doc/swagger-ui/index.html#/
 
 ## Tareas - Casos de uso no críticos 
 - Invitado
-  - Recuperar contraseña <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
+  - Recuperar contraseña <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
   - Cerrar sesión <img src="https://img.shields.io/badge/Front-Hecho-success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
-  - Editar perfil <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
+  - Editar perfil <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 - Administrador
-  - Buscar usuarios <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
-  - Resumen de actividad <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
+  - Buscar usuarios <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
+  - Resumen de actividad <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 - Coordinador
-  - Registrar previaturas <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
-  - Listar previas por asignatura <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
+  - Registrar previaturas <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
+  - Listar previas por asignatura <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
   - Listar asignaturas por carrera <img src="https://img.shields.io/badge/Front-Hecho-success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 - Funcionario
-  - Modificar horario de una asignatura <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
-  - Modificar horario de un exámen <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
-  - Listar estudiantes inscriptos en asignatura <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
-  - Listar exámenes a tomar en período <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
+  - Modificar horario de una asignatura <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
+  - Modificar horario de un exámen <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
+  - Listar estudiantes inscriptos en asignatura <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
+  - Listar exámenes a tomar en período <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 - Estudiantes
   - Generar escolaridad <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
   - Listado de asignaturas aprobadas <img src="https://img.shields.io/badge/Front-InProgress-yellow"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
-  - Listado de asignaturas pendientes <img src="https://img.shields.io/badge/Front-InProgress-yellow"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
+  - Listado de asignaturas pendientes <img src="https://img.shields.io/badge/Front-Hecho-success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 
 # INSTALACIÓN DEL FRONTEND
 ```bash
