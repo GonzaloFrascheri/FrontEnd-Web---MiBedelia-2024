@@ -230,6 +230,9 @@ export default function Sidebar() {
                         <a className="nav-link" href="/privado/Estudiantes/Examen">
                           Inscripción a un exámen
                         </a>
+                        <a className="nav-link" href="/privado/Estudiantes/Asignatura/Pendiente">
+                          Listar carreras
+                        </a>
                       </nav>
                     </div>
                   </>

@@ -15,6 +15,7 @@ export default function Index ({
   asignaturaSeleccionada,
   resetearForm
 }) {
+
   return (
     <div className='container-xl px-4 mt-n10'>
       <InscripcionAsignaturaPasos
