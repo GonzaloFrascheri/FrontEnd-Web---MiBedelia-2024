@@ -8,21 +8,15 @@ import ExamenAsignaturaListCarrera from "@/app/componentes/funcionario/registro/
 import ExamenAsignaturaListAsignatura from "@/app/componentes/funcionario/registro/examen/examenAsignaturaListAsignatura";
 import ExamenAsignaturaPasos from "@/app/componentes/funcionario/registro/examen/examenAsignaturaPasos";
 import { parseDateToISO } from "@/utils/utils";
+import { useSidebar } from "@/context/AppContext";
 
 function FuncionarioExamenAsignatura() {
-  const breadcrumbs = [
-    "privado",
-    "Funcionario",
-    "Registro",
-    "AltaExamen",
-  ];
-  const [isSidebarToggled, setIsSidebarToggled] = useState(false);
-  const toggleSidebar = () => {
-    setIsSidebarToggled(!isSidebarToggled);
-  };
+  const breadcrumbs = ["privado", "Funcionario", "Registro", "AltaExamen"];
   // Carreras
   const [listaCarrera, setListaCarrera] = useState([]);
   const [selectedCarreraId, setSelectedCarreraId] = useState(null);
+  const { isSidebarToggled } = useSidebar();
+
   const handleCarreraChange = (id) => {
     setSelectedCarreraId(id);
   };
@@ -63,10 +57,10 @@ function FuncionarioExamenAsignatura() {
     };
     fetchListaAsignaturas();
   }, [selectedCarreraId]);
-  
+
   // Docentes
   const [listaDocentes, setListaDocentes] = useState([]);
-  
+
   // Fechas
   const hoy = new Date();
   const [periodoActivo, setPeriodoActivo] = useState({
@@ -82,7 +76,6 @@ function FuncionarioExamenAsignatura() {
       [name]: formattedDate,
     }));
   };
-
 
   const [estado, setEstado] = useState({
     message: "",
@@ -180,13 +173,10 @@ function FuncionarioExamenAsignatura() {
     <body
       className={isSidebarToggled ? "nav-fixed" : "nav-fixed sidenav-toggled"}
     >
-      <NavPrivado
-        isSidebarToggled={isSidebarToggled}
-        toggleSidebar={toggleSidebar}
-      />
+      <NavPrivado />
       <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
-          <Sidebar isSidebarToggled={isSidebarToggled} />
+          <Sidebar />
         </div>
         <div id="layoutSidenav_content">
           <div id="layoutAuthentication">

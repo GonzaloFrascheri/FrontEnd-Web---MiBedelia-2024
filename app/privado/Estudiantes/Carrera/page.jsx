@@ -6,6 +6,7 @@ import InscripcionCarrera from '@/app/componentes/estudiantes/carrera/inscripcio
 import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado'
 import axios from '@/utils/axios'
 import { useAuth } from '@/context/AuthProvider'
+import { useSidebar } from '@/context/AppContext'
 
 function EstudianteInscripcionCarrera () {
   const authData = useAuth()
@@ -18,6 +19,7 @@ function EstudianteInscripcionCarrera () {
   const [careers, setCareers] = useState([])
   const [careesAreLoading, setCareesAreLoading] = useState(true)
   const [selectedCareer, setSelectedCareer] = useState('')
+  const { isSidebarToggled } = useSidebar()
 
   useEffect(() => {
     if (authData && !userData) {
@@ -71,11 +73,6 @@ function EstudianteInscripcionCarrera () {
     setSelectedCareer(e.target.value)
   }
 
-  const [isSidebarToggled, setIsSidebarToggled] = useState(false)
-  const toggleSidebar = () => {
-    setIsSidebarToggled(!isSidebarToggled)
-  }
-
   // If failed, reset form status
   const resetFormStatus = () => {
     setEstado({
@@ -90,13 +87,10 @@ function EstudianteInscripcionCarrera () {
     <body
       className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}
     >
-      <NavPrivado
-        isSidebarToggled={isSidebarToggled}
-        toggleSidebar={toggleSidebar}
-      />
+      <NavPrivado />
       <div id='layoutSidenav'>
         <div id='layoutSidenav_nav'>
-          <Sidebar isSidebarToggled={isSidebarToggled} />
+          <Sidebar />
         </div>
         <div id='layoutSidenav_content'>
           <div id='layoutAuthentication'>

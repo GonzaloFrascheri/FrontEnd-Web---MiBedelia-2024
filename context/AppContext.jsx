@@ -1,22 +1,18 @@
-'use client';
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react'
 
-const AppContext = createContext();
+const AppContext = createContext()
 
-export const AppProvider = ({ children }) => {
-  const [isSidebarToggled, setIsSidebarToggled] = useState(false);
+export const SidebarProvider = ({ children }) => {
+  const [isSidebarToggled, setIsSidebarToggled] = useState(false)
   const toggleSidebar = () => {
-    setIsSidebarToggled(!isSidebarToggled);
-  };
-
-  // Agrega otros estados y funciones que necesites compartir
-  const [globalVariable, setGlobalVariable] = useState('');
+    setIsSidebarToggled(prevState => !prevState)
+  }
 
   return (
-    <AppContext.Provider value={{ isSidebarToggled, toggleSidebar, globalVariable, setGlobalVariable }}>
+    <AppContext.Provider value={{ isSidebarToggled, toggleSidebar }}>
       {children}
     </AppContext.Provider>
-  );
-};
+  )
+}
 
-export const useAppContext = () => useContext(AppContext);
+export const useSidebar = () => useContext(AppContext)

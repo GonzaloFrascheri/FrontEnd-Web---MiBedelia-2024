@@ -5,15 +5,13 @@ import MainDashboard from '@/app/componentes/main/dashboard.jsx'
 import NavPrivado from '@/app/componentes/navs/nav-privado.jsx'
 import Footer from '@/app/componentes/main/footer'
 import { useAuth } from '@/context/AuthProvider'
+import { useSidebar } from '@/context/AppContext'
 
 function PrivadoPage () {
   const authData = useAuth()
   const [data, setData] = useState('')
 
-  const [isSidebarToggled, setIsSidebarToggled] = useState(false)
-  const toggleSidebar = () => {
-    setIsSidebarToggled(!isSidebarToggled)
-  }
+  const { isSidebarToggled } = useSidebar()
 
   useEffect(() => {
     if (authData && !data) {
@@ -26,13 +24,10 @@ function PrivadoPage () {
     <body
       className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}
     >
-      <NavPrivado
-        isSidebarToggled={isSidebarToggled}
-        toggleSidebar={toggleSidebar}
-      />
+      <NavPrivado />
       <div id='layoutSidenav'>
         <div id='layoutSidenav_nav'>
-          <Sidebar isSidebarToggled={isSidebarToggled} />
+          <Sidebar />
         </div>
         <div id='layoutSidenav_content'>
           <MainDashboard data={data} />

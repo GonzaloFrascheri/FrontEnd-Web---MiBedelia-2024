@@ -1,34 +1,29 @@
 'use client'
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import HeaderPagePrivado from "@/app/componentes/headers/headerPage-privado";
-import NavPrivado from "@/app/componentes/navs/nav-privado";
-import Sidebar from "@/app/componentes/siders/sidebar";
-import BajaUsuario from "../../../../componentes/administrador/usuarios/bajaUsuario.jsx"
-import axios from "@/utils/axios";
-import storage from "@/utils/storage";
+import React from 'react'
+import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado'
+import NavPrivado from '@/app/componentes/navs/nav-privado'
+import Sidebar from '@/app/componentes/siders/sidebar'
+import BajaUsuario from '@/app/componentes/administrador/usuarios/bajaUsuario.jsx'
+import { useSidebar } from '@/context/AppContext'
 
-function Page() {
-  const router = useRouter();
-  const breadcrumbs = ['privado', 'Administrador', 'Usuarios', 'Baja'];
-  const [isSidebarToggled, setIsSidebarToggled] = useState(false);
-  
-  const toggleSidebar = () => {
-    setIsSidebarToggled(!isSidebarToggled);
-  };
+function Page () {
+  const breadcrumbs = ['privado', 'Administrador', 'Usuarios', 'Baja']
+  const { isSidebarToggled } = useSidebar()
 
   return (
-    <body className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}>
-      <NavPrivado isSidebarToggled={isSidebarToggled} toggleSidebar={toggleSidebar} />
-      <div id="layoutSidenav">
-        <div id="layoutSidenav_nav">
-          <Sidebar isSidebarToggled={isSidebarToggled} />
+    <body
+      className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}
+    >
+      <NavPrivado />
+      <div id='layoutSidenav'>
+        <div id='layoutSidenav_nav'>
+          <Sidebar />
         </div>
-        <div id="layoutSidenav_content">
-          <div id="layoutAuthentication">
-            <div id="layoutAuthentication_content">
+        <div id='layoutSidenav_content'>
+          <div id='layoutAuthentication'>
+            <div id='layoutAuthentication_content'>
               <main>
-                <HeaderPagePrivado breadcrumbs={breadcrumbs}/>
+                <HeaderPagePrivado breadcrumbs={breadcrumbs} />
                 <BajaUsuario />
               </main>
             </div>
@@ -36,8 +31,7 @@ function Page() {
         </div>
       </div>
     </body>
-  );
+  )
+}
 
-};
-
-export default Page;
+export default Page

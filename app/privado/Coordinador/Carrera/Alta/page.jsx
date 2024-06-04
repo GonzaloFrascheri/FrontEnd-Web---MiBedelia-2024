@@ -5,6 +5,7 @@ import NavPrivado from '@/app/componentes/navs/nav-privado.jsx'
 import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado.jsx'
 import AltaCarrera from '@/app/componentes/coordinador/carrera/altaCarrera.jsx'
 import axios from '@/utils/axios'
+import { useSidebar } from '@/context/AppContext'
 
 function CoordinadorAltaCarrera () {
   const breadcrumbs = ['privado', 'Coordinador', 'Carrera', 'Alta']
@@ -16,6 +17,7 @@ function CoordinadorAltaCarrera () {
     nombre: '',
     duracion: ''
   })
+  const { isSidebarToggled } = useSidebar()
 
   const handleChange = e => {
     const { name, value } = e.target
@@ -43,22 +45,14 @@ function CoordinadorAltaCarrera () {
     }
   }
 
-  const [isSidebarToggled, setIsSidebarToggled] = useState(false)
-  const toggleSidebar = () => {
-    setIsSidebarToggled(!isSidebarToggled)
-  }
-
   return (
     <body
       className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}
     >
-      <NavPrivado
-        isSidebarToggled={isSidebarToggled}
-        toggleSidebar={toggleSidebar}
-      />
+      <NavPrivado />
       <div id='layoutSidenav'>
         <div id='layoutSidenav_nav'>
-          <Sidebar isSidebarToggled={isSidebarToggled} />
+          <Sidebar />
         </div>
         <div id='layoutSidenav_content'>
           <div id='layoutAuthentication'>

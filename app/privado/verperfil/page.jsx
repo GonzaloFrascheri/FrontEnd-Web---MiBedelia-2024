@@ -3,16 +3,11 @@ import React, { useEffect, useState } from 'react'
 import NavPrivado from '@/app/componentes/navs/nav-privado.jsx'
 import Sidebar from '@/app/componentes/siders/sidebar.jsx'
 import VerPerfil from '@/app/componentes/perfil/verPerfil.jsx'
-import storage from '@/utils/storage'
 import { useAuth } from '@/context/AuthProvider'
+import { useSidebar } from '@/context/AppContext'
 
 function VerPerfilPage () {
   const authData = useAuth()
-  const token = storage.getToken()
-  const [estado, setEstado] = useState({
-    message: '',
-    estado: 0
-  })
   const [credentials, setCredentials] = useState({
     id: '',
     nombre: '',
@@ -24,42 +19,19 @@ function VerPerfilPage () {
     rol: '',
     uidgoogle: ''
   })
-  const [data, setData] = useState('')
+  const [userData, setUserData] = useState('')
+  const { isSidebarToggled } = useSidebar()
 
   useEffect(() => {
-    if (authData && !data) {
-      setData(authData)
+    if (authData && !userData) {
+      setUserData(authData)
     }
-  }, [authData, data])
-
-  useEffect(() => {
-    fetch('http://localhost:8080/usuario/getUsuario', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token
-      },
-      mode: 'cors'
-    })
-      .then(res => {
-        if (res.status !== 200) {
-          throw new Error('Error en la conexión.')
-        }
-        setEstado({
-          estado: res.status
-        })
-        return res.json()
-      })
-      .then(data => {
-        setCredentials(data)
-      })
-      .catch(error => {
-        console.error('Hubo un problema en el fecth:', error)
-      })
-  }, [])
+  }, [authData, userData])
 
   return (
-    <>
+    <body
+      className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}
+    >
       <NavPrivado />
       <div id='layoutSidenav'>
         <div id='layoutSidenav_nav'>
@@ -84,12 +56,15 @@ function VerPerfilPage () {
               </div>
             </header>
             <div className='container-xl px-4 mt-4'>
-              <VerPerfil credentials={credentials} />
+              <VerPerfil
+                setCredentials={setCredentials}
+                credentials={credentials}
+              />
             </div>
           </main>
         </div>
       </div>
-    </>
+    </body>
   )
 }
 

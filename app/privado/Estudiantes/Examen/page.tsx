@@ -6,6 +6,8 @@ import InscripcionExamen from "@/app/componentes/estudiantes/examen/inscripcionE
 import HeaderPagePrivado from "@/app/componentes/headers/headerPage-privado";
 import axios from "@/utils/axios";
 import { useAuth } from "@/context/AuthProvider";
+import { useSidebar } from "@/context/AppContext";
+
 function EstudianteInscripcionExamen() {
   const authData = useAuth();
   const breadcrumbs = ["privado", "Estudiantes", "Examen"];
@@ -17,6 +19,7 @@ function EstudianteInscripcionExamen() {
   const [selectedExam, setSelectedExam] = useState("");
   const [exams, setExams] = useState([]);
   const [examsAreLoading, setExamsAreLoading] = useState(true);
+  const { isSidebarToggled } = useSidebar();
 
   useEffect(() => {
     if (authData && !userData) {
@@ -70,11 +73,6 @@ function EstudianteInscripcionExamen() {
     }
   };
 
-  const [isSidebarToggled, setIsSidebarToggled] = useState(false);
-  const toggleSidebar = () => {
-    setIsSidebarToggled(!isSidebarToggled);
-  };
-
   const onExamChange = (e) => {
     setSelectedExam(e.target.value);
   };
@@ -93,13 +91,10 @@ function EstudianteInscripcionExamen() {
     <body
       className={isSidebarToggled ? "nav-fixed" : "nav-fixed sidenav-toggled"}
     >
-      <NavPrivado
-        isSidebarToggled={isSidebarToggled}
-        toggleSidebar={toggleSidebar}
-      />
+      <NavPrivado />
       <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
-          <Sidebar isSidebarToggled={isSidebarToggled} />
+          <Sidebar />
         </div>
         <div id="layoutSidenav_content">
           <div id="layoutAuthentication">

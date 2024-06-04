@@ -7,11 +7,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '@/context/AuthProvider'
+import { useSidebar } from '@/context/AppContext'
 
-function NavPrivado ({ isSidebarToggled, toggleSidebar }) {
+function NavPrivado () {
   const authData = useAuth()
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [user, setUser] = useState(null)
+  const { isSidebarToggled, toggleSidebar } = useSidebar()
 
   useEffect(() => {
     if (authData && !user) {

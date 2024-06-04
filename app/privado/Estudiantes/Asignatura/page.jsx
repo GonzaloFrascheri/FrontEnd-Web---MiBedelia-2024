@@ -6,11 +6,11 @@ import NavPrivado from '@/app/componentes/navs/nav-privado.jsx'
 import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado.jsx'
 import InscripcionAsignatura from '@/app/componentes/estudiantes/asignatura/inscripcionAsignatura'
 import { useAuth } from '@/context/AuthProvider'
+import { useSidebar } from '@/context/AppContext'
 
 export default function EstudianteInscripcionAsignatura () {
   const authData = useAuth()
   const breadcrumbs = ['privado', 'Estudiante', 'Asignatura']
-  const [isSidebarToggled, setIsSidebarToggled] = useState(false)
   // Carreras
   const [carreers, setCareers] = useState([])
   const [careersAreLoading, setcareersAreLoading] = useState(true)
@@ -25,10 +25,7 @@ export default function EstudianteInscripcionAsignatura () {
     message: '',
     estado: ''
   })
-
-  const toggleSidebar = () => {
-    setIsSidebarToggled(!isSidebarToggled)
-  }
+  const { isSidebarToggled } = useSidebar()
 
   const handleCareerChange = e => {
     setSelectedCareerId(e.target.value)
@@ -140,13 +137,10 @@ export default function EstudianteInscripcionAsignatura () {
     <body
       className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}
     >
-      <NavPrivado
-        isSidebarToggled={isSidebarToggled}
-        toggleSidebar={toggleSidebar}
-      />
+      <NavPrivado />
       <div id='layoutSidenav'>
         <div id='layoutSidenav_nav'>
-          <Sidebar isSidebarToggled={isSidebarToggled} />
+          <Sidebar />
         </div>
         <div id='layoutSidenav_content'>
           <div id='layoutAuthentication'>

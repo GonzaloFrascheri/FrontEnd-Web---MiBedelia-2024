@@ -1,13 +1,14 @@
 'use client'
 import { AuthProvider } from '@/context/AuthProvider'
+import { SidebarProvider } from '@/context/AppContext'
 import React from 'react'
 
 export default function PrivadoLayout ({ children }) {
   return (
-    <html lang='es'>
+    <SidebarProvider>
       <AuthProvider>
         <body className='nav-fixed sidenav-toggled'>{children}</body>
       </AuthProvider>
-    </html>
+    </SidebarProvider>
   )
 }

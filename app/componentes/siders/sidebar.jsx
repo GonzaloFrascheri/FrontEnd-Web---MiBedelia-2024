@@ -1,12 +1,13 @@
+import { useSidebar } from "@/context/AppContext";
 import { useAuth } from "@/context/AuthProvider";
 import { faAngleDown, faArrowsToCircle, faGraduationCap, faPenFancy, faUserTie } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 
-export default function Sidebar({ isSidebarToggled }) {
+export default function Sidebar() {
   const authData = useAuth();
   const [userData, setUserData] = useState(null);
-
+  const {isSidebarToggled} = useSidebar();
   const [collapseAdministrador, setCollapseAdministrador] = useState(false);
   const [collapseCoordinador, setCollapseCoordinador] = useState(false);
   const [collapseFuncionario, setCollapseFuncionario] = useState(false);

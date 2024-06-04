@@ -9,6 +9,7 @@ import HorarioAsignaturaListAsignatura from "@/app/componentes/funcionario/regis
 import HorarioAsignaturaPasos from "@/app/componentes/funcionario/registro/horario/horarioAsignaturaPasos";
 import validators from "@/utils/validators";
 import { compararHoras, isFormValid } from "@/utils/utils";
+import { useSidebar } from "@/context/AppContext";
 
 function FuncionarioExamenAsignatura() {
   const breadcrumbs = [
@@ -35,7 +36,6 @@ function FuncionarioExamenAsignatura() {
     message: "",
     estado: "",
   });
-  const [isSidebarToggled, setIsSidebarToggled] = useState(false);
   const [errors, setErrors] = useState({
     idAsignatura: "",
     ciDocente: "",
@@ -43,6 +43,7 @@ function FuncionarioExamenAsignatura() {
     horarioFin: "",
     diasDictados: "",
   });
+  const { isSidebarToggled } = useSidebar();
 
   const handleValidation = () => {
     return isFormValid(errors, formData);
@@ -201,21 +202,14 @@ function FuncionarioExamenAsignatura() {
     }
   };
 
-  const toggleSidebar = () => {
-    setIsSidebarToggled(!isSidebarToggled);
-  };
-
   return (
     <body
       className={isSidebarToggled ? "nav-fixed" : "nav-fixed sidenav-toggled"}
     >
-      <NavPrivado
-        isSidebarToggled={isSidebarToggled}
-        toggleSidebar={toggleSidebar}
-      />
+      <NavPrivado />
       <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
-          <Sidebar isSidebarToggled={isSidebarToggled} />
+          <Sidebar />
         </div>
         <div id="layoutSidenav_content">
           <div id="layoutAuthentication">

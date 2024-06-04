@@ -6,6 +6,7 @@ import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado.jsx'
 import AltaAsignatura from '@/app/componentes/coordinador/asignatura/altaAsignatura.jsx'
 import axios from "@/utils/axios";
 import { crearSecuencia } from "@/utils/utils";
+import { useSidebar } from '@/context/AppContext'
 
 function CoordinadorAltaAsignatura() {
   const breadcrumbs = ['privado', 'Coordinador', 'Asignatura', 'Alta'];
@@ -20,6 +21,8 @@ function CoordinadorAltaAsignatura() {
     gradoMateria: "",
   });
   const [opcionesSemestre, setOpcionesSemestre] = useState([]);
+
+  const { isSidebarToggled } = useSidebar()
 
 
   const handleChange = (e) => {
@@ -61,10 +64,6 @@ function CoordinadorAltaAsignatura() {
       }    
   };
 
-  const [isSidebarToggled, setIsSidebarToggled] = useState(false);
-  const toggleSidebar = () => {
-      setIsSidebarToggled(!isSidebarToggled);
-  };
 
   useEffect(() => {
     const fetchListaCarreras = async () => {
@@ -79,16 +78,12 @@ function CoordinadorAltaAsignatura() {
     fetchListaCarreras();
   }, []);
 
-  useEffect(() => {
-    document.body.className = isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled';
-  }, [isSidebarToggled]);
-
   return (
     <body className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}>
-      <NavPrivado isSidebarToggled={isSidebarToggled} toggleSidebar={toggleSidebar} />
+      <NavPrivado />
       <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
-          <Sidebar isSidebarToggled={isSidebarToggled} />
+          <Sidebar />
         </div>
         <div id="layoutSidenav_content">
           <div id="layoutAuthentication">
