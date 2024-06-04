@@ -91,8 +91,7 @@ export default function Sidebar() {
                 {/* Coordinador */}
                 {(userData.role === 'COORDINADOR' || userData.role === 'ADMIN') && (
                   <>
-                    <a
-                      className="nav-link collapsed"
+                    <a className="nav-link collapsed"
                       onClick={toggleCollapseCoordinador}
                       aria-expanded={collapseCoordinador ? 'true' : 'false'}
                       data-bs-toggle="collapse"
@@ -164,6 +163,9 @@ export default function Sidebar() {
                       >
                         <a className="nav-link" href="/privado/Funcionario/Generar/ActaExamen">
                           Generar acta examen
+                        </a>
+                        <a className="nav-link" href="/privado/Funcionario/Registro/ActaExamen">
+                          Registrar acta de examen
                         </a>
                         <a className="nav-link" href="/privado/Funcionario/Generar/ActaFinDeCurso">
                           Generar acta fin de curso
