@@ -3,7 +3,7 @@ import axios from '@/utils/axios'
 import * as XLSX from 'xlsx';
 import {GenerarExcelActaFinDeCurso} from '@/app/componentes/generadorEXCEL/actaFinDeCurso.jsx';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
+import { faQuestionCircle, faExclamationTriangle,faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import DataTable from 'react-data-table-component'
 
 export default function FinDeCursoRegistrar({
@@ -19,6 +19,7 @@ export default function FinDeCursoRegistrar({
     const [file, setFile] = useState(null);
     const [studentsData, setStudentsData] = useState([]);
     const [isValid, setIsValid] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const generarExcel = () => {
         if (!FinDeCursoDto) {
@@ -36,7 +37,12 @@ export default function FinDeCursoRegistrar({
                 },
                 estudiantes: 
                     FinDeCursoDto.estudiantes,
-                logo: '' // Imagen en base64
+                logo: '', // Imagen en base64
+                enumNotas: {
+                    exonerado: 'EXONERADO',
+                    aExamen: 'A_EXAMEN',
+                    recursa: 'RECURSA'
+                }
             };
             EXCELGenerador(datosPrueba);
             }
@@ -66,31 +72,50 @@ export default function FinDeCursoRegistrar({
             const worksheet = workbook.Sheets[firstSheetName];
             const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
             
-            // Procesar los datos del archivo Excel
-            const estudiantesProcesados = jsonData.slice(13).map(row => ({
-                index: row[0],
-                nombre: row[1],
-                apellido: row[2],
-                ci: row[3],
-                telefono: row[4],
-                email: row[5],
-                nota: row[6],
-                id: row[7],
-                idInscripcion: row[8]
-            }));
-            setEstado({
-                ...estado,
-                paso: 4,
-            });
-            setStudentsData(estudiantesProcesados);
+            try {
+                // Procesar los datos del archivo Excel
+                const estudiantesProcesados = jsonData.slice(13).map(row => {
+                    const nota = (row[6] || '').toUpperCase().trim();
+                    const validNotas = ["EXONERADO", "A_EXAMEN", "RECURSA"];
+                    if (!validNotas.includes(nota)) {
+                        throw new Error(`Nota inválida para el estudiante: ${row[1]} ${row[2]}, usted escribió: ( ${row[6]} ).`);
+                    }
+                    return {
+                        nombre: row[1],
+                        apellido: row[2],
+                        ci: row[3],
+                        telefono: row[4],
+                        email: row[5],
+                        nota: nota,
+                        id: row[7],
+                        idInscripcion: row[8]
+                    };
+                });
+                setEstado({
+                    ...estado,
+                    paso: 4,
+                });
+    
+                setStudentsData(estudiantesProcesados);
+                setErrorMessage('');
+            } catch (error) {
+                setErrorMessage(error.message);
+                console.error('Error al procesar el archivo:', error);
+            }
         };
         reader.readAsArrayBuffer(file);
     };
+    
 
     const handleSubmitExcel = (e) => {
         e.preventDefault();
         if (file) {
-            leerExcel(file);
+            try {
+                leerExcel(file);
+            } catch (error) {
+                console.error('Error al procesar el archivo:', error);
+                alert(`Error al procesar el archivo: ${error.message}`);
+            }
         } else {
             console.error('No se ha seleccionado ningún archivo');
         }
@@ -143,8 +168,7 @@ export default function FinDeCursoRegistrar({
                 <div className="card shadow-lg border-0 rounded-lg">
                     <div className="card-header justify-content-center">
                         <h3 className="fw-light">
-                            Generar Acta de Examen para la asignatura:
-                            <span className="badge bg-primary text-white ms-5">
+                            Generar Acta de Examen para la asignatura: <span className="badge bg-primary text-white ms-5">
                                 {formData?.nombreAsignatura || ""}
                             </span>
                         </h3>
@@ -161,15 +185,15 @@ export default function FinDeCursoRegistrar({
                                         highlightOnHover
                                         pointerOnHover
                                     />
-                                    <div class="card card-icon">
-                                        <div class="row no-gutters">
-                                            <div class="col-auto card-icon-aside bg-primary">
-                                                <i data-feather="layers"> <FontAwesomeIcon icon={faQuestionCircle} /> </i>
+                                    <div className="card card-icon">
+                                        <div className="row no-gutters">
+                                            <div className="col-auto card-icon-aside bg-primary text-white">
+                                                <FontAwesomeIcon icon={faQuestionCircle} />
                                             </div>
-                                            <div class="col">
-                                                <div class="card-body py-5">
-                                                    <h5 class="card-title">Paso 4: Confirmar datos</h5>
-                                                    <p class="card-text">Verifique que los datos esten caragdos correctamente y haga clic en "Confirmar" para enviar los datos.</p>
+                                            <div className="col">
+                                                <div className="card-body py-5">
+                                                    <h5 className="card-title">Paso 4: Confirmar datos</h5>
+                                                    <p className="card-text">Verifique que los datos estén cargados correctamente y haga clic en "Confirmar" para enviar los datos.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -186,25 +210,25 @@ export default function FinDeCursoRegistrar({
                             </>
                         ) : (
                             <>
-                            <div className='card-body'>
-                                <div
-                                    className={`alert alert-icon m-2 alert-primary`}
-                                    role='alert'
-                                >
-                                    <div className='alert-icon-aside'>
-                                    <i className='far fa-flag'></i>
+                                <div className='card-body'>
+                                    <div
+                                        className={`alert alert-icon m-2 alert-primary`}
+                                        role='alert'
+                                    >
+                                        <div className='alert-icon-aside'>
+                                            <FontAwesomeIcon icon={faInfoCircle} />
+                                        </div>
+                                        <div className='alert-icon-content'>
+                                            <h6 className='alert-heading'>Resultado</h6>
+                                            {estado.message}
+                                        </div>
                                     </div>
-                                    <div className='alert-icon-content'>
-                                    <h6 className='alert-heading'>Resultado</h6>
-                                    {estado.message}
-                                    </div>
-                                </div>
                                 </div>
                                 <div className='card-footer text-center'>
-                                <div className='small'>
-                                    <a href='/privado'>Volver al inicio</a>
+                                    <div className='small'>
+                                        <a href='/privado'>Volver al inicio</a>
+                                    </div>
                                 </div>
-                            </div>
                             </>
                         )
                     ) : (
@@ -238,18 +262,31 @@ export default function FinDeCursoRegistrar({
                                     </button>
                                 </div>
                             </div>
-                            <div class="card card-icon">
-                                <div class="row no-gutters">
-                                    <div class="col-auto card-icon-aside bg-primary">
-                                        <i data-feather="layers"> <FontAwesomeIcon icon={faQuestionCircle} /> </i>
+                            {errorMessage && (
+                                <div className="alert alert-danger alert-icon" role="alert">
+                                    <div className="alert-icon-aside">
+                                        <FontAwesomeIcon icon={faExclamationTriangle} />
                                     </div>
-                                    <div class="col">
-                                        <div class="card-body py-5">
-                                            <h5 class="card-title">Paso 3: Cargar el archivo excel con las notas</h5>
-                                            <p class="card-text"><b>1ro.:</b> utilice el botón "Descargar Planilla en Excel" y descarge el archivo en su equipo.</p>
-                                            <p class="card-text"><b>2do.:</b> Modifique el archivo en su equipo, cargando las notas correspondiente a cada estudiantes en la columna "Notas".</p>
-                                            <p class="card-text"><b>3ro.:</b> utilice el botón "Cargar Planilla Excel" para seleccionar el archivo descargado y ya modificado, recuerde gaurdar los cambios.</p>
-                                            <p class="card-text"><b>4to.:</b> Utilice el botón "Analizar Notas" para procesar las notas y generar el acta de examen.</p>
+                                    <div className="alert-icon-content">
+                                        <h6 className="alert-heading">{errorMessage}</h6>
+                                        Recuerde que las notas posibles son: EXONERADO, A_EXAMEN, RECURSA.<br />
+                                        Por favor, modifique nuevamenete el archivo descargado y asegurese de utilziar este formato de nota.<br />
+                                        Recuerde guardar sus cambios.<br />
+                                    </div>
+                                </div>
+                            )}
+                            <div className="card card-icon">
+                                <div className="row no-gutters">
+                                    <div className="col-auto card-icon-aside bg-primary text-white">
+                                        <FontAwesomeIcon icon={faQuestionCircle} />
+                                    </div>
+                                    <div className="col">
+                                        <div className="card-body py-5">
+                                            <h5 className="card-title">Paso 3: Cargar el archivo excel con las notas</h5>
+                                            <p className="card-text"><b>1ro.:</b> utilice el botón "Descargar Planilla en Excel" y descarge el archivo en su equipo.</p>
+                                            <p className="card-text"><b>2do.:</b> Modifique el archivo en su equipo, cargando las notas correspondiente a cada estudiantes en la columna "Notas".</p>
+                                            <p className="card-text"><b>3ro.:</b> utilice el botón "Cargar Planilla Excel" para seleccionar el archivo descargado y ya modificado, recuerde gaurdar los cambios.</p>
+                                            <p className="card-text"><b>4to.:</b> Utilice el botón "Analizar Notas" para procesar las notas y generar el acta de examen.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -260,5 +297,6 @@ export default function FinDeCursoRegistrar({
                 </div>
             </div>
         </div>
-    )
+    );
+    
 }

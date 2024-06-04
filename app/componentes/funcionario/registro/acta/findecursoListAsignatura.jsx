@@ -16,10 +16,7 @@ export default function FinDeCursoListAsignatura({
             <div className="card shadow-lg border-0 rounded-lg">
                 <div className="card-header justify-content-center">
                     <h3 className="fw-light">
-                        Elegir Asignatura 
-                        <span className="badge bg-primary text-white ms-5">
-                            carrera seleccionada: <b>{selectedCarreraNombre}</b>
-                        </span>
+                        Elegir Asignatura <span className="badge bg-primary text-white ms-5">carrera seleccionada: <b>{selectedCarreraNombre}</b></span>
                     </h3>
                 </div>
                 {estado.message === "" || estado.continuar === false ? (
@@ -54,15 +51,15 @@ export default function FinDeCursoListAsignatura({
                                 </div>
                             </div>
                         </div>
-                        <div class="card card-icon">
-                            <div class="row no-gutters">
-                                <div class="col-auto card-icon-aside bg-primary">
-                                    <i data-feather="layers"> <FontAwesomeIcon icon={faQuestionCircle} /> </i>
+                        <div className="card card-icon">
+                            <div className="row no-gutters">
+                                <div className="col-auto card-icon-aside bg-primary text-white">
+                                    <FontAwesomeIcon icon={faQuestionCircle} />
                                 </div>
-                                <div class="col">
-                                    <div class="card-body py-5">
-                                        <h5 class="card-title">Paso 2: Seleccionar una asignatura</h5>
-                                        <p class="card-text">Utilice el selector: "Lista de asignaturas", despliéguelo y seleccione la asignatura correspondiente.</p>
+                                <div className="col">
+                                    <div className="card-body py-5">
+                                        <h5 className="card-title">Paso 2: Seleccionar una asignatura</h5>
+                                        <p className="card-text">Utilice el selector: "Lista de asignaturas", despliéguelo y seleccione la asignatura correspondiente.</p>
                                     </div>
                                 </div>
                             </div>

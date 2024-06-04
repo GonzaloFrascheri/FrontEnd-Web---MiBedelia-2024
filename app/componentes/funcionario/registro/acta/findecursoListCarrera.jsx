@@ -38,15 +38,15 @@ export default function FinDeCursoListCarrera ({ listaCarrera, onCarreraChange }
                                 )}
                             </select>
                         </div>
-                        <div class="card card-icon">
-                            <div class="row no-gutters">
-                                <div class="col-auto card-icon-aside bg-primary">
-                                    <i data-feather="layers"> <FontAwesomeIcon icon={faQuestionCircle} /> </i>
+                        <div className="card card-icon">
+                            <div className="row no-gutters">
+                                <div className="col-auto card-icon-aside bg-primary text-white">
+                                    <FontAwesomeIcon icon={faQuestionCircle} />
                                 </div>
-                                <div class="col">
-                                    <div class="card-body py-5">
-                                        <h5 class="card-title">Paso 1: Seleccionar una carrera</h5>
-                                        <p class="card-text">Utilice el selector: "Lista de carreras", despliéguelo y seleccione la carrera.</p>
+                                <div className="col">
+                                    <div className="card-body py-5">
+                                        <h5 className="card-title">Paso 1: Seleccionar una carrera</h5>
+                                        <p className="card-text">Utilice el selector: "Lista de carreras", despliéguelo y seleccione la carrera.</p>
                                     </div>
                                 </div>
                             </div>
