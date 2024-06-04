@@ -231,7 +231,10 @@ export default function Sidebar() {
                           Inscripción a un exámen
                         </a>
                         <a className="nav-link" href="/privado/Estudiantes/Asignatura/Pendiente">
-                          Listar carreras
+                          Asignaturas pendientes
+                        </a>
+                        <a className="nav-link" href="/privado/Estudiantes/Asignatura/Aprobada">
+                          Asignaturas aprobadas
                         </a>
                       </nav>
                     </div>

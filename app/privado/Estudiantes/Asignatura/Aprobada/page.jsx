@@ -3,15 +3,15 @@
 import React, { useEffect, useState } from 'react'
 import NavPrivado from '@/app/componentes/navs/nav-privado'
 import Sidebar from '@/app/componentes/siders/sidebar'
-import AsignaturasPendientes from '@/app/componentes/estudiantes/asignatura/pendientes/asignaturasPendientes'
+import AsignaturasAprobadas from '@/app/componentes/estudiantes/asignatura/aprobadas/asignaturasAprobadas' 
 import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado'
 import axios from '@/utils/axios'
 import { useAuth } from '@/context/AuthProvider'
 import { useSidebar } from '@/context/AppContext'
 
-function EstudianteAsignaturasPendientes () {
+function EstudianteAsignaturasAprobadas () {
   const authData = useAuth()
-  const breadcrumbs = ['privado', 'Estudiantes', 'Asignatura', 'Pendiente']
+  const breadcrumbs = ['privado', 'Estudiantes', 'Asignatura', 'Aprobada']
   const [estado, setEstado] = useState({
     message: '',
     estado: ''
@@ -52,10 +52,10 @@ function EstudianteAsignaturasPendientes () {
     }
   }, [userData])
 
-  const obtenerAsignaturasPendientes = async () => {
+  const obtenerAsignaturasAprobadas = async () => {
     try {
       const response = await axios.get(
-        `/Estudiante/getAsignaturasPendientes?idEstudiante=${userData.id}&idCarrera=${selectedCareer}`
+        `/Estudiante/getAsignaturasAprobadas?idEstudiante=${userData.id}&idCarrera=${selectedCareer}`
       )
       const { data } = response
       return data
@@ -105,14 +105,14 @@ function EstudianteAsignaturasPendientes () {
                     </option>
                   ))}
                 </select>*/}
-                <AsignaturasPendientes
+                <AsignaturasAprobadas
                   estado={estado}
                   resetearForm={resetFormStatus}
                   carreras={carreers}
                   carreraSeleccionada={selectedCareer}
                   seleccionarCarrera={handleCareerChange}
                   estanCargandoCarreras={careesAreLoading}
-                  obtenerAsignaturasPendientes={obtenerAsignaturasPendientes}
+                  obtenerAsignaturasAprobadas={obtenerAsignaturasAprobadas}
                 />
               </main>
             </div>
@@ -123,4 +123,4 @@ function EstudianteAsignaturasPendientes () {
   )
 }
 
-export default EstudianteAsignaturasPendientes
+export default EstudianteAsignaturasAprobadas

@@ -46,8 +46,8 @@ https://mibedelia-backend-production.up.railway.app/doc/swagger-ui/index.html#/
   - Listar exámenes a tomar en período <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
 - Estudiantes
   - Generar escolaridad <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
-  - Listado de asignaturas aprobadas <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
-  - Listado de asignaturas pendientes <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Falta-red">
+  - Listado de asignaturas aprobadas <img src="https://img.shields.io/badge/Front-InProgress-yellow"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
+  - Listado de asignaturas pendientes <img src="https://img.shields.io/badge/Front-InProgress-yellow"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 
 # INSTALACIÓN DEL FRONTEND
 ```bash
