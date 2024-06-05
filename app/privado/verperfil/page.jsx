@@ -5,28 +5,185 @@ import Sidebar from '@/app/componentes/siders/sidebar.jsx'
 import VerPerfil from '@/app/componentes/perfil/verPerfil.jsx'
 import { useAuth } from '@/context/AuthProvider'
 import { useSidebar } from '@/context/AppContext'
+import axios from '@/utils/axios'
+import {
+  handleProfileFormValidation,
+  updatePasswordErrors
+} from '@/utils/validators'
+import { hashPassword } from '@/utils/utils'
 
 function VerPerfilPage () {
   const authData = useAuth()
   const [credentials, setCredentials] = useState({
-    id: '',
+    ci: '',
     nombre: '',
-    username: '',
     apellido: '',
     email: '',
     telefono: '',
-    status: '',
     rol: '',
-    uidgoogle: ''
+    password: '',
+    confirmPassword: ''
   })
-  const [userData, setUserData] = useState('')
+  const [userData, setUserData] = useState(null)
+  const [errors, setErrors] = useState({
+    nombre: '',
+    apellido: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    telefono: ''
+  })
+  const [estado, setEstado] = useState({ estado: '', message: '' })
+  const [isPasswordEditable, setIsPasswordEditable] = useState(false)
+  const [formIsDirty, setFormIsDirty] = useState(false)
   const { isSidebarToggled } = useSidebar()
 
+  // Check session
   useEffect(() => {
     if (authData && !userData) {
       setUserData(authData)
     }
   }, [authData, userData])
+
+  // Request credentials
+  useEffect(() => {
+    if (userData) {
+      const fetchCredentials = async () => {
+        try {
+          const response = await axios.get(`/Usuario/getUsuario`)
+          const { status, data } = response
+          if (status === 200) {
+            setCredentials({
+              ci: data.ci,
+              nombre: data.nombre,
+              apellido: data.apellido,
+              email: data.email,
+              telefono: data.telefono,
+              rol: data.rol,
+              password: '',
+              confirmPassword: ''
+            })
+          }
+        } catch (error) {
+          const { status, data } = error.response
+          setEstado({
+            estado: status,
+            message: data.message
+          })
+        }
+      }
+      fetchCredentials()
+    }
+  }, [userData])
+
+  const handleChange = e => {
+    if (!formIsDirty) setFormIsDirty(true)
+
+    const { name, value } = e.target
+
+    setCredentials(prevState => ({
+      ...prevState,
+      [name]: value
+    }))
+
+    if (
+      isPasswordEditable ||
+      (name !== 'password' && name !== 'confirmPassword')
+    ) {
+      handleValidation(name, value)
+    }
+  }
+
+  const handleFormValidation = () => {
+    const { password, confirmPassword, ...rest } = credentials
+
+    const formDataValid =
+      Object.values(rest).every(value => value !== '') &&
+      (!isPasswordEditable || (password !== '' && confirmPassword !== ''))
+
+    const errorsValid =
+      Object.values(errors).every(error => error === '') &&
+      (!isPasswordEditable ||
+        (errors.password === '' && errors.confirmPassword === ''))
+
+    return formDataValid && errorsValid && formIsDirty
+  }
+
+  const handleValidation = (name, value) => {
+    const params = {
+      name,
+      value,
+      secondValue:
+        name === 'password' ? credentials.confirmPassword : credentials.password
+    }
+    const error = handleProfileFormValidation(params)
+
+    setErrors(prevState => {
+      let newErrors = { ...prevState, [name]: error }
+
+      if (
+        isPasswordEditable &&
+        (name === 'password' || name === 'confirmPassword')
+      ) {
+        newErrors = updatePasswordErrors(
+          newErrors,
+          name,
+          value,
+          credentials.password,
+          credentials.confirmPassword
+        )
+      }
+
+      return newErrors
+    })
+  }
+
+  const handleCheckboxChange = () => {
+    const newState = !isPasswordEditable
+    setIsPasswordEditable(newState)
+    if (newState === false) {
+      setCredentials(prevState => ({
+        ...prevState,
+        password: '',
+        confirmPassword: ''
+      }))
+      setErrors(prevState => ({
+        ...prevState,
+        password: '',
+        confirmPassword: ''
+      }))
+    }
+  }
+
+  const handleSubmit = async e => {
+    e.preventDefault()
+    try {
+      const formData = {
+        nombre: credentials.nombre,
+        apellido: credentials.apellido,
+        email: credentials.email,
+        telefono: credentials.telefono,
+        password: isPasswordEditable
+          ? await hashPassword(credentials.password)
+          : ''
+      }
+
+      const response = await axios.put(`/Usuario/editarUsuario`, formData)
+      const { status, data } = response
+
+      setEstado({
+        message: data.message,
+        estado: status
+      })
+    } catch (error) {
+      setEstado({
+        message: error.response
+          ? error.response.data.message
+          : 'Error al editar perfil',
+        estado: error.response ? error.response.status : 500
+      })
+    }
+  }
 
   return (
     <body
@@ -57,8 +214,14 @@ function VerPerfilPage () {
             </header>
             <div className='container-xl px-4 mt-4'>
               <VerPerfil
-                setCredentials={setCredentials}
+                estado={estado}
+                handleSubmit={handleSubmit}
+                isFormValid={handleFormValidation}
+                errors={errors}
+                handleChange={handleChange}
                 credentials={credentials}
+                isPasswordEditable={isPasswordEditable}
+                handleCheckboxChange={handleCheckboxChange}
               />
             </div>
           </main>

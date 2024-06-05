@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import axios from "@/utils/axios";
-import validators from "@/utils/validators";
+import { validators } from "@/utils/validators";
 import Footer from '@/app/componentes/main/footer';
 import storage from "@/utils/storage";
 import { hashPassword } from "@/utils/utils"

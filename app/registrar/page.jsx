@@ -2,7 +2,8 @@
 import { useState } from 'react'
 import RegistroBasico from '@/app/componentes/registro/registroBasico.jsx'
 import axios from '@/utils/axios'
-import { hashPassword, handleRegisterFormValidation, isFormValid } from '@/utils/utils'
+import { hashPassword, isFormValid } from '@/utils/utils'
+import { handleRegisterFormValidation } from '@/utils/validators'
 
 function RegistrarPage () {
   const [estado, setEstado] = useState({

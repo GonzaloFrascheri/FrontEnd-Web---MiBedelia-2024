@@ -7,7 +7,7 @@ import HeaderPagePrivado from "@/app/componentes/headers/headerPage-privado";
 import HorarioAsignaturaListCarrera from "@/app/componentes/funcionario/registro/horario/horarioAsignaturaListCarrera";
 import HorarioAsignaturaListAsignatura from "@/app/componentes/funcionario/registro/horario/horarioAsignaturaListAsignatura";
 import HorarioAsignaturaPasos from "@/app/componentes/funcionario/registro/horario/horarioAsignaturaPasos";
-import validators from "@/utils/validators";
+import { validators } from "@/utils/validators";
 import { compararHoras, isFormValid } from "@/utils/utils";
 import { useSidebar } from "@/context/AppContext";
 

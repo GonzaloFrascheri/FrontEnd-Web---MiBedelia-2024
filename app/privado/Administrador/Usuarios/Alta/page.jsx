@@ -7,9 +7,9 @@ import AltaUsuario from '@/app/componentes/administrador/usuarios/altaUsuario.js
 import axios from '@/utils/axios'
 import {
   hashPassword,
-  handleRegisterFormValidation,
   isFormValid
 } from '@/utils/utils'
+import { handleRegisterFormValidation } from '@/utils/validators'
 import { useSidebar } from '@/context/AppContext'
 
 function RegistrarPage () {
@@ -33,7 +33,7 @@ function RegistrarPage () {
     telefono: null,
     rol: null
   })
-  const { isSidebarToggled, toggleSidebar } = useSidebar()
+  const { isSidebarToggled } = useSidebar()
 
   const handleFormValidation = () => {
     return isFormValid(errors, formData)
