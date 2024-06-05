@@ -11,9 +11,10 @@ import {
   updatePasswordErrors
 } from '@/utils/validators'
 import { hashPassword } from '@/utils/utils'
+import storage from '@/utils/storage'
 
 function VerPerfilPage () {
-  const authData = useAuth()
+  let authData = useAuth()
   const [credentials, setCredentials] = useState({
     ci: '',
     nombre: '',
@@ -175,6 +176,10 @@ function VerPerfilPage () {
         message: data.message,
         estado: status
       })
+
+      // Reset token 
+      storage.setToken(data.token)
+
     } catch (error) {
       setEstado({
         message: error.response
