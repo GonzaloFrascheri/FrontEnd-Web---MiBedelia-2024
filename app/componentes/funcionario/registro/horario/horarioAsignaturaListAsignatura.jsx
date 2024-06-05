@@ -286,9 +286,7 @@ export default function Index ({
           ) : (
             <div className='card-body'>
               <div
-                className={`alert alert-icon m-2 ${
-                  estado.estado === 200 ? 'alert-primary' : 'alert-secondary'
-                }`}
+                className={`alert alert-icon m-2 alert-primary`}
                 role='alert'
               >
                 <div className='alert-icon-aside'>

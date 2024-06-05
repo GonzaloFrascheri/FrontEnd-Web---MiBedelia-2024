@@ -106,9 +106,7 @@ export default function Index ({
           ) : (
             <div>
               <div
-                className={`alert alert-icon m-2 ${
-                  estado.estado === 200 ? 'alert-primary' : 'alert-secondary'
-                }`}
+                className={`alert alert-icon m-2 alert-primary`}
                 role='alert'
               >
                 <button
