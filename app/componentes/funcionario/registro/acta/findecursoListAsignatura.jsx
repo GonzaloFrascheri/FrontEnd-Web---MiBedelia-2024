@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
 export default function FinDeCursoListAsignatura({
-    selectedCarreraNombre,
     listaAsignaturas,
     handleAsignaturaChange,
     formData,
     estado,
-    isFormValid,
 }) {
     return (
     <div className="container-xl px-4">
@@ -16,7 +14,7 @@ export default function FinDeCursoListAsignatura({
             <div className="card shadow-lg border-0 rounded-lg">
                 <div className="card-header justify-content-center">
                     <h3 className="fw-light">
-                        Elegir Asignatura <span className="badge bg-primary text-white ms-5">carrera seleccionada: <b>{selectedCarreraNombre}</b></span>
+                        Elegir Asignatura <span className="badge bg-primary text-white ms-5">carrera seleccionada: <b>{formData.nombreCarrera}</b></span>
                     </h3>
                 </div>
                 {estado.message === "" || estado.continuar === false ? (

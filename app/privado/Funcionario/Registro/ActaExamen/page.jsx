@@ -9,6 +9,7 @@ import { useSidebar } from '@/context/AppContext'
 import ExamenPasos from '@/app/componentes/funcionario/registro/acta/examenPasos.jsx'
 import ListarCarrerasInfo from '@/app/componentes/reutilizables/listarCarrerasInfo.jsx'
 import ListarExamenesInfo from '@/app/componentes/reutilizables/listarExamenesInfo.jsx'
+import ExamenRegistrar from '@/app/componentes/funcionario/registro/acta/examenRegistrar.jsx'
 
 export default function FuncionarioRegistroActaExamen () {
     // Global state
@@ -22,6 +23,7 @@ export default function FuncionarioRegistroActaExamen () {
     const { isSidebarToggled } = useSidebar()
     // Breadcrumbs
     const breadcrumbs = ['privado', 'Funcionario', 'Registro', 'ActaExamen']
+    const [examenDto, setExamenDto] = useState([])
     // estado
     const [estado, setEstado] = useState({
         message: '',
@@ -41,18 +43,19 @@ export default function FuncionarioRegistroActaExamen () {
     const [formData, setFormData] = useState({
         idCarrera: null,
         nombreCarrera: '',
-        idAsignatura: null,
-        nombreAsignatura: '',
+        idExamen: null,
+        nombreExamen: '',
         archivoExcel: null
     })
 
     // Carreras
     const [listaCarrera, setListaCarrera] = useState([])
-    const [selectedCarreraId, setSelectedCarreraId] = useState(null)
-    const [selectedCarreraNombre, setSelectedCarreraNombre] = useState('')
     const handleCarreraChange = selectedCarrera => {
-        setSelectedCarreraId(selectedCarrera.id)
-        setSelectedCarreraNombre(selectedCarrera.nombre)
+        setFormData({
+            ...formData,
+            idCarrera: selectedCarrera.id,
+            nombreCarrera: selectedCarrera.nombre,
+        })
     }
     // Fetch lista de carreras
     useEffect(() => {
@@ -69,34 +72,64 @@ export default function FuncionarioRegistroActaExamen () {
 
     // Examen
     const [listaExamen, setListaExamen] = useState([])
-    const [selectedExamenId, setSelectedExamenId] = useState(null)
-    const [examenDto, setExamenDto] = useState([])
-    const handleChangeExamen = id => {
-        setSelectedExamenId(id)
+    const handleChangeExamen = (event) => {
+        const selectedId = Number(event.target.value);
+        const selectedExamen = listaExamen.find(
+            examen => examen.id === selectedId
+        )
+        setFormData({
+            ...formData,
+            idExamen: selectedExamen.id,
+            nombreExamen: selectedExamen.nombreAsignatura,
+        });
     }
     // Fetch lista de examenes
     useEffect(() => {
         const fetchListaExamenes = async () => {
             try {
-            const response = await axios.get(
-                'Funcionario/listarExamenesPeriodo?idCarrera=' + selectedCarreraId
-            )
-            setEstado({
-                ...estado,
-                paso: 2
-            })
-            setListasInfo({
-                cu: 'Registro de examen',
-                tituloInfo: 'Paso 2: Seleccionar un examen.',
-                mensajeInfo: 'Utilice el selector: "Lista de examenes", despliéguelo y seleccione el examen.'
-            })
-            setListaExamen(response.data)
+                const response = await axios.get(
+                    'Funcionario/listarExamenesPeriodo?idCarrera=' + formData.idCarrera
+                )
+                setEstado({
+                    ...estado,
+                    paso: 2
+                })
+                setListasInfo({
+                    cu: 'Registro de examen',
+                    tituloInfo: 'Paso 2: Seleccionar un examen.',
+                    mensajeInfo: 'Utilice el selector: "Lista de examenes", despliéguelo y seleccione el examen.'
+                })
+                setListaExamen(response.data)
             } catch (error) {
-            console.error('Error fetching listaExamenes:', error)
+                console.error('Error fetching listaExamenes:', error)
             }
         }
         fetchListaExamenes()
-    }, [selectedCarreraId])
+    }, [formData.idCarrera])
+
+    // Fetch examenDto
+    useEffect(() => {
+        const fetchExamenDto = async () => {
+            try {
+                const response = await axios.get(
+                    'Funcionario/generarActaExamen?idExamen=' + formData.idExamen
+                )
+                setEstado({
+                    ...estado,
+                    paso: 3
+                })
+                setListasInfo({
+                    cu: 'Registro de examen',
+                    tituloInfo: 'Paso 3: Analizar archivo.',
+                    mensajeInfo: 'Seleccione un archivo Excel con los datos de los estudiantes.'
+                })
+                setExamenDto(response.data)
+            } catch (error) {
+                console.error('Error fetching examenDto:', error)
+            }
+        }
+        fetchExamenDto()
+    }, [formData.idExamen])
 
     return (
         <body className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'} >
@@ -111,22 +144,28 @@ export default function FuncionarioRegistroActaExamen () {
                             <main>
                                 <HeaderPagePrivado breadcrumbs={breadcrumbs} />
                                 <ExamenPasos estado={estado} setEstado={setEstado} />
-                                {selectedCarreraId === null ? (
-                                <ListarCarrerasInfo
-                                    listaCarrera={listaCarrera}
-                                    onCarreraChange={handleCarreraChange}
-                                    listasInfo={listasInfo}
-                                />
-                                ) : selectedExamenId === null ? (
+                                {formData.idCarrera === null ? (
+                                    <ListarCarrerasInfo
+                                        listaCarrera={listaCarrera}
+                                        onCarreraChange={handleCarreraChange}
+                                        listasInfo={listasInfo}
+                                    />
+                                ) : formData.idExamen === null ? (
                                     <ListarExamenesInfo
                                         listaExamen={listaExamen}
                                         handleChangeExamen={handleChangeExamen}
-                                        selectedExamenId={selectedExamenId}
                                         listasInfo={listasInfo}
-                                        ExamenDto={examenDto}
+                                        formData={formData}
                                     />
-                                  ) : (
-                                    <>  hola</>
+                                ) : (
+                                    <ExamenRegistrar
+                                        setFormData={setFormData}
+                                        estado={estado}
+                                        setEstado={setEstado}
+                                        listasInfo={listasInfo}
+                                        formData={formData}
+                                        examenDto={examenDto}
+                                    />
                                 )}
                             </main>
                         </div>

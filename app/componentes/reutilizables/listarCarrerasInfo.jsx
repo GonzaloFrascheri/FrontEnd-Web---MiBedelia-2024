@@ -18,7 +18,7 @@ export default function ListarCarrerasInfo ({ listaCarrera, onCarreraChange, lis
             <div className="card">
                 <div className='card shadow-lg border-0 rounded-lg'>
                     <div className='card-header justify-content-center'>
-                        <h3 className='fw-light'>{listasInfo.cu} | Seleccionar carreras</h3>
+                        <h3 className='fw-light'>{listasInfo.cu} | Seleccionar carrera</h3>
                     </div>
                     <div className='card-body'>
                         <div className="mb-3">

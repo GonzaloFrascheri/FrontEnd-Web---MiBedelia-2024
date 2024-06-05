@@ -1,45 +1,49 @@
 import React, { useState, useEffect } from 'react';
 import axios from '@/utils/axios'
 import * as XLSX from 'xlsx';
-import {GenerarExcelActaFinDeCurso} from '@/app/componentes/generadorEXCEL/actaFinDeCurso.jsx';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {GenerarExcelActaExamen} from '@/app/componentes/generadorEXCEL/actaExamen.jsx'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuestionCircle, faExclamationTriangle,faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import DataTable from 'react-data-table-component'
+import DataTable from 'react-data-table-component';
 
-export default function FinDeCursoRegistrar({
+export default function ExamenRegistrar({
+    listasInfo,
     formData,
     setFormData,
     estado,
     setEstado,
-    FinDeCursoDto
+    examenDto
 }) {
+    
 
-    const { EXCELGenerador } = GenerarExcelActaFinDeCurso();
+    const { EXCELGenerador } = GenerarExcelActaExamen();
     const [file, setFile] = useState(null);
     const [studentsData, setStudentsData] = useState([]);
     const [isValid, setIsValid] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
     const generarExcel = () => {
-        if (!FinDeCursoDto) {
-            console.error('FinDeCursoDto es null');
+        if (!examenDto) {
+            console.error('examenDto es null');
             setError(true);
         } else {
             const datosPrueba = {
-                asignatura: FinDeCursoDto.nombreAsignatura,
-                semestre: FinDeCursoDto.semestre,
-                //fechaExamen: fecha.toISOString().split('T')[0],
-                año: FinDeCursoDto.anioLectivo,
+                fecha: examenDto.fechaExamen,
+                asignatura: examenDto.nombreAsignatura,
+                periodo: examenDto.idPeriodo,
+                año: examenDto.anioLectivo,
                 docente: {
-                    nombre: FinDeCursoDto.nombreDocente,
+                    nombre: examenDto.nombreDocente,
                 },
-                estudiantes: 
-                    FinDeCursoDto.estudiantes,
+                estudiantes: examenDto.estudiantes,
+                horario: examenDto.horario,
+                diaInicio: examenDto.diaInicio,
+                diaFin: examenDto.diaFin,
                 logo: '', // Imagen en base64
                 enumNotas: {
-                    exonerado: 'EXONERADO',
+                    aprobado: 'APROBADO',
                     aExamen: 'A_EXAMEN',
-                    recursa: 'RECURSA'
+                    reprobado: 'REPROBADO'
                 }
             };
             EXCELGenerador(datosPrueba);
@@ -72,9 +76,9 @@ export default function FinDeCursoRegistrar({
             
             try {
                 // Procesar los datos del archivo Excel
-                const estudiantesProcesados = jsonData.slice(13).map(row => {
+                const estudiantesProcesados = jsonData.slice(15).map(row => {
                     const nota = (row[6] || '').toUpperCase().trim();
-                    const validNotas = ["EXONERADO", "A_EXAMEN", "RECURSA"];
+                    const validNotas = ["APROBADO", "A_EXAMEN", "REPROBADO"];
                     if (!validNotas.includes(nota)) {
                         throw new Error(`Nota inválida para el estudiante: ${row[1]} ${row[2]}, usted escribió: ( ${row[6]} ).`);
                     }
@@ -129,9 +133,10 @@ export default function FinDeCursoRegistrar({
     ];
 
     const enviarDatos = async () => {
+        
         const datos = {
-            id: formData.idAsignatura,
-            nombreAsignatura: formData.nombreAsignatura,
+            id: formData.idExamen,
+            nombreAsignatura: formData.nombreExamen,
             estudiantes: studentsData.map(est => ({
                 id: est.id,
                 ci: est.ci,
@@ -139,17 +144,18 @@ export default function FinDeCursoRegistrar({
                 resultado: est.nota
             }))
         };
-        
         try {
             console.info('Enviando datos:', datos);
-            const {data, status} = await axios.put('Funcionario/registrarActaFinCurso', datos);
+            /*
+            const {data, status} = await axios.put('Funcionario/registrarActaExamen', datos);
             if (status === 200) {
                 setEstado({
                     ...estado,
-                    message: data.message + ' Se registró con éxito el acta para la asignatura: [' + FinDeCursoDto.nombreAsignatura + '].',
+                    message: data.message + ' Se registró con éxito el acta para la asignatura: [' + examenDto.nombreAsignatura + '].',
                     estado: data.evento
                 });
             }
+            */
         } catch (error) {
             console.error('Error al enviar los datos:', error);
             setEstado({
@@ -166,8 +172,9 @@ export default function FinDeCursoRegistrar({
                 <div className="card shadow-lg border-0 rounded-lg">
                     <div className="card-header justify-content-center">
                         <h3 className="fw-light">
+                            {listasInfo.cu} |
                             Generar Acta de Examen para la asignatura: <span className="badge bg-primary text-white ms-5">
-                                {formData?.nombreAsignatura || ""}
+                                {formData?.nombreExamen || ""}
                             </span>
                         </h3>
                     </div>
@@ -267,7 +274,7 @@ export default function FinDeCursoRegistrar({
                                     </div>
                                     <div className="alert-icon-content">
                                         <h6 className="alert-heading">{errorMessage}</h6>
-                                        Recuerde que las notas posibles son: EXONERADO, A_EXAMEN, RECURSA.<br />
+                                        Recuerde que las notas posibles son: APROBADO, A_EXAMEN, REPROBADO.<br />
                                         Por favor, modifique nuevamenete el archivo descargado y asegurese de utilziar este formato de nota.<br />
                                         Recuerde guardar sus cambios.<br />
                                     </div>

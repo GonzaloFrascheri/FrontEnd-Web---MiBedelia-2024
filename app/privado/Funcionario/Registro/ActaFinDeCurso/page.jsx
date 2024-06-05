@@ -4,12 +4,12 @@ import axios from '@/utils/axios'
 import Sidebar from '@/app/componentes/siders/sidebar.jsx'
 import NavPrivado from '@/app/componentes/navs/nav-privado.jsx'
 import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado.jsx'
+import { useAuth } from '@/context/AuthProvider'
+import { useSidebar } from '@/context/AppContext'
 import FinDeCursoPasos from '@/app/componentes/funcionario/registro/acta/findecursoPasos.jsx'
 import FinDeCursoListCarrera from '@/app/componentes/funcionario/registro/acta/findecursoListCarrera.jsx'
 import FinDeCursoListAsignatura from '@/app/componentes/funcionario/registro/acta/findecursoListAsignatura.jsx'
 import FinDeCursoRegistrar from '@/app/componentes/funcionario/registro/acta/findecursoRegistrar.jsx'
-import { useAuth } from '@/context/AuthProvider'
-import { useSidebar } from '@/context/AppContext'
 
 export default function FuncionarioActaFinDeCurso () {
   // Global state
@@ -45,11 +45,12 @@ export default function FuncionarioActaFinDeCurso () {
 
   // Carreras
   const [listaCarrera, setListaCarrera] = useState([])
-  const [selectedCarreraId, setSelectedCarreraId] = useState(null)
-  const [selectedCarreraNombre, setSelectedCarreraNombre] = useState('')
   const handleCarreraChange = selectedCarrera => {
-    setSelectedCarreraId(selectedCarrera.id)
-    setSelectedCarreraNombre(selectedCarrera.nombre)
+    setFormData({
+      ...formData,
+      idCarrera: selectedCarrera.id,
+      nombreCarrera: selectedCarrera.nombre
+    })
   }
   // Fetch lista de carreras
   useEffect(() => {
@@ -66,20 +67,13 @@ export default function FuncionarioActaFinDeCurso () {
 
   // Asignaturas
   const [listaAsignatura, setListaAsignatura] = useState([])
-  const [selectedAsignaturaId, setSelectedAsignaturaId] = useState(null)
-  const [selectedAsignaturaNombre, setSelectedAsignaturaNombre] = useState('')
-
   const handleAsignaturaChange = event => {
     const selectedId = Number(event.target.value)
     const selectedAsignatura = listaAsignatura.find(
       asignatura => asignatura.id === selectedId
     )
-    setSelectedAsignaturaId(selectedAsignatura.id)
-    setSelectedAsignaturaNombre(selectedAsignatura.nombre)
     setFormData({
       ...formData,
-      idCarrera: selectedCarreraId,
-      nombreCarrera: selectedCarreraNombre,
       idAsignatura: selectedAsignatura.id,
       nombreAsignatura: selectedAsignatura.nombre
     })
@@ -89,7 +83,7 @@ export default function FuncionarioActaFinDeCurso () {
     const fetchListaAsignaturas = async () => {
       try {
         const response = await axios.get(
-          'Funcionario/listarAsignatura?idCarrera=' + selectedCarreraId
+          'Funcionario/listarAsignatura?idCarrera=' + formData.idCarrera
         )
         setEstado({
           ...estado,
@@ -101,14 +95,14 @@ export default function FuncionarioActaFinDeCurso () {
       }
     }
     fetchListaAsignaturas()
-  }, [selectedCarreraId])
+  }, [formData.idCarrera])
 
   // Fetch FinDeCursoDto
   useEffect(() => {
     const fetchListaFinDeCursoDto = async () => {
       try {
         const response = await axios.get(
-          'Funcionario/generarActa?idAsignatura=' + selectedAsignaturaId
+          'Funcionario/generarActa?idAsignatura=' + formData.idAsignatura
         )
         setEstado({
           ...estado,
@@ -120,7 +114,7 @@ export default function FuncionarioActaFinDeCurso () {
       }
     }
     fetchListaFinDeCursoDto()
-  }, [selectedAsignaturaId])
+  }, [formData.idAsignatura])
 
   const isFormValid = () =>
     Object.values(formData).every(value => value !== null)
@@ -140,14 +134,13 @@ export default function FuncionarioActaFinDeCurso () {
               <main>
                 <HeaderPagePrivado breadcrumbs={breadcrumbs} />
                 <FinDeCursoPasos estado={estado} setEstado={setEstado} />
-                {selectedCarreraId === null ? (
+                {formData.idCarrera === null ? (
                   <FinDeCursoListCarrera
                     listaCarrera={listaCarrera}
                     onCarreraChange={handleCarreraChange}
                   />
-                ) : selectedAsignaturaId === null ? (
+                ) : formData.idAsignatura === null ? (
                   <FinDeCursoListAsignatura
-                    selectedCarreraNombre={selectedCarreraNombre}
                     listaAsignaturas={listaAsignatura}
                     handleAsignaturaChange={handleAsignaturaChange}
                     formData={formData}
