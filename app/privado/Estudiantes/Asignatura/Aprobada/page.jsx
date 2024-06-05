@@ -39,8 +39,12 @@ function EstudianteAsignaturasAprobadas () {
           )
           const { status, data } = response
           if (status === 200) {
-            setCareers([...data])
-            setCareesAreLoading(false)
+            if(data.length === 0){
+              alert('El estudiante no se encuentra inscripto en ninguna carrera.');
+            }else{
+              setCareers([...data])
+              setCareesAreLoading(false)
+            }
           }
         } catch (error) {
           const { status, data } = error.response

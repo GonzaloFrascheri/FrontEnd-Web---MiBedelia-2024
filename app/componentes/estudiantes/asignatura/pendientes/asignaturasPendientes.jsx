@@ -73,19 +73,12 @@ export default function AsignaturasPendientes({
                       </div>
                     )}
                     <br></br>
-                    <a 
-                        href="/privado/Estudiantes/Asignatura/Pendiente" 
-                        className="btn btn-link" 
-                        style={{ position: 'absolute', left: '10px', bottom: '10px' }}>
-                            Volver
-                    </a>
                   </>
                 )}
               </div>
             </>
           ) : (
-            <div>
-              {/* Mensaje de error o éxito */}
+            {/*<div>
               <div className='card-footer text-center'>
                 <div className='small'>
                   <a
@@ -97,7 +90,7 @@ export default function AsignaturasPendientes({
                   </a>
                 </div>
               </div>
-            </div>
+          </div>*/}
           )}
         </div>
       </div>

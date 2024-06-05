@@ -15,6 +15,7 @@ export default function AsignaturasAprobadas({
   setFechaFin
 }) {
   const [asignaturasAprobadas, setAsignaturasAprobadas] = useState([]);
+  const [mensaje, setMensaje] = useState('');
 
   const handleVerAsignaturas = async () => {
     if (!carreraSeleccionada) {
@@ -29,17 +30,21 @@ export default function AsignaturasAprobadas({
       const fechaInicioFiltro = fechaInicio ? new Date(fechaInicio) : null ;
       const fechaFinFiltro = fechaFin ? new Date(fechaFin) : null ;
       
-      console.log("Fecha Aprobacion:", fechaAprobacion);
-      console.log("Fecha Inicio Filtro:", fechaInicioFiltro);
-      console.log("Fecha Fin Filtro:", fechaFinFiltro);
-      
+      if(fechaInicioFiltro > fechaFinFiltro){
+        alert('La fecha de inicio no puede ser mayor que la fecha de fin del rango');
+      }
+
       return (!fechaInicio || fechaAprobacion >= fechaInicioFiltro) 
       && (!fechaFin || fechaAprobacion <= fechaFinFiltro);
       
     });
     
+    if(asignaturasFiltradas.length === 0){
+      setMensaje('No existen asignaturas aprobadas en el rango de tiempo solicitado.')
+      return;
+    }
+
     setAsignaturasAprobadas(asignaturasFiltradas);
-    console.log("Asignaturas Filtradas: ",asignaturasFiltradas);
   };
 
   const formatearFecha = (fecha) => {
@@ -54,17 +59,17 @@ export default function AsignaturasAprobadas({
     <div className='container-xl px-4 mt-n10'>
       <div className='card'>
         <div className='card shadow-lg border-0 rounded-lg'>
+          <div className='card-header d-flex align-items-center justify-content-between'>
+            <h3 className='fw-light'>Listado de asignaturas aprobadas</h3>
+            <div className="small">
+                <a href="/privado/Estudiantes/Asignatura/Aprobada">Volver</a>
+            </div>
+          </div>
           {estado.message === '' ? (
             <>
               <div>
-                <div className='card-header justify-content-center'>
-                  <h3 className='fw-light'>Listado de asignaturas aprobadas</h3>
-                </div>
                 {!carreraSeleccionada ? (
                   <>
-                    <div className='card-header justify-content-center'>
-                      <h4 className='fw-light'>Seleccionar carrera</h4>
-                    </div>{' '}
                     <ListarCarreras
                       carreraSeleccionada={carreraSeleccionada}
                       carreras={carreras}
@@ -108,6 +113,7 @@ export default function AsignaturasAprobadas({
                       >
                         Listado de asignaturas aprobadas
                       </button>
+                      {mensaje && <p style={{ textAlign: 'left' }}>{mensaje}</p>}
                     </div>
                     {asignaturasAprobadas.length > 0 && (
                       <div className='card-body'>
@@ -116,7 +122,6 @@ export default function AsignaturasAprobadas({
                           <thead>
                             <tr>
                               <th>Nombre</th>
-                              <th>Calificación</th>
                               <th>Fecha Aprobación</th>
                             </tr>
                           </thead>
@@ -124,7 +129,6 @@ export default function AsignaturasAprobadas({
                             {asignaturasAprobadas.map((asignatura, index) => (
                               <tr key={index}>
                                 <td>{asignatura.nombre}</td>
-                                <td>{asignatura.calificacion}</td>
                                 <td>{formatearFecha(asignatura.fechaAprobacion)}</td>
                               </tr>
                             ))}
@@ -133,12 +137,6 @@ export default function AsignaturasAprobadas({
                       </div>
                     )}
                     <br></br>
-                    <a 
-                      href="/privado/Estudiantes/Asignatura/Aprobada" 
-                      className="btn btn-link" 
-                      style={{ position: 'absolute', left: '10px', bottom: '10px' }}>
-                        Volver
-                    </a>
                   </>
                 )}
               </div>
