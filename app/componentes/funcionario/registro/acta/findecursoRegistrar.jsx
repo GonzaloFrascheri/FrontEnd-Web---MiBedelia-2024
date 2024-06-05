@@ -72,11 +72,15 @@ export default function FinDeCursoRegistrar({
             
             try {
                 // Procesar los datos del archivo Excel
+                let totalEstudiantes = FinDeCursoDto.estudiantes.length;
                 const estudiantesProcesados = jsonData.slice(13).map(row => {
+                    totalEstudiantes--;
                     const nota = (row[6] || '').toUpperCase().trim();
                     const validNotas = ["EXONERADO", "A_EXAMEN", "RECURSA"];
-                    if (!validNotas.includes(nota)) {
-                        throw new Error(`Nota inválida para el estudiante: ${row[1]} ${row[2]}, usted escribió: ( ${row[6]} ).`);
+                    if (totalEstudiantes >= 0) {
+                        if (!validNotas.includes(nota)) {
+                            throw new Error(`Nota inválida para el estudiante: ${row[1]} ${row[2]}, usted escribió: ( ${row[6]} ).`);
+                        }
                     }
                     return {
                         nombre: row[1],
@@ -141,7 +145,6 @@ export default function FinDeCursoRegistrar({
         };
         
         try {
-            console.info('Enviando datos:', datos);
             const {data, status} = await axios.put('Funcionario/registrarActaFinCurso', datos);
             if (status === 200) {
                 setEstado({

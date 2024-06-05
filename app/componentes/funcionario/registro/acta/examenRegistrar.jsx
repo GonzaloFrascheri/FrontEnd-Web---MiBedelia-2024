@@ -15,6 +15,7 @@ export default function ExamenRegistrar({
     examenDto
 }) {
     
+    console.info('ExamenRegistrar:', examenDto);
 
     const { EXCELGenerador } = GenerarExcelActaExamen();
     const [file, setFile] = useState(null);
@@ -145,8 +146,6 @@ export default function ExamenRegistrar({
             }))
         };
         try {
-            console.info('Enviando datos:', datos);
-            /*
             const {data, status} = await axios.put('Funcionario/registrarActaExamen', datos);
             if (status === 200) {
                 setEstado({
@@ -155,7 +154,6 @@ export default function ExamenRegistrar({
                     estado: data.evento
                 });
             }
-            */
         } catch (error) {
             console.error('Error al enviar los datos:', error);
             setEstado({
