@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import { GenerarPdfActaExamen } from "@/app/componentes/generadorPDF/actaExamen";
 
-export default function Index({ listaExamen, handleChangeExamen, selectedExamenId, ExamenDto}) {
+export default function ListarExamenesInfo ({ listaExamen, handleChangeExamen, selectedExamenId, listasInfo, ExamenDto}) {
 
     const [error, setError] = useState(false);
     // Función para cargar la imagen y convertirla a base64
@@ -64,7 +66,7 @@ export default function Index({ listaExamen, handleChangeExamen, selectedExamenI
             <div className="card">
                 <div className="card shadow-lg border-0 rounded-lg">
                         <div className="card-header d-flex align-items-center justify-content-between">
-                            <h3 className="fw-light">Elegir un Examen</h3>
+                            <h3 className="fw-light">{listasInfo.cu} | Elegir un Examen</h3>
                             <div className="small">
                                 <a href="/privado/Funcionario/Generar/ActaExamen">Volver</a>
                             </div>
@@ -100,14 +102,18 @@ export default function Index({ listaExamen, handleChangeExamen, selectedExamenI
                                 </div>
                             </div>
                             )}
-                            <div className="mb-3">
-                                <button 
-                                    className="btn btn-primary" 
-                                    disabled={!selectedExamenId}
-                                    onClick={generarPDF}
-                                >
-                                    Generar PDF
-                                </button>
+                            <div className="card card-icon">
+                                <div className="row no-gutters">
+                                    <div className="col-auto card-icon-aside bg-primary text-white">
+                                        <FontAwesomeIcon icon={faQuestionCircle} />
+                                    </div>
+                                    <div className="col">
+                                        <div className="card-body py-5">
+                                            <h5 className="card-title">{listasInfo.tituloInfo}</h5>
+                                            <p className="card-text">{listasInfo.mensajeInfo}</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                 </div>

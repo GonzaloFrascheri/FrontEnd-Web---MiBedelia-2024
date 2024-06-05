@@ -12,11 +12,19 @@ import { useAuth } from '@/context/AuthProvider'
 import { useSidebar } from '@/context/AppContext'
 
 export default function FuncionarioActaFinDeCurso () {
+  // Global state
+  const authData = useAuth()
+  const [userData, setUserData] = useState(null)
+  useEffect(() => {
+    if (authData && !userData) {
+      setUserData(authData)
+    }
+  }, [authData, userData])
+  const { isSidebarToggled } = useSidebar()
   // Breadcrumbs
   const breadcrumbs = ['privado', 'Funcionario', 'Registro', 'ActaFinDeCurso']
   const [finDeCursoDto, setFinDeCursoDto] = useState([])
   // Estado
-  const [userData, setUserData] = useState(null)
   const [estado, setEstado] = useState({
     message: '',
     estado: '',
@@ -35,26 +43,14 @@ export default function FuncionarioActaFinDeCurso () {
     archivoExcel: null
   })
 
-  // Global state
-  const authData = useAuth()
-  const { isSidebarToggled } = useSidebar()
-
   // Carreras
   const [listaCarrera, setListaCarrera] = useState([])
   const [selectedCarreraId, setSelectedCarreraId] = useState(null)
   const [selectedCarreraNombre, setSelectedCarreraNombre] = useState('')
-
   const handleCarreraChange = selectedCarrera => {
     setSelectedCarreraId(selectedCarrera.id)
     setSelectedCarreraNombre(selectedCarrera.nombre)
   }
-
-  useEffect(() => {
-    if (authData && !userData) {
-      setUserData(authData)
-    }
-  }, [authData, userData])
-
   // Fetch lista de carreras
   useEffect(() => {
     const fetchListaCarreras = async () => {
@@ -167,8 +163,7 @@ export default function FuncionarioActaFinDeCurso () {
                     isFormValid={isFormValid}
                     FinDeCursoDto={finDeCursoDto}
                   />
-                )}
-                ;
+                )};
               </main>
             </div>
           </div>
