@@ -17,10 +17,12 @@ function EstudianteAsignaturasAprobadas () {
     estado: ''
   })
   const [userData, setUserData] = useState('')
-  const [carreers, setCareers] = useState([])
+  const [careers, setCareers] = useState([])
   const [careesAreLoading, setCareesAreLoading] = useState(true)
   const [selectedCareer, setSelectedCareer] = useState('')
   const { isSidebarToggled } = useSidebar()
+  const [fechaInicio, setFechaInicio] = useState('')
+  const [fechaFin, setFechaFin] = useState('')
 
   useEffect(() => {
     if (authData && !userData) {
@@ -97,22 +99,42 @@ function EstudianteAsignaturasAprobadas () {
             <div id='layoutAuthentication_content'>
               <main>
                 <HeaderPagePrivado breadcrumbs={breadcrumbs} />
-                {/*<select value={selectedCareer} onChange={handleCareerChange}>
-                  <option value=''>Selecciona una carrera</option>
-                  {careers.map((career, index) => (
-                    <option key={index} value={career.id}>
-                      {career.nombre}
-                    </option>
-                  ))}
-                </select>*/}
+                <div className="container">
+                  <div className="row mb-3">
+                    <div className="col-md-6">
+                      <label htmlFor="fechaInicio">Fecha Inicio</label>
+                      <input
+                        type="date"
+                        id="fechaInicio"
+                        className="form-control"
+                        value={fechaInicio}
+                        onChange={(e) => setFechaInicio(e.target.value)}
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label htmlFor="fechaFin">Fecha Fin</label>
+                      <input
+                        type="date"
+                        id="fechaFin"
+                        className="form-control"
+                        value={fechaFin}
+                        onChange={(e) => setFechaFin(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
                 <AsignaturasAprobadas
                   estado={estado}
                   resetearForm={resetFormStatus}
-                  carreras={carreers}
+                  carreras={careers}
                   carreraSeleccionada={selectedCareer}
                   seleccionarCarrera={handleCareerChange}
                   estanCargandoCarreras={careesAreLoading}
                   obtenerAsignaturasAprobadas={obtenerAsignaturasAprobadas}
+                  fechaInicio={fechaInicio}
+                  setFechaInicio={setFechaInicio}
+                  fechaFin={fechaFin}
+                  setFechaFin={setFechaFin}
                 />
               </main>
             </div>
@@ -120,7 +142,7 @@ function EstudianteAsignaturasAprobadas () {
         </div>
       </div>
     </body>
-  )
+  );
 }
 
 export default EstudianteAsignaturasAprobadas

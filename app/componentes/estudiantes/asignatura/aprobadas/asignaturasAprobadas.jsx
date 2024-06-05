@@ -8,7 +8,11 @@ export default function AsignaturasAprobadas({
   estado,
   carreras,
   seleccionarCarrera,
-  obtenerAsignaturasAprobadas
+  obtenerAsignaturasAprobadas,
+  fechaInicio,
+  setFechaInicio,
+  fechaFin,
+  setFechaFin
 }) {
   const [asignaturasAprobadas, setAsignaturasAprobadas] = useState([]);
 
@@ -17,10 +21,33 @@ export default function AsignaturasAprobadas({
       alert('Debes seleccionar una carrera antes de ver las asignaturas aprobadas.');
       return;
     }
-
-    // Llamar a la función para obtener las asignaturas pendientes
+    
     const asignaturas = await obtenerAsignaturasAprobadas();
-    setAsignaturasAprobadas(asignaturas);
+    
+    const asignaturasFiltradas = asignaturas.filter(asignaturas => {
+      const fechaAprobacion = new Date(asignaturas.fechaAprobacion);
+      const fechaInicioFiltro = fechaInicio ? new Date(fechaInicio) : null ;
+      const fechaFinFiltro = fechaFin ? new Date(fechaFin) : null ;
+      
+      console.log("Fecha Aprobacion:", fechaAprobacion);
+      console.log("Fecha Inicio Filtro:", fechaInicioFiltro);
+      console.log("Fecha Fin Filtro:", fechaFinFiltro);
+      
+      return (!fechaInicio || fechaAprobacion >= fechaInicioFiltro) 
+      && (!fechaFin || fechaAprobacion <= fechaFinFiltro);
+      
+    });
+    
+    setAsignaturasAprobadas(asignaturasFiltradas);
+    console.log("Asignaturas Filtradas: ",asignaturasFiltradas);
+  };
+
+  const formatearFecha = (fecha) => {
+    const date = new Date(fecha);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   };
 
   return (
@@ -48,9 +75,33 @@ export default function AsignaturasAprobadas({
                   </>
                 ) : (
                   <>
+                    <div className="container">
+                      <div className="row mb-3">
+                        <div className="col-md-6">
+                          <label htmlFor="fechaInicio">Fecha Inicio</label>
+                          <input
+                            type="date"
+                            id="fechaInicio"
+                            className="form-control"
+                            value={fechaInicio}
+                            onChange={(e) => setFechaInicio(e.target.value)}
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <label htmlFor="fechaFin">Fecha Fin</label>
+                          <input
+                            type="date"
+                            id="fechaFin"
+                            className="form-control"
+                            value={fechaFin}
+                            onChange={(e) => setFechaFin(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                    </div>
                     <div className='card-footer text-center'>
                       <button
-                        disabled={!carreraSeleccionada}
+                        disabled={!fechaInicio || !fechaFin}
                         onClick={handleVerAsignaturas}
                         type='button'
                         className='btn btn-primary'
@@ -61,27 +112,39 @@ export default function AsignaturasAprobadas({
                     {asignaturasAprobadas.length > 0 && (
                       <div className='card-body'>
                         <h5>Asignaturas Aprobadas:</h5>
-                        <ul>
-                          {asignaturasAprobadas.map((asignatura, index) => (
-                            <li key={index}>{asignatura.nombre}</li>
-                          ))}
-                        </ul>
+                        <table className="table">
+                          <thead>
+                            <tr>
+                              <th>Nombre</th>
+                              <th>Calificación</th>
+                              <th>Fecha Aprobación</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {asignaturasAprobadas.map((asignatura, index) => (
+                              <tr key={index}>
+                                <td>{asignatura.nombre}</td>
+                                <td>{asignatura.calificacion}</td>
+                                <td>{formatearFecha(asignatura.fechaAprobacion)}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
                       </div>
                     )}
                     <br></br>
                     <a 
-                        href="/privado/Estudiantes/Asignatura/Aprobada" 
-                        className="btn btn-link" 
-                        style={{ position: 'absolute', left: '10px', bottom: '10px' }}>
-                            Volver
+                      href="/privado/Estudiantes/Asignatura/Aprobada" 
+                      className="btn btn-link" 
+                      style={{ position: 'absolute', left: '10px', bottom: '10px' }}>
+                        Volver
                     </a>
                   </>
                 )}
               </div>
             </>
           ) : (
-            <div>
-            </div>
+            <div></div>
           )}
         </div>
       </div>
