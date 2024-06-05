@@ -10,7 +10,7 @@ import { useSidebar } from '@/context/AppContext'
 
 export default function EstudianteInscripcionAsignatura () {
   const authData = useAuth()
-  const breadcrumbs = ['privado', 'Estudiante', 'Asignatura']
+  const breadcrumbs = ['privado', 'Estudiantes', 'Asignatura']
   // Carreras
   const [carreers, setCareers] = useState([])
   const [careersAreLoading, setcareersAreLoading] = useState(true)

@@ -4,6 +4,7 @@ export default function AsignaturaListarPasos({ selectedCarreraId, selectedAsign
     const [estado, setEstado] = useState({
         paso1: "step-item active",
         paso2: "step-item",
+        paso3: "step-item",
     });
 
     useEffect(() => {
@@ -19,17 +20,31 @@ export default function AsignaturaListarPasos({ selectedCarreraId, selectedAsign
                 paso2: "step-item",
                 paso3: "step-item active"
             });
+        }else{
+            setEstado({
+                paso1: "step-item active",
+                paso2: "step-item",
+                paso3: "step-item"
+            });
         }
     }, [selectedCarreraId, selectedAsignaturaId]);
 
     return (
         <div className="step step-warning py-4 mt-n15">
             <div className={estado.paso1}>
-                <a className="step-item-link" href="/privado/Coordinador/Asignatura/Listar">Elegir Carrera</a>
+                <a className="step-item-link" href="/privado/Funcionario/Listar">Elegir Carrera</a>
             </div>
             <div className={estado.paso2}>
                 <a
                     className={`step-item-link ${!selectedCarreraId ? 'disabled' : ''}`}
+                    href="#!" aria-disabled="true"
+                >
+                    Elegir Asignatura
+                </a>
+            </div>
+            <div className={estado.paso3}>
+                <a
+                    className={`step-item-link ${!selectedAsignaturaId ? 'disabled' : ''}`}
                     href="#!" aria-disabled="true"
                 >
                     Finalizar
