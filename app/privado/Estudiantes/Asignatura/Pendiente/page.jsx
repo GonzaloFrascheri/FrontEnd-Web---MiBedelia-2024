@@ -40,6 +40,12 @@ function EstudianteAsignaturasPendientes () {
             setCareers([...data])
             setCareesAreLoading(false)
           }
+
+          if(data.length === 0){
+            // El estudiante no tiene ninguna inscripcion a carrera
+            console.log('Usted no tiene ninguna inscripción a carrera');
+          }
+
         } catch (error) {
           const { status, data } = error.response
           setEstado({
@@ -58,7 +64,14 @@ function EstudianteAsignaturasPendientes () {
         `/Estudiante/getAsignaturasPendientes?idEstudiante=${userData.id}&idCarrera=${selectedCareer}`
       )
       const { data } = response
+
+      if(data.length === 0){
+        // No hay asignaturas pendientes para esa carrera
+        console.log('Usted no tiene asignaturas pendientes para esta carrera.');
+      }
+
       return data
+
     } catch (error) {
       const { status, data } = error.response
       setEstado({

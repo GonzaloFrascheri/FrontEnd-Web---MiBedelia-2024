@@ -27,12 +27,15 @@ export default function AsignaturasPendientes({
     <div className='container-xl px-4 mt-n10'>
       <div className='card'>
         <div className='card shadow-lg border-0 rounded-lg'>
+            <div className='card-header d-flex align-items-center justify-content-between'>
+              <h3 className='fw-light'>Listado de asignaturas pendientes</h3>
+              <div className="small">
+                  <a href="/privado/Estudiantes/Asignatura/Pendiente">Volver</a>
+              </div>
+            </div>
           {estado.message === '' ? (
             <>
               <div>
-                <div className='card-header justify-content-center'>
-                  <h3 className='fw-light'>Listado de asignaturas pendientes</h3>
-                </div>
                 {/* ListarCarreras y otros componentes necesarios */}
                 {!carreraSeleccionada ? (
                   <>
