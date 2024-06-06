@@ -1,14 +1,77 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
+import axios from "@/utils/axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 
 export default function ListarPreviasInfo({
-    listaAsignatura,
-    detalleAsignatura,
+    listAsignatura,
     listasInfo,
     formData
 }) {
-    console.info("ListarPreviasInfo", detalleAsignatura);
+
+    const [showPopup, setShowPopup] = useState(false);
+    const [selectedAsignatura, setSelectedAsignatura] = useState(null);
+    const [requisito, setRequisito] = useState('EXONERADO');
+    const [estado, setEstado] = useState({message: '', estado: '', refresh: 0});
+    const [detalleAsignatura, setDetalleAsignatura] = useState([]);
+
+    const handleMostrarPopUp = (asignatura) => {
+        setSelectedAsignatura(asignatura);
+        setShowPopup(true);
+    };
+
+    const fetchListaPrevia = async () => {
+        try {
+            const responseAsignatura = await axios.get('Coordinador/getAsignatura?idAsignatura=' + formData.idAsignatura);
+            setDetalleAsignatura(responseAsignatura.data);
+        } catch (error) {
+            console.error('Error fetching listaPrevia:', error)
+        }
+    }
+
+    useEffect(() => {
+        fetchListaPrevia();
+    }, [estado.refresh]);
+                
+    const handleAsignarPrevia = async () => {
+        try {
+            // envío datos al bk
+            const datos = {
+                idAsigOrigen: formData.idAsignatura,
+                idPrevAsignada: selectedAsignatura.id,
+                requisito: requisito
+            };
+            const { data, status } = await axios.post('Coordinador/registrarPreviatura', datos);
+            console.log('data:', data);
+            // si la data es ok - docente fue dado de alta
+            if (status === 200) {
+                setEstado({
+                    message: data.message,
+                    estado: 'success',
+                    refresh: estado.refresh + 1
+                });
+            }else{
+                setEstado({
+                    message: data.message,
+                    estado: 'danger'
+                });
+            }
+        } catch (error) {
+            console.error('Error al guardar la asignatura:', error);
+            setEstado({
+                message: error.response ? error.response.data.message : 'Error al guardar la asignatura',
+                estado: 'danger'
+            });
+        }finally {
+            setShowPopup(false);
+            setTimeout(() => setEstado({ message: '', estado: '' }), 5000);
+        }
+    };
+
+    const handleCancelar = () => {
+        setShowPopup(false);
+    };
+
     return (
         <div className="container-xl">
             <div className="card shadow-lg border-0 rounded-lg">
@@ -18,31 +81,35 @@ export default function ListarPreviasInfo({
                     </h3>
                 </div>
                 <div className="card-body">
+                    {/** DETALLE DE HORARIOS */}
                     <div className="container-fluid px-4">
                         <div className="card bg-gradient-primary-to-secondary mb-4">
                             <div className="card-body">
                                 <div className="d-flex align-items-center justify-content-between">
-                                    {detalleAsignatura.horarios && detalleAsignatura.horarios.length >= 0 ? (
-                                        detalleAsignatura.horarios.map((horario, index) => (
-                                            <>
-                                                <div key={index} className="mb-3">
-                                                    <div className="small text-white-50">
-                                                        <strong>Horario:</strong> {horario.horarioInicio} - {horario.horarioFin}
+                                    {detalleAsignatura.horarios && detalleAsignatura.horarios.length > 0 ? (
+                                        (() => {
+                                            const horario = detalleAsignatura.horarios[detalleAsignatura.horarios.length - 1];
+                                            return (
+                                                <>
+                                                    <div key={detalleAsignatura.horarios.length - 1} className="mb-3">
+                                                        <div className="small text-white-50">
+                                                            <strong>Horario:</strong> {horario.horarioInicio} - {horario.horarioFin}
+                                                        </div>
+                                                        <div className="h1 text-white">
+                                                            <strong>Docente:</strong> {horario.nombreDocente} ({horario.ciDocente})
+                                                        </div>
                                                     </div>
-                                                    <div className="h1 text-white">
-                                                        <strong>Docente:</strong> {horario.nombreDocente} ({horario.ciDocente})
+                                                    <div className="text-white">
+                                                        <p><strong>Días Dictados:</strong> {horario.diasDictados !== null ? (
+                                                            horario.diasDictados.join(", ")
+                                                        ) : (
+                                                            "No especificado"
+                                                        )}</p>
+                                                        <strong>Semestre:</strong> {horario.tipoSemestre} ({new Date(horario.inicioSemestre).toLocaleDateString()} - {new Date(horario.finSemestre).toLocaleDateString()})
                                                     </div>
-                                                </div>
-                                                <div className="text-white">
-                                                    <p><strong>Días Dictados:</strong> {horario.diasDictados !== null ? (
-                                                        horario.diasDictados.join(", ")
-                                                    ) : (
-                                                        "No especificado"
-                                                    )}</p>
-                                                    <strong>Semestre:</strong> {horario.tipoSemestre} ({new Date(horario.inicioSemestre).toLocaleDateString()} - {new Date(horario.finSemestre).toLocaleDateString()})
-                                                </div>
-                                            </>
-                                        ))
+                                                </>
+                                            );
+                                        })()
                                     ) : (
                                         <div className="me-3">
                                             <div className="h1 text-white">No hay horarios asignados.</div>
@@ -52,65 +119,104 @@ export default function ListarPreviasInfo({
                             </div>
                         </div>
                     </div>
-                    <div className="container-fluid mb-4">
-                        <div className="row gx-4">
-                            <div className="col-lg-7">
-                                <div className="card mb-4">
-                                    <div className="card-header">Detalles de previas</div>
-                                    <div className="card-body">
-                                        {detalleAsignatura.previaturas && detalleAsignatura.previaturas.length > 0 ? (
-                                            <div>
-                                                <h4>Lista de Previaturas</h4>
-                                                <ul className="list-group">
-                                                    {detalleAsignatura.previaturas.map((previatura, index) => (
-                                                        <li key={index} className="list-group-item">
-                                                            <p>
-                                                                <strong>Nombre:</strong> {previatura.nombrePrev}
-                                                                <strong>Requisito:</strong> {previatura.requisito}
-                                                            </p>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        ) : (
-                                            <p>No hay previaturas asignadas.</p>
-                                        )}
-                                    </div>
+
+                    {/** MENSAJES */}
+                    {estado.message && (
+                        <div>
+                            <div
+                                className={`alert alert-icon m-2 alert-${estado.estado}`}
+                                role="alert"
+                            >
+                                <button
+                                    className="btn-close"
+                                    type="button"
+                                    data-bs-dismiss="alert"
+                                    aria-label="Close"
+                                ></button>
+                                <div className="alert-icon-aside">
+                                    <i className="far fa-flag"></i>
+                                </div>
+                                <div className="alert-icon-content">
+                                    <h6 className="alert-heading">Resultado</h6>
+                                    {estado.message}!
                                 </div>
                             </div>
-                            <div className="col-lg-5">
+                        </div>
+                    )}
+                    {/** DETALLE DE PREVIAS */}
+                    <div className="container-fluid mb-4">
+                        <div className="row gx-4">
+                            {/** PREVIAS YA ASIGNADAS */}
+                            <div className="col-lg-6">
+                                <div className="card mb-4">
+                                    <div className="card-header">Detalles de previas</div>
+                                    <div className="card-body p-0">
+                                        <table className="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Estado</th>
+                                                    <th>Nombre</th>
+                                                    <th>Requisito</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {detalleAsignatura.previaturas && detalleAsignatura.previaturas.length > 0 ? (
+                                                    detalleAsignatura.previaturas.map((previatura, index) => (
+                                                        <tr key={index}>
+                                                            <td>
+                                                                <FontAwesomeIcon icon={faCheckCircle} className="text-success text-xs me-2" />
+                                                            </td>
+                                                            <td><strong>{previatura.nombrePrev}</strong></td>
+                                                            <td>{previatura.requisito}</td>
+                                                        </tr>
+                                                    ))
+                                                ) : (
+                                                    <tr>
+                                                        <td colSpan="3" className="text-center">No se asignaron previas aún.</td>
+                                                    </tr>
+                                                )}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div className="card-footer"></div>
+                                </div>
+                            </div>
+                            {/** FORM PARA ASIGNAR PREVIAS */}
+                            <div className="col-lg-6">
                                 <div className="card card-header-actions">
                                     <div className="card-header">
                                         Agregar previas
                                     </div>
                                     <div className="card-body p-0">
                                         <ul className="list-group list-group-flush">
-                                            {listaAsignatura.length > 0 ? (
-                                                listaAsignatura.map((asignatura) => (
-                                                    <li
-                                                        key={asignatura.id}
-                                                        className="list-group-item"
-                                                    >
-                                                        {asignatura.id === formData.idAsignatura ? (
+                                            {console.info("detalleAsignatura.previaturas:", detalleAsignatura, formData)}
+                                            {
+                                                formData.idSemestre === 1 ? (
+                                                    <li className="list-group-item">No se admiten previas para Asignaturas de semestre uno.</li>
+                                                ) : (
+                                                    listAsignatura.filter(asignatura =>
+                                                        detalleAsignatura.previaturas &&
+                                                        !detalleAsignatura.previaturas.some(previatura => previatura.idPrevAsignada === asignatura.id)
+                                                    ).map((asignatura) => (
+                                                        <li
+                                                            key={asignatura.id}
+                                                            className="list-group-item"
+                                                            onClick={() => handleMostrarPopUp(asignatura)}
+                                                        >
                                                             <FontAwesomeIcon icon={faCheckCircle} className="text-danger text-xs me-2" />
-                                                        ) : (
-                                                            <FontAwesomeIcon icon={faCheckCircle} className="text-primary text-xs me-2" />
-                                                        )}
-                                                        {asignatura.nombre}
-                                                    </li>
-                                                ))
-                                            ) : (
-                                                <li className="list-group-item">No se recibieron datos aún</li>
-                                            )}
+                                                            ({asignatura.gradoSemestre}) {asignatura.nombre}
+                                                        </li>
+                                                    ))
+                                                )
+                                            }
                                         </ul>
                                     </div>
-                                    <div className="card-footer d-flex align-items-center justify-content-between">
-                                        <button className="fw-500 btn btn-primary-soft text-primary">Agregar</button>
-                                    </div>
+                                    <div className="card-footer"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {/** AYUDA */}
                     <div className="card card-icon mb-4">
                         <div className="row no-gutters">
                             <div className="col-auto card-icon-aside bg-primary text-white">
@@ -126,6 +232,49 @@ export default function ListarPreviasInfo({
                     </div>
                 </div>
             </div>
+            {/* Modal Popup */}
+            {showPopup && (
+                <div className="modal show" style={{ display: 'block' }}>
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Asignar Previa</h5>
+                                <button type="button" className="close" onClick={handleCancelar}>
+                                    <span>&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <form>
+                                    <div className="form-group">
+                                        <label>Nombre</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={selectedAsignatura?.id || ''}
+                                            readOnly
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Grado/Semestre</label>
+                                        <select
+                                            className="form-control"
+                                            value={requisito}
+                                            onChange={(e) => setRequisito(e.target.value)}
+                                        >
+                                            <option value="EXONERADO">EXONERADO</option>
+                                            <option value="A_EXAMEN">A_EXAMEN</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" onClick={handleCancelar}>Cancelar</button>
+                                <button type="button" className="btn btn-primary" onClick={handleAsignarPrevia}>Asignar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

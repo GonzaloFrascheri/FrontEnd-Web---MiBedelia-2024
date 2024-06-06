@@ -44,7 +44,8 @@ export default function CoordinadorRegistrarPreviatura () {
         idCarrera: null,
         nombreCarrera: '',
         idAsignatura: null,
-        nombreAsignatura: ''
+        nombreAsignatura: '',
+        idSemestre: null
     })
 
     // Carreras
@@ -53,7 +54,7 @@ export default function CoordinadorRegistrarPreviatura () {
         setFormData({
             ...formData,
             idCarrera: selectedCarrera.id,
-            nombreCarrera: selectedCarrera.nombre,
+            nombreCarrera: selectedCarrera.nombre
         })
     }
     // Fetch lista de carreras
@@ -79,7 +80,8 @@ export default function CoordinadorRegistrarPreviatura () {
         setFormData({
             ...formData,
             idAsignatura: selectedAsignatura.id,
-            nombreAsignatura: selectedAsignatura.nombre
+            nombreAsignatura: selectedAsignatura.nombre,
+            idSemestre: selectedAsignatura.gradoSemestre
         })
     }
     // Fetch lista de asignaturas
@@ -107,11 +109,11 @@ export default function CoordinadorRegistrarPreviatura () {
     }, [formData.idCarrera])
 
     // cargar previas
-    const [detalleAsignatura, setDetalleAsignatura] = useState([])
+    const [listAsignaturaPaginado, setListAsignaturaPaginado] = useState([]);
     useEffect(() => {
         const fetchListaPrevia = async () => {
             try {
-                const response = await axios.get('Coordinador/getAsignatura?idAsignatura=' + formData.idAsignatura)
+                const response = await axios.get('Coordinador/listAsignaturasPorG?idCarrera='+ formData.idCarrera +'&gradoAsignatura=' + formData.idSemestre)
                 setEstado({
                     ...estado,
                     paso: 3
@@ -121,7 +123,7 @@ export default function CoordinadorRegistrarPreviatura () {
                     tituloInfo: 'Paso 3: Detalle de previas.',
                     mensajeInfo: 'En este paso se muestra lalista de previas que tenga la Asignatura seleccionado, en caso de ya tener previas caragadas anteriormente.'
                 })
-                setDetalleAsignatura(response.data)
+                setListAsignaturaPaginado(response.data);
             } catch (error) {
                 console.error('Error fetching listaPrevia:', error)
             }
@@ -159,8 +161,7 @@ export default function CoordinadorRegistrarPreviatura () {
                                     />
                                 ) : (
                                     <ListPreviaInfo
-                                        listaAsignatura={listaAsignatura}
-                                        detalleAsignatura={detalleAsignatura}
+                                        listAsignatura={listAsignaturaPaginado}
                                         listasInfo={listasInfo}
                                         formData={formData}
                                     />
