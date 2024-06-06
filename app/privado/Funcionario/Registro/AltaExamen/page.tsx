@@ -1,5 +1,5 @@
 "use client";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "@/utils/axios";
 import Sidebar from "@/app/componentes/siders/sidebar";
 import NavPrivado from "@/app/componentes/navs/nav-privado";
@@ -70,10 +70,10 @@ function FuncionarioExamenAsignatura() {
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const formattedDate = parseDateToISO(value);
+    const valueToChange = name === "fechaExamen"? parseDateToISO(value) : value;
     setFormData((prevState) => ({
       ...prevState,
-      [name]: formattedDate,
+      [name]: valueToChange,
     }));
   };
 
@@ -88,6 +88,7 @@ function FuncionarioExamenAsignatura() {
     idDocente: "",
     anioLectivo: hoy.getFullYear().toString(),
     fechaExamen: "",
+    horario: "",
   });
   const isFormValid = () =>
     Object.values(formData).every((value) => value !== "");
@@ -115,6 +116,7 @@ function FuncionarioExamenAsignatura() {
           idDocente: "",
           anioLectivo: "",
           fechaExamen: "",
+          horario: ""
         });
       } else {
         setEstado({
