@@ -257,6 +257,12 @@ export default function Sidebar () {
                         >
                           Listar estudiantes inscriptos en asignatura
                         </a>
+                        <a
+                          className='nav-link'
+                          href='/privado/Funcionario/Listar/Periodo'
+                        >
+                          Listar exámenes a tomar en período
+                        </a>
                       </nav>
                     </div>
                   </>
