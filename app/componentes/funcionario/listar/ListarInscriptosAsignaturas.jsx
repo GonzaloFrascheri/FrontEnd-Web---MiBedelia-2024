@@ -11,6 +11,7 @@ export default function ListarInscriptosAsignaturas({ listaAsignaturas, handleAs
     const [horarios, setHorarios] = useState([]); // Para almacenar los horarios
     const [selectedHorario, setSelectedHorario] = useState(null);
     const [estudiantesInscriptos, setEstudiantesInscriptos] = useState([]);
+    const [loadingHorarios, setLoadingHorarios] = useState(false);
 
     const columnas = [
         { name: 'ID', selector: (row) => row.id, sortable: true, width: '80px' },
@@ -33,18 +34,27 @@ export default function ListarInscriptosAsignaturas({ listaAsignaturas, handleAs
             console.error('Error en el fetching detalles del horario', error);
             setHorarios([]);
         }
+        setLoadingHorarios(false);
     };
 
     const handleHorarioSeleccionado = async (horario) => {
         setSelectedHorario(horario);
         try {
-            const response = await axios.get(`/Funcionario/listarAlumnosHorario?idHorario=${idHorario}`);
+            const response = await axios.get(`/Funcionario/listarAlumnosHorario?idHorario=${horario.id}`);
             setEstudiantesInscriptos(response.data);
         } catch (error) {
             console.error('Error fetching estudiantes inscriptos:', error);
             setEstudiantesInscriptos([]);
         }
     };
+
+    const formatearFecha = (fecha) => {
+        const date = new Date(fecha);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      };
 
     function Loader() {
         return <div className='text-center'><FontAwesomeIcon icon={faSpinner} spin /></div>;
@@ -66,10 +76,10 @@ export default function ListarInscriptosAsignaturas({ listaAsignaturas, handleAs
                                 setSelectedAsignaturaId(e.target.value); // Actualiza el estado selectedAsignaturaId
                                 handleAsignaturaChange(e);
                                 setSelectedHorario(null);
-                                setEstudiantesInscriptos();
+                                setEstudiantesInscriptos([]);
                             }}
                         >
-                            <option value="" disabled defaultValue>Seleccione una asignatura</option>
+                            <option value="" disabled selected>Seleccione una asignatura</option>
                             {listaAsignaturas.length > 0 ? (
                                 listaAsignaturas.map((asignatura) => (
                                     <option key={asignatura.id} value={asignatura.id}>{asignatura.nombre}</option>
@@ -81,7 +91,9 @@ export default function ListarInscriptosAsignaturas({ listaAsignaturas, handleAs
                     </div>
                 </div>
             </div>
-            {horarios.length > 0 ? (
+            {loadingHorarios ? (
+                <Loader />
+            ) : horarios.length > 0 ? (
                 <div className="card mt-4">
                     <div className="card-header">
                         <h3 className="fw-light">Horarios de la Asignatura</h3>
@@ -102,8 +114,8 @@ export default function ListarInscriptosAsignaturas({ listaAsignaturas, handleAs
                                     <tr key={index}>
                                         <td>{horario.diasDictados.join(', ')}</td>
                                         <td>{horario.nombreDocente}</td>
-                                        <td>{horario.inicioSemestre}</td>
-                                        <td>{horario.finSemestre}</td>
+                                        <td>{formatearFecha(horario.inicioSemestre)}</td>
+                                        <td>{formatearFecha(horario.finSemestre)}</td>
                                         <td>
                                             <button className="btn btn-primary" onClick={() => handleHorarioSeleccionado(horario)}>Seleccionar</button>
                                         </td>
@@ -113,7 +125,7 @@ export default function ListarInscriptosAsignaturas({ listaAsignaturas, handleAs
                         </table>
                     </div>
                 </div>
-            ) : selectedAsignaturaId && (
+            ) : selectedAsignaturaId && !loadingHorarios && (
                 <div className="alert alert-warning mt-4" role="alert">
                     No se encontraron horarios para la asignatura seleccionada.
                 </div>
@@ -144,8 +156,8 @@ export default function ListarInscriptosAsignaturas({ listaAsignaturas, handleAs
                                         <td>{estudiante.email}</td>
                                         <td>{estudiante.telefono}</td>
                                         <td>{estudiante.ci}</td>
-                                        <td>{estudiante.inicioSemestre}</td>
-                                        <td>{estudiante.finSemestre}</td>
+                                        <td>{formatearFecha(estudiante.inicioSemestre)}</td>
+                                        <td>{formatearFecha(estudiante.finSemestre)}</td>
                                     </tr>
                                 ))}
                             </tbody>

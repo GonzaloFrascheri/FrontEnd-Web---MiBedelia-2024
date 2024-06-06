@@ -10,7 +10,7 @@ import ListarInscriptosPasos from '@/app/componentes/funcionario/listar/ListarIn
 import { useSidebar } from '@/context/AppContext'
 
 function FuncionarioListarInscriptos () {
-  const breadcrumbs = ['privado', 'Coordinador', 'Asignatura', 'Listar']
+  const breadcrumbs = ['privado', 'Funcionario', 'Listar']
   const [listaCarrera, setListaCarrera] = useState([])
   const [listaAsignatura, setListaAsignatura] = useState([])
   const [selectedCarreraId, setSelectedCarreraId] = useState(null)
@@ -96,9 +96,9 @@ function FuncionarioListarInscriptos () {
                   <ListarInscriptosAsignaturas
                     listaAsignaturas={listaAsignatura}
                     handleAsignaturaChange={handleCarreraChange}
-                    //handleChange={handleChange}
-                    //estado={estado}
-                    //formData={formData}
+                    handleChange={handleChange}
+                    estado={estado}
+                    formData={formData}
                   />
                 )}
               </main>

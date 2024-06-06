@@ -4,7 +4,6 @@ export default function AsignaturaListarPasos({ selectedCarreraId, selectedAsign
     const [estado, setEstado] = useState({
         paso1: "step-item active",
         paso2: "step-item",
-        paso3: "step-item",
     });
 
     useEffect(() => {
@@ -20,12 +19,6 @@ export default function AsignaturaListarPasos({ selectedCarreraId, selectedAsign
                 paso2: "step-item",
                 paso3: "step-item active"
             });
-        }else{
-            setEstado({
-                paso1: "step-item active",
-                paso2: "step-item",
-                paso3: "step-item"
-            });
         }
     }, [selectedCarreraId, selectedAsignaturaId]);
 
@@ -40,14 +33,6 @@ export default function AsignaturaListarPasos({ selectedCarreraId, selectedAsign
                     href="#!" aria-disabled="true"
                 >
                     Elegir Asignatura
-                </a>
-            </div>
-            <div className={estado.paso3}>
-                <a
-                    className={`step-item-link ${!selectedAsignaturaId ? 'disabled' : ''}`}
-                    href="#!" aria-disabled="true"
-                >
-                    Finalizar
                 </a>
             </div>
         </div>
