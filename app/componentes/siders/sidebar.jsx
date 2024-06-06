@@ -126,6 +126,9 @@ export default function Sidebar() {
                         <a className="nav-link" href="/privado/Coordinador/Asignatura/Listar">
                           Listar asignaturas por carreras
                         </a>
+                        <a className="nav-link" href="/privado/Coordinador/Registrar/Previatura">
+                          Registrar previatura
+                        </a>
                       </nav>
                     </div>
                   </>
