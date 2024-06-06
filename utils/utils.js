@@ -50,3 +50,8 @@ export function compararHoras (a, b) {
 
   return horaA > horaB
 }
+
+export function extractYearFromISODate(isoDateString) {
+  const date = new Date(isoDateString);
+  return date.getFullYear();
+}

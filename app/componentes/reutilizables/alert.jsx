@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-function CustomAlert ({ estado }) {
+function CustomAlert ({ estado, closable = true }) {
   const [showAlert, setShowAlert] = useState(false)
 
   useEffect(() => {
@@ -21,12 +21,14 @@ function CustomAlert ({ estado }) {
         }`}
         role='alert'
       >
-        <button
-          type='button'
-          className='btn-close'
-          aria-label='Close'
-          onClick={handleClose}
-        ></button>
+        {closable && (
+          <button
+            type='button'
+            className='btn-close'
+            aria-label='Close'
+            onClick={handleClose}
+          ></button>
+        )}
         <div className='alert-icon-content text-center'>{estado.message}</div>
       </div>
     )

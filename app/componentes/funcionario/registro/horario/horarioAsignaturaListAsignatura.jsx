@@ -311,7 +311,7 @@ export default function Index ({
               <div className='modal-content'>
                 <div className='modal-header'>
                   <h5 className='modal-title' id='docenteModalLabel'>
-                    Seleccione un Docente para el examen
+                    Seleccione un Docente para la asignatura
                   </h5>
                   <button
                     className='btn-close'
