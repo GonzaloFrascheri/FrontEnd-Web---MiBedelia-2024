@@ -15,7 +15,6 @@ function FuncionarioListarInscriptos () {
   const [listaAsignatura, setListaAsignatura] = useState([])
   const [selectedCarreraId, setSelectedCarreraId] = useState(null)
   const [selectedAsignaturaId, setSelectedAsignaturaId] = useState(null)
-  const [listaAniosElectivos, setListaAniosElectivos] = useState([])
   const [estado, setEstado] = useState({ message: '', estado: '' })
   const [formData, setFormData] = useState({ idAsignatura: '' })
   const { isSidebarToggled } = useSidebar()
@@ -60,50 +59,15 @@ function FuncionarioListarInscriptos () {
   useEffect(() => {
     const fetchListaAsignaturas = async () => {
       try {
-        const response = await axios.get(
-          'Funcionario/listarAsignaturaPaginado?idCarrera=' +
-            selectedCarreraId +
-            '&page=1&pageSize=300'
-        )
-        setListaAsignatura(response.data.items)
-        console.info('listaAsignatura', response.data.items)
+        const response = await axios.get(`/Funcionario/listarAsignaturaPaginado?idCarrera=${selectedCarreraId}&page=1&pageSize=300`)
+        setListaAsignatura(response.data.items);
       } catch (error) {
         console.error('Error fetching listaAsignatura:', error)
       }
     }
-    if (selectedCarreraId) {
-      fetchListaAsignaturas()
-    }
+    fetchListaAsignaturas();
   }, [selectedCarreraId])
 
-  useEffect(() => {
-    const fetchListaAniosElectivos = async () => {
-      if (selectedAsignaturaId) {
-        try {
-          const { data, status } = await axios.get(
-            `listarHorariosAsignaturaPaginado?idAsignatura=${selectedAsignaturaId}`
-          )
-          const horarios = response.data.items
-
-          // Extraer años lectivos únicos de los horarios
-          const aniosElectivos = Array.from(
-            new Set(horarios.map(horario => horario.anioLectivo))
-          )
-
-          // Formatear los años lectivos para que coincidan con el formato de opciones de selección
-          const listaAniosElectivos = aniosElectivos.map(anio => ({
-            id: anio,
-            nombre: anio
-          }))
-
-          setListaAniosElectivos(listaAniosElectivos)
-        } catch (error) {
-          console.error('Error fetching listaAniosElectivos:', error)
-        }
-      }
-    }
-    fetchListaAniosElectivos()
-  }, [selectedAsignaturaId])
 
   return (
     <body
@@ -131,11 +95,10 @@ function FuncionarioListarInscriptos () {
                 ) : (
                   <ListarInscriptosAsignaturas
                     listaAsignaturas={listaAsignatura}
-                    handleAsignaturaChange={handleAsignaturaChange}
-                    handleChange={handleChange}
-                    estado={estado}
-                    formData={formData}
-                    listaAniosElectivos={listaAniosElectivos}
+                    handleAsignaturaChange={handleCarreraChange}
+                    //handleChange={handleChange}
+                    //estado={estado}
+                    //formData={formData}
                   />
                 )}
               </main>

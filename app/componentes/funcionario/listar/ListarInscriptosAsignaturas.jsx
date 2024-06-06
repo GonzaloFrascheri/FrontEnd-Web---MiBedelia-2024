@@ -7,26 +7,42 @@ import axios from '@/utils/axios';
 
 export default function ListarInscriptosAsignaturas({ listaAsignaturas, handleAsignaturaChange, handleChange, estado, formData }) {
     
-    const [listaAniosElectivos, setListaAniosElectivos] = useState([]); // Estado para almacenar la lista de años electivos
-    const [selectedAnioElectivo, setSelectedAnioElectivo] = useState(""); // Estado para almacenar el año electivo seleccionado
+    const [selectedAsignaturaId, setSelectedAsignaturaId] = useState('');
+    const [horarios, setHorarios] = useState([]); // Para almacenar los horarios
+    const [selectedHorario, setSelectedHorario] = useState(null);
+    const [estudiantesInscriptos, setEstudiantesInscriptos] = useState([]);
 
     const columnas = [
         { name: 'ID', selector: (row) => row.id, sortable: true, width: '80px' },
         { name: 'Nombre', selector: (row) => row.nombre, sortable: true }
     ];
 
-    const handleAnioElectivoChange = (event) => {
-        setSelectedAnioElectivo(event.target.value);
+    useEffect(() => {
+        if(selectedAsignaturaId){
+            fetchHorariosAsignatura(selectedAsignaturaId);
+        }else{
+            setHorarios([]);
+        }
+    }, [selectedAsignaturaId]);
+
+    const fetchHorariosAsignatura = async (asignaturaId) => {
+        try{
+            const response = await axios.get(`/Funcionario/listarHorariosAsignatura?idAsignatura=${asignaturaId}`)
+            setHorarios(response.data);
+        }catch(error){
+            console.error('Error en el fetching detalles del horario', error);
+            setHorarios([]);
+        }
     };
 
-    const handleHorarioDetalle = async () => {
-        // Llama al endpoint para obtener los detalles del horario
+    const handleHorarioSeleccionado = async (horario) => {
+        setSelectedHorario(horario);
         try {
-            // Supongamos que necesitas enviar tanto el ID de la asignatura como el año electivo seleccionado
-            const response = await axios.get(`listarHorariosAsignaturaPaginado?idAsignatura=${selectedAsignaturaId}&anioLectivo=${selectedAnioElectivo}`);
-            console.log(response.data); // Aquí puedes manejar la respuesta del endpoint
+            const response = await axios.get(`/Funcionario/listarAlumnosHorario?idHorario=${idHorario}`);
+            setEstudiantesInscriptos(response.data);
         } catch (error) {
-            console.error('Error fetching detalles del horario:', error);
+            console.error('Error fetching estudiantes inscriptos:', error);
+            setEstudiantesInscriptos([]);
         }
     };
 
@@ -43,38 +59,100 @@ export default function ListarInscriptosAsignaturas({ listaAsignaturas, handleAs
                 <div className="card-body" style={{ position: 'relative' }}>
                     <div className="mb-3">
                         <label htmlFor="listaAsignatura">Lista de asignaturas</label>
-                            <select
-                                className="form-control"
-                                id="listaAsignatura"
-                                onChange={handleAsignaturaChange}
-                            >
-                                <option value="" disabled selected>Seleccione una asignatura</option>
-                                {listaAsignaturas.length > 0 ? (
-                                    listaAsignaturas.map((asignatura) => (
-                                        <option key={asignatura.id} value={asignatura.id}>{asignatura.nombre}</option>
-                                    ))
-                                ) : (
-                                    <option>No se recibieron datos aún</option>
-                                )}
-                            </select>
-                        </div>
-                    <div>
-                        <label htmlFor="listaAniosElectivos">Años Electivos:</label>
                         <select
-                            id="listaAniosElectivos"
                             className="form-control"
-                            onChange={handleAnioElectivoChange}
-                            value={selectedAnioElectivo}
+                            id="listaAsignatura"
+                            onChange={(e) => {
+                                setSelectedAsignaturaId(e.target.value); // Actualiza el estado selectedAsignaturaId
+                                handleAsignaturaChange(e);
+                                setSelectedHorario(null);
+                                setEstudiantesInscriptos();
+                            }}
                         >
-                            <option value="" disabled>Seleccione un año electivo</option>
-                            {listaAniosElectivos.map((anio) => (
-                                <option key={anio.id} value={anio.id}>{anio.nombre}</option>
-                            ))}
+                            <option value="" disabled defaultValue>Seleccione una asignatura</option>
+                            {listaAsignaturas.length > 0 ? (
+                                listaAsignaturas.map((asignatura) => (
+                                    <option key={asignatura.id} value={asignatura.id}>{asignatura.nombre}</option>
+                                ))
+                            ) : (
+                                <option disabled>No se recibieron datos aún</option>
+                            )}
                         </select>
-                        <button onClick={handleHorarioDetalle} className="btn btn-primary mt-2">Ver Detalles del Horario</button>
                     </div>
                 </div>
             </div>
+            {horarios.length > 0 ? (
+                <div className="card mt-4">
+                    <div className="card-header">
+                        <h3 className="fw-light">Horarios de la Asignatura</h3>
+                    </div>
+                    <div className="card-body">
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th>Días Dictados</th>
+                                    <th>Nombre Docente</th>
+                                    <th>Inicio Semestre</th>
+                                    <th>Fin Semestre</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {horarios.map((horario, index) => (
+                                    <tr key={index}>
+                                        <td>{horario.diasDictados.join(', ')}</td>
+                                        <td>{horario.nombreDocente}</td>
+                                        <td>{horario.inicioSemestre}</td>
+                                        <td>{horario.finSemestre}</td>
+                                        <td>
+                                            <button className="btn btn-primary" onClick={() => handleHorarioSeleccionado(horario)}>Seleccionar</button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            ) : selectedAsignaturaId && (
+                <div className="alert alert-warning mt-4" role="alert">
+                    No se encontraron horarios para la asignatura seleccionada.
+                </div>
+            )}
+            {selectedHorario && (
+                <div className="card mt-4">
+                    <div className="card-header">
+                        <h3 className="fw-light">Estudiantes Inscriptos</h3>
+                    </div>
+                    <div className="card-body">
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>Email</th>
+                                    <th>Telefono</th>
+                                    <th>CI</th>
+                                    <th>Inicio Semestre</th>
+                                    <th>Fin Semestre</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {estudiantesInscriptos.map((estudiante, index) => (
+                                    <tr key={index}>
+                                        <td>{estudiante.nombre}</td>
+                                        <td>{estudiante.apellido}</td>
+                                        <td>{estudiante.email}</td>
+                                        <td>{estudiante.telefono}</td>
+                                        <td>{estudiante.ci}</td>
+                                        <td>{estudiante.inicioSemestre}</td>
+                                        <td>{estudiante.finSemestre}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

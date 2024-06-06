@@ -39,9 +39,6 @@ export default function AsignaturasPendientes({
                 {/* ListarCarreras y otros componentes necesarios */}
                 {!carreraSeleccionada ? (
                   <>
-                    <div className='card-header justify-content-center'>
-                      <h4 className='fw-light'>Seleccionar carrera</h4>
-                    </div>{' '}
                     <ListarCarreras
                       carreraSeleccionada={carreraSeleccionada}
                       carreras={carreras}
