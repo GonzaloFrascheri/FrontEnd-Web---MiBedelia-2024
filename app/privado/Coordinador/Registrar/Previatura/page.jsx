@@ -10,6 +10,7 @@ import { useSidebar } from '@/context/AppContext'
 import PreviaturaPasos from '@/app/componentes/coordinador/registrar/previatura/previaturaPasos.jsx'
 import ListarCarrerasInfo from '@/app/componentes/reutilizables/listarCarrerasInfo.jsx'
 import ListAsignaturaInfo from '@/app/componentes/reutilizables/listarAsignaturasInfo.jsx'
+import ListPreviaInfo from '@/app/componentes/reutilizables/listarPreviasInfo.jsx'
 
 export default function CoordinadorRegistrarPreviatura () {
     // Global state
@@ -47,11 +48,7 @@ export default function CoordinadorRegistrarPreviatura () {
     })
 
     // Carreras
-    const [listaCarrera, setListaCarrera] = useState({
-        id: '',
-        nombre: '',
-        duracion: ''
-    })
+    const [listaCarrera, setListaCarrera] = useState([])
     const handleCarreraChange = selectedCarrera => {
         setFormData({
             ...formData,
@@ -68,17 +65,12 @@ export default function CoordinadorRegistrarPreviatura () {
             } catch (error) {
                 console.error('Error fetching listaCarreras:', error)
             }
-            }
-            fetchListaCarreras()
+        }
+        fetchListaCarreras()
     }, [])
 
     // Asignaturas
-    const [listaAsignatura, setListaAsignatura] = useState({
-        id: '',
-        nombre: '',
-        idCarrera: '',
-        gradoSemestre: ''
-    })
+    const [listaAsignatura, setListaAsignatura] = useState([])
     const handleAsignaturaChange = event => {
         const selectedId = Number(event.target.value)
         const selectedAsignatura = listaAsignatura.find(
@@ -94,9 +86,7 @@ export default function CoordinadorRegistrarPreviatura () {
     useEffect(() => {
         const fetchListaAsignaturas = async () => {
             try {
-                const response = await axios.get(
-                    'Coordinador/listarAsignatura?idCarrera=' + formData.idCarrera
-                )
+                const response = await axios.get('Coordinador/listarAsignatura?idCarrera=' + formData.idCarrera)
                 setEstado({
                     ...estado,
                     paso: 2
@@ -105,14 +95,41 @@ export default function CoordinadorRegistrarPreviatura () {
                     cu: 'Registro de previatura',
                     tituloInfo: 'Paso 2: Seleccionar una Asignatura.',
                     mensajeInfo: 'Utilice el selector: "Lista de asignaturas", despliéguelo y seleccione la asignatura.'
-                    })
+                })
                 setListaAsignatura(response.data)
             } catch (error) {
                 console.error('Error fetching listaAsignatura:', error)
             }
         }
-        fetchListaAsignaturas()
+        if (formData.idCarrera !== null) {
+            fetchListaAsignaturas()
+        }
     }, [formData.idCarrera])
+
+    // cargar previas
+    const [detalleAsignatura, setDetalleAsignatura] = useState([])
+    useEffect(() => {
+        const fetchListaPrevia = async () => {
+            try {
+                const response = await axios.get('Coordinador/getAsignatura?idAsignatura=' + formData.idAsignatura)
+                setEstado({
+                    ...estado,
+                    paso: 3
+                })
+                setListasInfo({
+                    cu: 'Registro de previatura',
+                    tituloInfo: 'Paso 3: Detalle de previas.',
+                    mensajeInfo: 'En este paso se muestra lalista de previas que tenga la Asignatura seleccionado, en caso de ya tener previas caragadas anteriormente.'
+                })
+                setDetalleAsignatura(response.data)
+            } catch (error) {
+                console.error('Error fetching listaPrevia:', error)
+            }
+        }
+        if (formData.idAsignatura !== null) {
+            fetchListaPrevia()
+        }
+    }, [formData.idAsignatura])
 
     return (
         <body className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'} >
@@ -135,14 +152,18 @@ export default function CoordinadorRegistrarPreviatura () {
                                     />
                                 ) : formData.idAsignatura === null ? (
                                     <ListAsignaturaInfo
-                                        listaAsignaturas={listaCarrera}
+                                        listaAsignatura={listaAsignatura}
                                         handleAsignaturaChange={handleAsignaturaChange}
                                         listasInfo={listasInfo}
                                         formData={formData}
                                     />
                                 ) : (
-                                    <h1>Formulario de registro de previatura</h1>
-                                
+                                    <ListPreviaInfo
+                                        listaAsignatura={listaAsignatura}
+                                        detalleAsignatura={detalleAsignatura}
+                                        listasInfo={listasInfo}
+                                        formData={formData}
+                                    />
                                 )}
                             </main>
                         </div>

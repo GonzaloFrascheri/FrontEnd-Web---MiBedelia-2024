@@ -2,13 +2,12 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
-export default function ListAsignaturaInfo({
+export default function GenerarPreviatura ({
     listaAsignatura,
-    handleAsignaturaChange,
+    detalleAsignatura,
     listasInfo,
     formData
 }) {
-    //console.info('listaAsignatura:', listaAsignatura)
     return (
     <div className="container-xl px-4">
         <div className="card">

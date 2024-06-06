@@ -60,7 +60,7 @@ export default function PreviaturaPasos ({estado, setEstado}) {
                     className={`step-item-link ${!estado.paso === 3 ? 'disabled' : ''}`}
                     href="#!" aria-disabled="true"
                 >
-                    Seleccionar previas
+                    Lista de previas
                 </a>
             </div>
             <div className={estado.paso3}>
