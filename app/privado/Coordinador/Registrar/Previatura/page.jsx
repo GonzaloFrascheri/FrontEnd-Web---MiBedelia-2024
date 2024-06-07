@@ -10,7 +10,7 @@ import { useSidebar } from '@/context/AppContext'
 import PreviaturaPasos from '@/app/componentes/coordinador/registrar/previatura/previaturaPasos.jsx'
 import ListarCarrerasInfo from '@/app/componentes/reutilizables/listarCarrerasInfo.jsx'
 import ListAsignaturaInfo from '@/app/componentes/reutilizables/listarAsignaturasInfo.jsx'
-import ListPreviaInfo from '@/app/componentes/reutilizables/listarPreviasInfo.jsx'
+import ListPreviaInfo from '@/app/componentes/coordinador/registrar/previatura/listarPrevias.jsx'
 
 export default function CoordinadorRegistrarPreviatura () {
     // Global state
