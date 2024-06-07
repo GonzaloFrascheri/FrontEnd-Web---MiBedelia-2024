@@ -234,14 +234,12 @@ export default function ListarPreviasInfo({
             </div>
             {/* Modal Popup */}
             {showPopup && (
-                <div className="modal show" style={{ display: 'block' }}>
+                <div className="modal show fade" style={{ display: 'block' }}>
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title">Asignar Previa</h5>
-                                <button type="button" className="close" onClick={handleCancelar}>
-                                    <span>&times;</span>
-                                </button>
+                                <h5 className="modal-title" id="staticBackdropLabel">Asignar Previa</h5>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleCancelar}></button>
                             </div>
                             <div className="modal-body">
                                 <form>
