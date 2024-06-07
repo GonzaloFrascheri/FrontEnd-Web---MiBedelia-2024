@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import axios from '@/utils/axios'
 import Sidebar from '@/app/componentes/siders/sidebar.jsx'
 import NavPrivado from '@/app/componentes/navs/nav-privado.jsx'
@@ -9,6 +9,7 @@ import ModificarHorarioExamenPasos from '@/app/componentes/funcionario/modificar
 import ModificarHorarioExamenForm from '@/app/componentes/funcionario/modificar/modificarHorarioExamen'
 
 export default function ModificarHorarioExamen () {
+  const hoy = useMemo(() => new Date(), [])
   const breadcrumbs = ['privado', 'Funcionario', 'Modificar', 'HorarioExamen']
   const [estado, setEstado] = useState({ estado: '', message: '' })
   // Carreras
@@ -19,7 +20,30 @@ export default function ModificarHorarioExamen () {
   const [listaExamen, setListaExamen] = useState([])
   const [selectedExamen, setSelectedExamen] = useState('')
   const [estanCargandoExamenes, setEstanCargandoExamenes] = useState(true)
-  // Horarios
+  const [periodoActivo, setPeriodoActivo] = useState({
+    diaFin: '',
+    diaInicio: '',
+    idPeriodo: ''
+  })
+
+  useEffect(() => {
+    const obtenerPeriodoActivo = async () => {
+      try {
+        const response = await axios.get(
+          `Funcionario/getPeriodoActivo?Aniolectivo=${hoy.getFullYear()}`
+        )
+        const data = response.data
+        setPeriodoActivo({
+          diaFin: data.diaFin,
+          diaInicio: data.diaInicio,
+          idPeriodo: data.idPeriodo
+        })
+      } catch (error) {
+        console.error('Error fetching obtenerPeriodoActivo:', error)
+      }
+    }
+    obtenerPeriodoActivo()
+  }, [hoy])
 
   const { isSidebarToggled } = useSidebar()
 
@@ -28,7 +52,8 @@ export default function ModificarHorarioExamen () {
     setSelectedCarreraId(e.target.value)
   }
 
-  const handleExamenChange = examen => {
+  const handleExamenChange = examenId => {
+    const examen = listaExamen.find(examen => examen.id === examenId)
     setSelectedExamen(examen)
   }
 
@@ -67,24 +92,30 @@ export default function ModificarHorarioExamen () {
     }
   }, [selectedCarreraId])
 
-  const handleSubmit = async formData => {
-    // try {
-    //   const { data, status } = await axios.put(
-    //     '/Funcionario/modificarHorarioAsignatura',
-    //     formData
-    //   )
-    //   setEstado({
-    //     message: data.message,
-    //     estado: status
-    //   })
-    // } catch (error) {
-    //   setEstado({
-    //     message: error.response
-    //       ? error.response.data.message
-    //       : 'Error al registrar el horario',
-    //     estado: error.response ? error.response.status : 500
-    //   })
-    // }
+  const handleSubmit = async data => {
+    const formData = {
+      ...data,
+      id: selectedExamen.id
+    }
+
+    try {
+      const { data, status } = await axios.put(
+        '/Funcionario/modificarHorarioExamen',
+        formData
+      )
+      setEstado({
+        message: data.message,
+        estado: status
+      })
+    } catch (error) {
+      console.log(error)
+      setEstado({
+        message: error.response.data.message
+          ? error.response.data.message
+          : 'Error al modificar el horario de examen',
+        estado: error.response ? error.response.status : 500
+      })
+    }
   }
 
   return (
@@ -118,6 +149,7 @@ export default function ModificarHorarioExamen () {
                   seleccionarExamen={handleExamenChange}
                   estanCargandoExamenes={estanCargandoExamenes}
                   examenSeleccionado={selectedExamen}
+                  periodoActivo={periodoActivo}
                 />
               </main>
             </div>

@@ -1,7 +1,6 @@
 import ListarCarreras from '@/app/componentes/reutilizables/listarCarreras'
-import ListarExamenes from '@/app/componentes/reutilizables/listarExamenes'
 import ListarHorarioExamen from '@/app/componentes/reutilizables/listarHorariosExamen'
-// import ModificarExamenForm from './modificarExamenFormulario';
+import ModificarExamenForm from './modificarHorarioExamenFormulario'
 
 export default function Index ({
   estado,
@@ -13,7 +12,8 @@ export default function Index ({
   examenes,
   seleccionarExamen,
   estanCargandoExamenes,
-  examenSeleccionado
+  examenSeleccionado,
+  periodoActivo
 }) {
   return (
     <div className='container-xl px-4'>
@@ -52,11 +52,13 @@ export default function Index ({
                   <h3 className='fw-light'>Modificar horario de examen</h3>
                 </div>
 
-                {/* <ModificarExamenForm
+                <ModificarExamenForm
                   estado={estado}
                   handleSubmit={handleSubmit}
+                  periodoActivo={periodoActivo}
                   examen={examenSeleccionado}
-                /> */}
+                  handleFormSubmit={handleSubmit}
+                />
               </>
             )}
           </div>
