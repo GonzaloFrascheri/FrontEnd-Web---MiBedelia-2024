@@ -10,7 +10,6 @@ export default function ListarPreviasInfo({
     listasInfo,
     formData
 }) {
-    const [estado, setEstado] = useState({message: '', estado: '', refresh: 0});
     const [detalleAsignatura, setDetalleAsignatura] = useState([]);
 
     const fetchListaPrevia = async () => {
@@ -41,110 +40,73 @@ export default function ListarPreviasInfo({
                         <div className="card bg-gradient-primary-to-secondary mb-4">
                             <div className="card-body">
                                 <div className="d-flex align-items-center justify-content-between">
-                                    <div className="col-md-8 mb-3">
-                                        <div className="text-white">
-                                            <label htmlFor="listaAsignatura">
-                                                Lista de asignaturas
-                                            </label>
-                                        </div>
-                                        <select
-                                            className="form-control"
-                                            id="listaAsignatura"
-                                            selected={formData?.idAsignatura || ""}
-                                            onChange={handleAsignaturaChange}
-                                            >
-                                            <option value="" disabled selected>
-                                                Seleccione una asignatura
-                                            </option>
-                                            {listaAsignatura.length > 0 ? (
-                                                listaAsignatura.map((asignatura) => (
-                                                    <option
-                                                        key={asignatura.id}
-                                                        value={asignatura.id}>
-                                                        [ {asignatura.gradoSemestre} ] {asignatura.nombre}
+                                    <div className="container-fluid mb-4">
+                                        <div className="row gx-4">
+                                            {/** PREVIAS YA ASIGNADAS */}
+                                            <div className="col-lg-6 mb-3">
+                                                <div className="text-white">
+                                                    <label htmlFor="listaAsignatura">
+                                                        Lista de asignaturas
+                                                    </label>
+                                                </div>
+                                                <select
+                                                    className="form-control"
+                                                    id="listaAsignatura"
+                                                    selected={formData?.idAsignatura || ""}
+                                                    onChange={handleAsignaturaChange}
+                                                    >
+                                                    <option value="" disabled selected>
+                                                        Seleccione una asignatura
                                                     </option>
-                                                ))
-                                            ) : (
-                                                <option>No se recibieron datos aún</option>
-                                            )}
-                                        </select>
+                                                    {listaAsignatura.length > 0 ? (
+                                                        listaAsignatura.map((asignatura) => (
+                                                            <option
+                                                                key={asignatura.id}
+                                                                value={asignatura.id}>
+                                                                [ {asignatura.gradoSemestre} ] {asignatura.nombre}
+                                                            </option>
+                                                        ))
+                                                    ) : (
+                                                        <option>No se recibieron datos aún</option>
+                                                    )}
+                                                </select>
+                                            </div>
+                                            <div className="col-lg-6">
+                                                <div className="card mb-4">
+                                                    <div className="card-header">Detalles de previas</div>
+                                                    <div className="card-body p-0">
+                                                        <table className="table table-striped">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Estado</th>
+                                                                    <th>Nombre</th>
+                                                                    <th>Requisito</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {detalleAsignatura.previaturas && detalleAsignatura.previaturas.length > 0 ? (
+                                                                    detalleAsignatura.previaturas.map((previatura, index) => (
+                                                                        <tr key={index}>
+                                                                            <td>
+                                                                                <FontAwesomeIcon icon={faCheckCircle} className="text-success text-xs me-2" />
+                                                                            </td>
+                                                                            <td><strong>{previatura.nombrePrev}</strong></td>
+                                                                            <td>{previatura.requisito}</td>
+                                                                        </tr>
+                                                                    ))
+                                                                ) : (
+                                                                    <tr>
+                                                                        <td colSpan="3" className="text-center">No se asignaron previas aún.</td>
+                                                                    </tr>
+                                                                )}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div className="card-footer"></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/** MENSAJES */}
-                    {estado.message && (
-                        <div>
-                            <div
-                                className={`alert alert-icon m-2 alert-${estado.estado}`}
-                                role="alert"
-                            >
-                                <button
-                                    className="btn-close"
-                                    type="button"
-                                    data-bs-dismiss="alert"
-                                    aria-label="Close"
-                                ></button>
-                                <div className="alert-icon-aside">
-                                    <i className="far fa-flag"></i>
-                                </div>
-                                <div className="alert-icon-content">
-                                    <h6 className="alert-heading">Resultado</h6>
-                                    {estado.message}!
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                    {/** DETALLE DE PREVIAS */}
-                    <div className="container-fluid mb-4">
-                        <div className="row gx-4">
-                            {/** PREVIAS YA ASIGNADAS */}
-                            <div className="col-lg-6">
-                                <div className="card mb-4">
-                                    <div className="card-header">Detalles de previas</div>
-                                    <div className="card-body p-0">
-                                        <table className="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>Estado</th>
-                                                    <th>Nombre</th>
-                                                    <th>Requisito</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {detalleAsignatura.previaturas && detalleAsignatura.previaturas.length > 0 ? (
-                                                    detalleAsignatura.previaturas.map((previatura, index) => (
-                                                        <tr key={index}>
-                                                            <td>
-                                                                <FontAwesomeIcon icon={faCheckCircle} className="text-success text-xs me-2" />
-                                                            </td>
-                                                            <td><strong>{previatura.nombrePrev}</strong></td>
-                                                            <td>{previatura.requisito}</td>
-                                                        </tr>
-                                                    ))
-                                                ) : (
-                                                    <tr>
-                                                        <td colSpan="3" className="text-center">No se asignaron previas aún.</td>
-                                                    </tr>
-                                                )}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div className="card-footer"></div>
-                                </div>
-                            </div>
-                            {/** FORM PARA ASIGNAR PREVIAS */}
-                            <div className="col-lg-6">
-                                <div className="card card-header-actions">
-                                    <div className="card-header">
-                                        Grafo de previaturas
-                                    </div>
-                                    <div className="card-body p-0">
-                                        
-                                    </div>
-                                    <div className="card-footer"></div>
                                 </div>
                             </div>
                         </div>
