@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import axios from "@/utils/axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faQuestionCircle, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { faQuestionCircle, faCheckCircle, faArrowAltCircleLeft } from "@fortawesome/free-solid-svg-icons";
 
 export default function ListarPreviasInfo({
     listAsignatura,
@@ -203,7 +203,7 @@ export default function ListarPreviasInfo({
                                                             className="list-group-item"
                                                             onClick={() => handleMostrarPopUp(asignatura)}
                                                         >
-                                                            <FontAwesomeIcon icon={faCheckCircle} className="text-danger text-xs me-2" />
+                                                            <FontAwesomeIcon icon={faArrowAltCircleLeft} className="text-danger text-xs me-2" />
                                                             ({asignatura.gradoSemestre}) {asignatura.nombre}
                                                         </li>
                                                     ))
