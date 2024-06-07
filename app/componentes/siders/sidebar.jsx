@@ -96,7 +96,7 @@ export default function Sidebar () {
                           className='nav-link'
                           href='/privado/Administrador/Usuarios/Listar'
                         >
-                          Listar Usuarios
+                          Listar/Buscar Usuarios
                         </a>
                       </nav>
                     </div>

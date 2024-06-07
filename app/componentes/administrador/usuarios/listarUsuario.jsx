@@ -11,7 +11,7 @@ export default function ListarUsuarios () {
   const pathname = usePathname()
   const [estado, setEstado] = useState({estado: 0,message: "",});
   const [data, setData]= useState([]);
-  const [search, SetSearch]= useState('');
+  const [search, setSearch]= useState('');
   const [filter, setFilter]= useState([]);
   const columnas = [
     {
@@ -51,8 +51,9 @@ export default function ListarUsuarios () {
       width: '100px',
     }
   ];
-  const getListUsuarios=async()=>{
-    try{
+
+  const getListUsuarios = async () => {
+    try {
         const {data, status } = await axios.get('/Administrador/listarUsuario?page=1&pageSize=300');
         const filteredItems = data.items.filter(item => item.status === true);
         setData(filteredItems);
@@ -65,24 +66,34 @@ export default function ListarUsuarios () {
       });
     }
   }
-  useEffect(()=>{
+
+  useEffect(() => {
       getListUsuarios();
   }, []);
-  useEffect(()=>{
-      const result= data.filter((item)=>{
-       return item.apellido.toLowerCase().match(search.toLocaleLowerCase());
+
+  useEffect(() => {
+      const result = data.filter((item) => {
+        return (
+          item.apellido.toLowerCase().includes(search.toLowerCase()) ||
+          item.nombre.toLowerCase().includes(search.toLowerCase()) ||
+          item.ci.toLowerCase().includes(search.toLowerCase()) ||
+          item.email.toLowerCase().includes(search.toLowerCase()) ||
+          item.rol.toLowerCase().includes(search.toLowerCase())
+        );
       });
       setFilter(result);
-  },[search]);
+  }, [search]);
+
   function Loader() {
     return <div className='text-center'><FontAwesomeIcon icon={faSpinner} spin /></div>
   }
-  const tableHeaderstyle={
-    headCells:{
-        style:{
-            fontWeight:"bold",
-            fontSize:"14px",
-            backgroundColor:"#ccc"
+
+  const tableHeaderstyle = {
+    headCells: {
+        style: {
+            fontWeight: "bold",
+            fontSize: "14px",
+            backgroundColor: "#ccc"
         },
     },
   }
@@ -99,7 +110,7 @@ export default function ListarUsuarios () {
               <div className='card-body'>
                 <div className='row gx-3 justify-content-center'>
                   <DataTable
-                    customStyles={ tableHeaderstyle}
+                    customStyles={tableHeaderstyle}
                     columns={columnas}
                     data={filter}
                     pagination
@@ -107,12 +118,12 @@ export default function ListarUsuarios () {
                     highlightOnHover
                     subHeader
                     subHeaderComponent={
-                        <input type="text"
-                        className="w-25 form-control"
-                        placeholder="Buscar por apellido..."
-                        value={ search}
-                        onChange={(e)=>SetSearch(e.target.value)}
-                        
+                        <input
+                          type="text"
+                          className="w-25 form-control"
+                          placeholder="Buscar por nombre, apellido, cédula, correo o rol..."
+                          value={search}
+                          onChange={(e) => setSearch(e.target.value)}
                         />
                     }
                     subHeaderAlign="right"
