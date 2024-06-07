@@ -1,4 +1,3 @@
-// registrar previatura
 'use client'
 import React, { useState, useEffect } from 'react'
 import axios from '@/utils/axios'
@@ -23,7 +22,7 @@ export default function CoordinadorRegistrarPreviatura () {
     }, [authData, userData])
     const { isSidebarToggled } = useSidebar()
     // Breadcrumbs
-    const breadcrumbs = ['privado', 'Coordinador', 'Registrar', 'Previatura']
+    const breadcrumbs = ['privado', 'Coordinador', 'Listar', 'PreviasPorAsignatura']
     // estado
     const [estado, setEstado] = useState({
         message: '',
@@ -35,7 +34,7 @@ export default function CoordinadorRegistrarPreviatura () {
         paso4: 'step-item'
     })
     const [listasInfo, setListasInfo] = useState({
-        cu: 'Registro de previatura',
+        cu: 'Listar previas por asignatura',
         tituloInfo: 'Paso 1: Seleccionar una carrera.',
         mensajeInfo: 'Utilice el selector: "Lista de carreras", despliéguelo y seleccione la carrera.',
     })
@@ -94,7 +93,7 @@ export default function CoordinadorRegistrarPreviatura () {
                     paso: 2
                 })
                 setListasInfo({
-                    cu: 'Registro de previatura',
+                    ...listasInfo,
                     tituloInfo: 'Paso 2: Seleccionar una Asignatura.',
                     mensajeInfo: 'Utilice el selector: "Lista de asignaturas", despliéguelo y seleccione la asignatura.'
                 })
@@ -119,10 +118,9 @@ export default function CoordinadorRegistrarPreviatura () {
                     paso: 3
                 })
                 setListasInfo({
-                    cu: 'Registro de previatura',
-                    tituloInfo: 'Paso 3: Agregar previas.',
-                    mensajeInfo: 'En la lista de la derecha se muestra la lista de previas para la asignatura seleccionada.'+
-                        'En la lista de la izquierda se muestra la lista de asignaturas que pueden ser previas; al hacer clic en una asignatura, se muestra un modal para asignar la materia como previa.'
+                    ...listasInfo,
+                    tituloInfo: 'Paso 3: Detalle de previas.',
+                    mensajeInfo: 'En este paso se muestra lalista de previas que tenga la Asignatura seleccionado, en caso de ya tener previas caragadas anteriormente.'
                 })
                 setListAsignaturaPaginado(response.data);
             } catch (error) {
