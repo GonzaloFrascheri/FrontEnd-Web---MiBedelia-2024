@@ -4,7 +4,6 @@ import 'jspdf-autotable';
 
 export function GenerarPdfActaFinDeCurso() {
 
-
     const PDFGenerador = (tmp) => {
 
         const { asignatura, semestre, año, docente, estudiantes, logo } = tmp;
