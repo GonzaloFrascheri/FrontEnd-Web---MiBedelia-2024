@@ -39,7 +39,7 @@ export default function ListAsignaturaInfo({
                                             <option
                                                 key={asignatura.id}
                                                 value={asignatura.id}>
-                                                {asignatura.nombre}
+                                                [ {asignatura.gradoSemestre} ] {asignatura.nombre}
                                             </option>
                                         ))
                                     ) : (

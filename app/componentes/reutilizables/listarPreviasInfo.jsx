@@ -248,7 +248,7 @@ export default function ListarPreviasInfo({
                                         <input
                                             type="text"
                                             className="form-control"
-                                            value={selectedAsignatura?.id || ''}
+                                            value={selectedAsignatura?.nombre || ''}
                                             readOnly
                                         />
                                     </div>
