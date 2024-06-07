@@ -333,6 +333,12 @@ export default function Sidebar () {
                         >
                           Asignaturas aprobadas
                         </a>
+                        <a
+                          className='nav-link'
+                          href='/privado/Estudiantes/Escolaridad'
+                        >
+                          Generar Escolaridad
+                        </a>
                       </nav>
                     </div>
                   </>
