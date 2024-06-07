@@ -4,21 +4,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle, faCheckCircle, faArrowAltCircleLeft } from "@fortawesome/free-solid-svg-icons";
 
 export default function ListarPreviasInfo({
+    listaAsignatura,
+    handleAsignaturaChange,
     listAsignatura,
     listasInfo,
     formData
 }) {
-
-    const [showPopup, setShowPopup] = useState(false);
-    const [selectedAsignatura, setSelectedAsignatura] = useState(null);
-    const [requisito, setRequisito] = useState('EXONERADO');
     const [estado, setEstado] = useState({message: '', estado: '', refresh: 0});
     const [detalleAsignatura, setDetalleAsignatura] = useState([]);
-
-    const handleMostrarPopUp = (asignatura) => {
-        setSelectedAsignatura(asignatura);
-        setShowPopup(true);
-    };
 
     const fetchListaPrevia = async () => {
         try {
@@ -31,46 +24,8 @@ export default function ListarPreviasInfo({
 
     useEffect(() => {
         fetchListaPrevia();
-    }, [estado.refresh]);
+    }, [formData.idAsignatura]);
                 
-    const handleAsignarPrevia = async () => {
-        try {
-            // envío datos al bk
-            const datos = {
-                idAsigOrigen: formData.idAsignatura,
-                idPrevAsignada: selectedAsignatura.id,
-                requisito: requisito
-            };
-            const { data, status } = await axios.post('Coordinador/registrarPreviatura', datos);
-            console.log('data:', data);
-            // si la data es ok - docente fue dado de alta
-            if (status === 200) {
-                setEstado({
-                    message: data.message,
-                    estado: 'success',
-                    refresh: estado.refresh + 1
-                });
-            }else{
-                setEstado({
-                    message: data.message,
-                    estado: 'danger'
-                });
-            }
-        } catch (error) {
-            console.error('Error al guardar la asignatura:', error);
-            setEstado({
-                message: error.response ? error.response.data.message : 'Error al guardar la asignatura',
-                estado: 'danger'
-            });
-        }finally {
-            setShowPopup(false);
-            setTimeout(() => setEstado({ message: '', estado: '' }), 5000);
-        }
-    };
-
-    const handleCancelar = () => {
-        setShowPopup(false);
-    };
 
     return (
         <div className="container-xl">
@@ -86,35 +41,34 @@ export default function ListarPreviasInfo({
                         <div className="card bg-gradient-primary-to-secondary mb-4">
                             <div className="card-body">
                                 <div className="d-flex align-items-center justify-content-between">
-                                    {detalleAsignatura.horarios && detalleAsignatura.horarios.length > 0 ? (
-                                        (() => {
-                                            const horario = detalleAsignatura.horarios[detalleAsignatura.horarios.length - 1];
-                                            return (
-                                                <>
-                                                    <div key={detalleAsignatura.horarios.length - 1} className="mb-3">
-                                                        <div className="small text-white-50">
-                                                            <strong>Horario:</strong> {horario.horarioInicio} - {horario.horarioFin}
-                                                        </div>
-                                                        <div className="h1 text-white">
-                                                            <strong>Docente:</strong> {horario.nombreDocente} ({horario.ciDocente})
-                                                        </div>
-                                                    </div>
-                                                    <div className="text-white">
-                                                        <p><strong>Días Dictados:</strong> {horario.diasDictados !== null ? (
-                                                            horario.diasDictados.join(", ")
-                                                        ) : (
-                                                            "No especificado"
-                                                        )}</p>
-                                                        <strong>Semestre:</strong> {horario.tipoSemestre} ({new Date(horario.inicioSemestre).toLocaleDateString()} - {new Date(horario.finSemestre).toLocaleDateString()})
-                                                    </div>
-                                                </>
-                                            );
-                                        })()
-                                    ) : (
-                                        <div className="me-3">
-                                            <div className="h1 text-white">No hay horarios asignados.</div>
+                                    <div className="col-md-8 mb-3">
+                                        <div className="text-white">
+                                            <label htmlFor="listaAsignatura">
+                                                Lista de asignaturas
+                                            </label>
                                         </div>
-                                    )}
+                                        <select
+                                            className="form-control"
+                                            id="listaAsignatura"
+                                            selected={formData?.idAsignatura || ""}
+                                            onChange={handleAsignaturaChange}
+                                            >
+                                            <option value="" disabled selected>
+                                                Seleccione una asignatura
+                                            </option>
+                                            {listaAsignatura.length > 0 ? (
+                                                listaAsignatura.map((asignatura) => (
+                                                    <option
+                                                        key={asignatura.id}
+                                                        value={asignatura.id}>
+                                                        [ {asignatura.gradoSemestre} ] {asignatura.nombre}
+                                                    </option>
+                                                ))
+                                            ) : (
+                                                <option>No se recibieron datos aún</option>
+                                            )}
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -185,31 +139,10 @@ export default function ListarPreviasInfo({
                             <div className="col-lg-6">
                                 <div className="card card-header-actions">
                                     <div className="card-header">
-                                        Agregar previas
+                                        Grafo de previaturas
                                     </div>
                                     <div className="card-body p-0">
-                                        <ul className="list-group list-group-flush">
-                                            {console.info("detalleAsignatura.previaturas:", detalleAsignatura, formData)}
-                                            {
-                                                formData.idSemestre === 1 ? (
-                                                    <li className="list-group-item">No se admiten previas para Asignaturas de semestre uno.</li>
-                                                ) : (
-                                                    listAsignatura.filter(asignatura =>
-                                                        detalleAsignatura.previaturas &&
-                                                        !detalleAsignatura.previaturas.some(previatura => previatura.idPrevAsignada === asignatura.id)
-                                                    ).map((asignatura) => (
-                                                        <li
-                                                            key={asignatura.id}
-                                                            className="list-group-item"
-                                                            onClick={() => handleMostrarPopUp(asignatura)}
-                                                        >
-                                                            <FontAwesomeIcon icon={faArrowAltCircleLeft} className="text-danger text-xs me-2" />
-                                                            ({asignatura.gradoSemestre}) {asignatura.nombre}
-                                                        </li>
-                                                    ))
-                                                )
-                                            }
-                                        </ul>
+                                        
                                     </div>
                                     <div className="card-footer"></div>
                                 </div>
@@ -232,47 +165,6 @@ export default function ListarPreviasInfo({
                     </div>
                 </div>
             </div>
-            {/* Modal Popup */}
-            {showPopup && (
-                <div className="modal show fade" style={{ display: 'block' }}>
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title" id="staticBackdropLabel">Asignar Previa</h5>
-                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleCancelar}></button>
-                            </div>
-                            <div className="modal-body">
-                                <form>
-                                    <div className="form-group">
-                                        <label>Nombre</label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            value={selectedAsignatura?.nombre || ''}
-                                            readOnly
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Grado/Semestre</label>
-                                        <select
-                                            className="form-control"
-                                            value={requisito}
-                                            onChange={(e) => setRequisito(e.target.value)}
-                                        >
-                                            <option value="EXONERADO">EXONERADO</option>
-                                            <option value="A_EXAMEN">A_EXAMEN</option>
-                                        </select>
-                                    </div>
-                                </form>
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" onClick={handleCancelar}>Cancelar</button>
-                                <button type="button" className="btn btn-primary" onClick={handleAsignarPrevia}>Asignar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 }

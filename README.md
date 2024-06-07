@@ -36,8 +36,8 @@ https://mibedelia-backend-production.up.railway.app/doc/swagger-ui/index.html#/
   - Buscar usuarios <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
   - Resumen de actividad <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 - Coordinador
-  - Registrar previaturas <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
-  - Listar previas por asignatura <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
+  - Registrar previaturas <img src="https://img.shields.io/badge/Front-Hecho-succes"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
+  - Listar previas por asignatura <img src="https://img.shields.io/badge/Front-Hecho-succes"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
   - Listar asignaturas por carrera <img src="https://img.shields.io/badge/Front-Hecho-success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 - Funcionario
   - Modificar horario de una asignatura <img src="https://img.shields.io/badge/Front-Hecho-Success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">

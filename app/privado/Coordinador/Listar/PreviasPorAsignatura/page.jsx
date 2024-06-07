@@ -6,7 +6,7 @@ import NavPrivado from '@/app/componentes/navs/nav-privado.jsx'
 import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado.jsx'
 import { useAuth } from '@/context/AuthProvider'
 import { useSidebar } from '@/context/AppContext'
-import PreviaturaPasos from '@/app/componentes/coordinador/registrar/previatura/previaturaPasos.jsx'
+import ListarPreviasPorAsignaturaPasos from '@/app/componentes/coordinador/listar/previasporasignatura/previasPorAsignaturaPasos.jsx'
 import ListarCarrerasInfo from '@/app/componentes/reutilizables/listarCarrerasInfo.jsx'
 import ListAsignaturaInfo from '@/app/componentes/reutilizables/listarAsignaturasInfo.jsx'
 import ListPreviaInfo from '@/app/componentes/reutilizables/listarPreviasInfo.jsx'
@@ -144,7 +144,7 @@ export default function CoordinadorRegistrarPreviatura () {
                         <div id='layoutAuthentication_content'>
                             <main>
                                 <HeaderPagePrivado breadcrumbs={breadcrumbs} />
-                                <PreviaturaPasos estado={estado} setEstado={setEstado} />
+                                <ListarPreviasPorAsignaturaPasos estado={estado} setEstado={setEstado} />
                                 {formData.idCarrera === null ? (
                                     <ListarCarrerasInfo
                                         listaCarrera={listaCarrera}
@@ -160,6 +160,8 @@ export default function CoordinadorRegistrarPreviatura () {
                                     />
                                 ) : (
                                     <ListPreviaInfo
+                                        listaAsignatura={listaAsignatura}
+                                        handleAsignaturaChange={handleAsignaturaChange}
                                         listAsignatura={listAsignaturaPaginado}
                                         listasInfo={listasInfo}
                                         formData={formData}
