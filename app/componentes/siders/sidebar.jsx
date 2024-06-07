@@ -246,7 +246,7 @@ export default function Sidebar () {
                           className='nav-link'
                           href='/privado/Funcionario/Registro/AltaExamen'
                         >
-                          Alta de exámen
+                          Alta de examen
                         </a>
                         <a
                           className='nav-link'

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import axios from "@/utils/axios";
 import Sidebar from "@/app/componentes/siders/sidebar";
 import NavPrivado from "@/app/componentes/navs/nav-privado";
@@ -7,19 +7,14 @@ import HeaderPagePrivado from "@/app/componentes/headers/headerPage-privado";
 import ExamenAsignaturaListCarrera from "@/app/componentes/funcionario/registro/examen/examenAsignaturaListCarrera";
 import ExamenAsignaturaListAsignatura from "@/app/componentes/funcionario/registro/examen/examenAsignaturaListAsignatura";
 import ExamenAsignaturaPasos from "@/app/componentes/funcionario/registro/examen/examenAsignaturaPasos";
-import { parseDateToISO } from "@/utils/utils";
+import { isFormValid, parseDateToISO } from "@/utils/utils";
 import { useSidebar } from "@/context/AppContext";
+import { validators } from "@/utils/validators";
 
-function FuncionarioExamenAsignatura() {
-  const breadcrumbs = ["privado", "Funcionario", "Registro", "AltaExamen"];
-  // Carreras
+const useCarreras = () => {
   const [listaCarrera, setListaCarrera] = useState([]);
   const [selectedCarreraId, setSelectedCarreraId] = useState(null);
-  const { isSidebarToggled } = useSidebar();
 
-  const handleCarreraChange = (id) => {
-    setSelectedCarreraId(id);
-  };
   useEffect(() => {
     const fetchListaCarreras = async () => {
       try {
@@ -29,59 +24,96 @@ function FuncionarioExamenAsignatura() {
         console.error("Error fetching listaCarreras:", error);
       }
     };
-
     fetchListaCarreras();
   }, []);
 
-  // Asignaturas
+  return { listaCarrera, selectedCarreraId, setSelectedCarreraId };
+};
+
+const useAsignaturas = (selectedCarreraId) => {
   const [listaAsignatura, setListaAsignatura] = useState([]);
-  const [selectedAsignaturaId, setSelectedAsignaturaId] = useState(null);
-  const handleAsignaturaChange = (event) => {
-    const selectedId = event.target.value;
-    setFormData({
-      ...formData,
-      idAsignatura: selectedId,
-    });
-    setSelectedAsignaturaId(selectedId);
-  };
+
   useEffect(() => {
     const fetchListaAsignaturas = async () => {
-      try {
-        const response = await axios.get(
-          "Funcionario/listarAsignatura?idCarrera=" + selectedCarreraId
-        );
-        setListaAsignatura(response.data);
-      } catch (error) {
-        console.error("Error fetching listaAsignatura:", error);
+      if (selectedCarreraId) {
+        try {
+          const response = await axios.get(
+            `Funcionario/listarAsignatura?idCarrera=${selectedCarreraId}`
+          );
+          setListaAsignatura(response.data);
+        } catch (error) {
+          console.error("Error fetching listaAsignatura:", error);
+        }
       }
     };
     fetchListaAsignaturas();
   }, [selectedCarreraId]);
 
-  // Docentes
+  return { listaAsignatura };
+};
+
+const useDocentes = () => {
   const [listaDocentes, setListaDocentes] = useState([]);
 
-  // Fechas
-  const hoy = new Date();
+  useEffect(() => {
+    const fetchListaDocentes = async () => {
+      try {
+        const response = await axios.get("Funcionario/listarDocentes");
+        setListaDocentes(response.data);
+      } catch (error) {
+        console.error("Error fetching listaDocentes:", error);
+      }
+    };
+    fetchListaDocentes();
+  }, []);
+
+  return { listaDocentes };
+};
+
+const usePeriodoActivo = (hoy, setFormData) => {
   const [periodoActivo, setPeriodoActivo] = useState({
     diaFin: "",
     diaInicio: "",
     idPeriodo: "",
   });
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    const valueToChange = name === "fechaExamen"? parseDateToISO(value) : value;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: valueToChange,
-    }));
-  };
 
-  const [estado, setEstado] = useState({
-    message: "",
-    estado: "",
-    continuar: false,
-  });
+  useEffect(() => {
+    const obtenerPeriodoActivo = async () => {
+      try {
+        const response = await axios.get(
+          `Funcionario/getPeriodoActivo?Aniolectivo=${hoy.getFullYear()}`
+        );
+        const data = response.data;
+        setPeriodoActivo({
+          diaFin: data.diaFin,
+          diaInicio: data.diaInicio,
+          idPeriodo: data.idPeriodo,
+        });
+        setFormData((prevState) => ({
+          ...prevState,
+          idPeriodo: data.idPeriodo,
+          fechaExamen: parseDateToISO(data.diaInicio),
+        }));
+      } catch (error) {
+        console.error("Error fetching obtenerPeriodoActivo:", error);
+      }
+    };
+    obtenerPeriodoActivo();
+  }, [hoy, setFormData]);
+
+  return { periodoActivo };
+};
+
+function FuncionarioExamenAsignatura() {
+  const breadcrumbs = ["privado", "Funcionario", "Registro", "AltaExamen"];
+  const hoy = useMemo(() => new Date(), []);
+  const { isSidebarToggled } = useSidebar();
+
+  const { listaCarrera, selectedCarreraId, setSelectedCarreraId } =
+    useCarreras();
+  const { listaAsignatura } = useAsignaturas(selectedCarreraId);
+  const { listaDocentes } = useDocentes();
+
   const [formData, setFormData] = useState({
     idAsignatura: "",
     idPeriodo: "",
@@ -90,33 +122,87 @@ function FuncionarioExamenAsignatura() {
     fechaExamen: "",
     horario: "",
   });
-  const isFormValid = () =>
-    Object.values(formData).every((value) => value !== "");
+
+  const [errors, setErrors] = useState({
+    idAsignatura: "",
+    idDocente: "",
+    fechaExamen: "",
+    horario: "",
+  });
+
+  const { periodoActivo } = usePeriodoActivo(hoy, setFormData);
+
+  const [estado, setEstado] = useState({
+    message: "",
+    estado: "",
+    continuar: false,
+  });
+
+  const handleCarreraChange = (id) => setSelectedCarreraId(id);
+
+  const handleAsignaturaChange = (event) => {
+    const { value } = event.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      idAsignatura: value,
+    }));
+    handleErrors("idAsignatura", value);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const valueToChange =
+      name === "fechaExamen" ? parseDateToISO(value) : value;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: valueToChange,
+    }));
+
+    handleErrors(name, valueToChange);
+  };
+
+  const handleErrors = (name, value) => {
+    let error = "";
+    if (name === "horario") {
+      error = validators.validateRequired(value);
+      if (!error) {
+        error = validators.validateTime(value);
+      }
+    } else {
+      error = validators.validateRequired(value);
+    }
+
+    setErrors((prevState) => ({
+      ...prevState,
+      [name]: error,
+    }));
+  };
+
+  const handleValidation = () => {
+    return isFormValid(errors, formData);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.info("formData", formData);
     try {
-      // envío datos al bk
       const { data, status } = await axios.post(
         "Funcionario/registrarExamenAsignaturas",
         formData
       );
-      // si la data es ok - examen fue dado de alta
+
       if (status === 200) {
         setEstado({
           message: data.message,
           estado: data.estado,
           continuar: true,
         });
-        // Limpia el formulario después de enviar los datos
         setFormData({
           idAsignatura: "",
           idPeriodo: "",
           idDocente: "",
-          anioLectivo: "",
+          anioLectivo: hoy.getFullYear().toString(),
           fechaExamen: "",
-          horario: ""
+          horario: "",
         });
       } else {
         setEstado({
@@ -136,41 +222,6 @@ function FuncionarioExamenAsignatura() {
     }
   };
 
-  useEffect(() => {
-    const fetchListaDocentes = async () => {
-      try {
-        const response = await axios.get("Funcionario/listarDocentes");
-        setListaDocentes(response.data);
-      } catch (error) {
-        console.error("Error fetching listaDocentes:", error);
-      }
-    };
-    fetchListaDocentes();
-  }, []);
-
-  useEffect(() => {
-    const obtenerPeriodoActivo = async () => {
-      try {
-        const response = await axios.get(
-          "Funcionario/getPeriodoActivo?Aniolectivo=" + hoy.getFullYear()
-        );
-        setPeriodoActivo({
-          diaFin: response.data.diaFin,
-          diaInicio: response.data.diaInicio,
-          idPeriodo: response.data.idPeriodo,
-        });
-        setFormData({
-          ...formData,
-          idPeriodo: response.data.idPeriodo,
-          fechaExamen: parseDateToISO(response.data.diaInicio),
-        });
-      } catch (error) {
-        console.error("Error fetching obtenerPeriodoActivo:", error);
-      }
-    };
-    obtenerPeriodoActivo();
-  }, []);
-
   return (
     <body
       className={isSidebarToggled ? "nav-fixed" : "nav-fixed sidenav-toggled"}
@@ -187,7 +238,7 @@ function FuncionarioExamenAsignatura() {
                 <HeaderPagePrivado breadcrumbs={breadcrumbs} />
                 <ExamenAsignaturaPasos
                   selectedCarreraId={selectedCarreraId}
-                  selectedAsignaturaId={selectedAsignaturaId}
+                  selectedAsignaturaId={formData.idAsignatura}
                 />
                 {selectedCarreraId === null ? (
                   <ExamenAsignaturaListCarrera
@@ -196,7 +247,8 @@ function FuncionarioExamenAsignatura() {
                   />
                 ) : (
                   <ExamenAsignaturaListAsignatura
-                    isFormValid={isFormValid}
+                    errors={errors}
+                    isFormValid={handleValidation}
                     listaAsignaturas={listaAsignatura}
                     handleAsignaturaChange={handleAsignaturaChange}
                     handleChange={handleChange}

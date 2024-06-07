@@ -16,6 +16,7 @@ export default function Index ({
   listaDocentes,
   formData,
   estado,
+  errors,
   isFormValid
 }) {
   const minDate = parseDateToISO(periodoActivo.diaInicio)
@@ -148,6 +149,11 @@ export default function Index ({
                           <option>No se recibieron datos aún</option>
                         )}
                       </select>
+                      {errors.idAsignatura && errors.idAsignatura !== '' && (
+                        <span className='text-danger text-xs'>
+                          {errors.idAsignatura}
+                        </span>
+                      )}
                     </div>
                   </div>
                   <div className='col-md-6'>
@@ -179,6 +185,12 @@ export default function Index ({
                         className='form-control w-100'
                         required
                       />
+
+                      {errors.fechaExamen && errors.fechaExamen !== '' && (
+                        <span className='text-danger text-xs'>
+                          {errors.fechaExamen}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -186,8 +198,8 @@ export default function Index ({
                 <div className='row'>
                   <div className='col-md-12'>
                     <div className='mb-3'>
-                      <label htmlFor='horarioInicio' className='form-label'>
-                        Hora inicio:
+                      <label htmlFor='horario' className='form-label'>
+                        Horario:
                       </label>
                       <MaskedInput
                         mask={[/^([0-2])/, /([0-9])/, ':', /[0-5]/, /[0-9]/]}
@@ -199,6 +211,11 @@ export default function Index ({
                         className='form-control'
                         required
                       />
+                      {errors.horario && errors.horario !== '' && (
+                        <span className='text-danger text-xs'>
+                          {errors.horario}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -238,6 +255,11 @@ export default function Index ({
                           <FontAwesomeIcon icon={faSearch} />
                         </span>
                       </div>
+                      {errors.idDocente && errors.idDocente !== '' && (
+                        <span className='text-danger text-xs'>
+                          {errors.idDocente}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
