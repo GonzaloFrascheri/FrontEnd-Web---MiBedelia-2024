@@ -41,7 +41,7 @@ https://mibedelia-backend-production.up.railway.app/doc/swagger-ui/index.html#/
   - Listar asignaturas por carrera <img src="https://img.shields.io/badge/Front-Hecho-success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 - Funcionario
   - Modificar horario de una asignatura <img src="https://img.shields.io/badge/Front-Hecho-Success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
-  - Modificar horario de un exámen <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
+  - Modificar horario de un exámen <img src="https://img.shields.io/badge/Front-Hecho-Success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
   - Listar estudiantes inscriptos en asignatura <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
   - Listar exámenes a tomar en período <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 - Estudiantes
