@@ -33,7 +33,7 @@ https://mibedelia-backend-production.up.railway.app/doc/swagger-ui/index.html#/
   - Cerrar sesión <img src="https://img.shields.io/badge/Front-Hecho-success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
   - Editar perfil <img src="https://img.shields.io/badge/Front-Hecho-Success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 - Administrador
-  - Buscar usuarios <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
+  - Buscar usuarios <img src="https://img.shields.io/badge/Front-hecho-succes"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
   - Resumen de actividad <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 - Coordinador
   - Registrar previaturas <img src="https://img.shields.io/badge/Front-Hecho-succes"> <img src="https://img.shields.io/badge/Backend-Hecho-success">

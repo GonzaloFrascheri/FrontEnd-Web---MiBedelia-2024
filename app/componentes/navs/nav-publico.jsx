@@ -1,5 +1,7 @@
 "use client"
 import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronRight, faCircleNodes, faBell, faBook } from '@fortawesome/free-solid-svg-icons';
 
 function NavPublico() {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -23,6 +25,23 @@ function NavPublico() {
                 </a>
 
                 <ul className="navbar-nav align-items-center ms-auto">
+
+                    <li className="nav-item dropdown no-caret d-none d-md-block me-3">
+                        <a className="nav-link dropdown-toggle" id="navbarDropdownDocs" href="javascript:void(0);" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div className="fw-500 pe-1">Documentación </div>
+                            <FontAwesomeIcon icon={faChevronRight} />
+                        </a>
+                        <div className="dropdown-menu dropdown-menu-end py-0 me-sm-n15 me-lg-0 o-hidden animated--fade-in-up" aria-labelledby="navbarDropdownDocs">
+                            <a className="dropdown-item py-3" href="/componentes/grafos">
+                                <div className="icon-stack bg-primary-soft text-primary me-4"><FontAwesomeIcon icon={faCircleNodes} /></div>
+                                <div>
+                                    <div className="small text-gray-500">Previaturas</div>
+                                    Listar previaturas por Carrera
+                                </div>
+                            </a>
+                        </div>
+                    </li>
+                    {/** MENU DE USUARIO */}
                     <li className="nav-item dropdown no-caret dropdown-user me-3 me-lg-4">
                         <a className="btn btn-icon btn-transparent-dark dropdown-toggle" 
                             id="navbarDropdownUserImage" 

@@ -3,7 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faBars,
   faUserAlt,
-  faSignOutAlt
+  faSignOutAlt,
+  faBell,
+  faBook
 } from '@fortawesome/free-solid-svg-icons'
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '@/context/AuthProvider'
@@ -52,6 +54,25 @@ function NavPrivado () {
         />
       </a>
       <ul className='navbar-nav align-items-center ms-auto'>
+        <li className="nav-item dropdown no-caret d-none d-sm-block me-3 dropdown-notifications">
+            <a className="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownAlerts" href="javascript:void(0);" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><FontAwesomeIcon icon={faBell} /></a>
+            <div className="dropdown-menu dropdown-menu-end border-0 shadow animated--fade-in-up" aria-labelledby="navbarDropdownAlerts">
+                <h6 className="dropdown-header dropdown-notifications-header">
+                    <FontAwesomeIcon icon={faBell} />
+                    Notificaciones
+                </h6>
+                
+                <a className="dropdown-item dropdown-notifications-item" href="#!">
+                    <div className="dropdown-notifications-item-icon bg-warning"><FontAwesomeIcon icon={faBook} /></div>
+                    <div className="dropdown-notifications-item-content">
+                        <div className="dropdown-notifications-item-content-details">2024-06-01</div>
+                        <div className="dropdown-notifications-item-content-text">Notificación de prueba.</div>
+                    </div>
+                </a>
+                
+                <a className="dropdown-item dropdown-notifications-footer" href="#!">Ver todas las notificaciones</a>
+            </div>
+        </li>
         <li className='nav-item dropdown no-caret dropdown-user me-3 me-lg-4'>
           <a
             className='btn btn-icon btn-transparent-dark dropdown-toggle'
