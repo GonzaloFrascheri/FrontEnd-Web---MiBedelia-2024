@@ -71,7 +71,7 @@ export default function ListarUsuarios () {
       selector: (row) => (
       <button
         className="btn btn-outline-red btn-xs"
-        onClick={() => handleDelete(row.id, row.ci, row.apellido)} 
+        onClick={() => handleDelete(row.id, row.nombre, row.apellido)} 
     >
             Eliminar
         </button>
@@ -97,7 +97,7 @@ export default function ListarUsuarios () {
   }, []);
   useEffect(()=>{
       const result= data.filter((item)=>{
-       return item.apellido.toLowerCase().match(search.toLocaleLowerCase());
+       return item.ci.toLowerCase().match(search.toLocaleLowerCase());
       });
       setFilter(result);
   },[search]);
