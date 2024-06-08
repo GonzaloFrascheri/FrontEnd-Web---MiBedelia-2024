@@ -71,7 +71,7 @@ export default function ListarUsuarios () {
       selector: (row) => (
       <button
         className="btn btn-outline-red btn-xs"
-        onClick={() => handleDelete(row.id, row.nombre, row.apellido)} 
+        onClick={() => handleDelete(row.id, row.ci, row.apellido)} 
     >
             Eliminar
         </button>
@@ -167,7 +167,7 @@ export default function ListarUsuarios () {
                       subHeaderComponent={
                           <input type="text"
                           className="w-25 form-control"
-                          placeholder="Buscar por apellido..."
+                          placeholder="Buscar por cédula de identidad..."
                           value={ search}
                           onChange={(e)=>SetSearch(e.target.value)}
                           
