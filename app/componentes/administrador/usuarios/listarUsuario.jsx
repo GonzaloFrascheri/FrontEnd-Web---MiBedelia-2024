@@ -4,14 +4,16 @@ import axios from '@/utils/axios'
 import { useRouter, usePathname } from 'next/navigation'
 import DataTable from 'react-data-table-component'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faArrowAltCircleLeft, faArrowCircleRight, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 export default function ListarUsuarios () {
   const router = useRouter()
   const pathname = usePathname()
   const [estado, setEstado] = useState({estado: 0,message: "",});
   const [data, setData]= useState([]);
-  const [search, setSearch]= useState('');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [filter, setFilter]= useState([]);
   const columnas = [
     {
@@ -52,37 +54,26 @@ export default function ListarUsuarios () {
     }
   ];
 
-  const getListUsuarios = async () => {
+  const getListUsuarios = async (page = 1, pageSize = 10) => {
     try {
-        const {data, status } = await axios.get('/Administrador/listarUsuario?page=1&pageSize=300');
-        const filteredItems = data.items.filter(item => item.status === true);
-        setData(filteredItems);
-        setFilter(filteredItems);
-    } catch(error){
+      const { data, status } = await axios.get(`/Administrador/listarUsuario?page=${page}&pageSize=${pageSize}`);
+      const filteredItems = data.items.filter(item => item.status === true);
+      setData(filteredItems);
+      setFilter(filteredItems);
+      setTotalPages(data.totalPages);
+    } catch (error) {
       console.log(error);
       setEstado({
         estado: error.status,
         message: error.message
       });
     }
-  }
+  };
 
   useEffect(() => {
-      getListUsuarios();
-  }, []);
+    getListUsuarios(page);
+  }, [page]);
 
-  useEffect(() => {
-      const result = data.filter((item) => {
-        return (
-          item.apellido.toLowerCase().includes(search.toLowerCase()) ||
-          item.nombre.toLowerCase().includes(search.toLowerCase()) ||
-          item.ci.toLowerCase().includes(search.toLowerCase()) ||
-          item.email.toLowerCase().includes(search.toLowerCase()) ||
-          item.rol.toLowerCase().includes(search.toLowerCase())
-        );
-      });
-      setFilter(result);
-  }, [search]);
 
   function Loader() {
     return <div className='text-center'><FontAwesomeIcon icon={faSpinner} spin /></div>
@@ -113,25 +104,32 @@ export default function ListarUsuarios () {
                     customStyles={tableHeaderstyle}
                     columns={columnas}
                     data={filter}
-                    pagination
                     fixedHeader
                     highlightOnHover
                     subHeader
-                    subHeaderComponent={
-                        <input
-                          type="text"
-                          className="w-25 form-control"
-                          placeholder="Buscar por nombre, apellido, cédula, correo o rol..."
-                          value={search}
-                          onChange={(e) => setSearch(e.target.value)}
-                        />
-                    }
                     subHeaderAlign="right"
+                    progressPending={loading}
                     progressComponent={<Loader />}
                   />
                 </div>
               </div>
-              <div className='card-footer text-center'></div>
+              <div className='card-footer text-center'>
+              <button 
+                    className='btn btn-outline-green btn-icon-split btn-sm'
+                      onClick={() => setPage(page > 1 ? page - 1 : 1)}
+                      disabled={page === 1}
+                    >
+                      <FontAwesomeIcon icon={faArrowAltCircleLeft} />
+                    </button>
+                    <span className='p-2'>{page} de {totalPages}</span>
+                    <button 
+                     className='btn btn-outline-green btn-icon-split btn-sm'
+                      onClick={() => setPage(page < totalPages ? page + 1 : totalPages)}
+                      disabled={page === totalPages}
+                    >
+                        <FontAwesomeIcon icon={faArrowCircleRight} />
+                    </button>
+              </div>
             </>
           ) : (
             <div>

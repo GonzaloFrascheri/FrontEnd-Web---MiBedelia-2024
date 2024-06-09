@@ -15,6 +15,7 @@ export default function BuscarUsuarios () {
     const [pageSize, setPageSize] = useState(10);
     const [totalPages, setTotalPages] = useState(0);
     const [search, setSearch] = useState('');
+    const [loading, setLoading] = useState(false);
     const [filter, setFilter]= useState([]);
     const columnas = [
     {
@@ -80,7 +81,6 @@ export default function BuscarUsuarios () {
         setPage(1); // Reset to first page on search
         getListUsuarios(1, pageSize, search);
       }, [search]);
-      
 
     useEffect(() => {
         const result = data.filter((item) => {
