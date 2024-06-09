@@ -51,7 +51,7 @@ function CoordinadorListarAsignatura () {
   useEffect(() => {
     const fetchListaCarreras = async () => {
       try {
-        const response = await axios.get('Funcionario/listarCarrera')
+        const response = await axios.get('Coordinador/listarCarrera')
         setListaCarrera(response.data)
       } catch (error) {
         console.error('Error fetching listaCarreras:', error)
@@ -64,10 +64,8 @@ function CoordinadorListarAsignatura () {
   useEffect(() => {
     const fetchListaAsignaturas = async () => {
       try {
-        //Funcionario/listarAsignaturaPaginado?idCarrera=1&page=1&pageSize=10
-        //const response = await axios.get('Funcionario/listarAsignatura?idCarrera=' + selectedCarreraId);
         const response = await axios.get(
-          'Funcionario/listarAsignaturaPaginado?idCarrera=' +
+          'Coordinador/listarAsignaturaPaginado?idCarrera=' +
             selectedCarreraId +
             '&page=1&pageSize=300'
         )
