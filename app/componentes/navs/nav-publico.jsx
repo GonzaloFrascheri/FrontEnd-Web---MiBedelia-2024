@@ -32,7 +32,7 @@ function NavPublico() {
                             <FontAwesomeIcon icon={faChevronRight} />
                         </a>
                         <div className="dropdown-menu dropdown-menu-end py-0 me-sm-n15 me-lg-0 o-hidden animated--fade-in-up" aria-labelledby="navbarDropdownDocs">
-                            <a className="dropdown-item py-3" href="/componentes/grafos">
+                            <a className="dropdown-item py-3" href="/grafos">
                                 <div className="icon-stack bg-primary-soft text-primary me-4"><FontAwesomeIcon icon={faCircleNodes} /></div>
                                 <div>
                                     <div className="small text-gray-500">Previaturas</div>
