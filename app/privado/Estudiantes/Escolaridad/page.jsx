@@ -13,9 +13,12 @@ import { useAuth } from '@/context/AuthProvider'
 export default function Index() {
 
     const breadcrumbs = ['privado', 'Estudiantes', 'Escolaridad']
+    // Carreras
     const [listaCarrera, setListaCarrera] = useState([])
-    
+    const [careesAreLoading, setCareesAreLoading] = useState(true)
     const [selectedCarreraId, setSelectedCarreraId] = useState(null)
+    
+    // Escolaridad
     const [listasInfo, setListasInfo] = useState({
         cu: "Generar Escolaridad",
         tituloInfo: "Paso 1: Seleccionar Carrera",
@@ -25,7 +28,7 @@ export default function Index() {
     const authData = useAuth()
     
     const {GenerarPdfEscolaridad} = IGenerarPdfEscolaridad();
-    const [user, setUser] = useState(null)
+    const [user, setUser] = useState('')
 
     useEffect(() => {
         if (authData && !user) {
@@ -37,19 +40,28 @@ export default function Index() {
         setSelectedCarreraId(id)
     }
 
+    
     // Fetch lista de carreras
     useEffect(() => {
+        if(user){
         const fetchListaCarreras = async () => {
             try {
-                const response = await axios.get('Estudiante/listarCarrera')
+                const response = await axios.get(
+                    `Estudiante/getCarreraInscripto?idEstudiante=${user.id}`
+                )
                 setListaCarrera(response.data)
+
+                if(response.data.length === 0){
+                    alert('El estudiante no se encuentra inscripto a ninguna carrera.')
+                }
             } catch (error) {
                 console.error('Error fetching listaCarreras:', error)
             }
         }
 
         fetchListaCarreras()
-    }, [])
+        } 
+    }, [user])
 
     const [EscolaridadDto, setEscolaridadDto] = useState([]);
 
