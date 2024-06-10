@@ -34,7 +34,7 @@ https://mibedelia-backend-production.up.railway.app/doc/swagger-ui/index.html#/
   - Editar perfil <img src="https://img.shields.io/badge/Front-Hecho-Success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 - Administrador
   - Buscar usuarios <img src="https://img.shields.io/badge/Front-hecho-succes"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
-  - Resumen de actividad <img src="https://img.shields.io/badge/Front-Falta-red"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
+  - Resumen de actividad <img src="https://img.shields.io/badge/Front-Hecho-Success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 - Coordinador
   - Registrar previaturas <img src="https://img.shields.io/badge/Front-Hecho-succes"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
   - Listar previas por asignatura <img src="https://img.shields.io/badge/Front-Hecho-succes"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
@@ -46,7 +46,7 @@ https://mibedelia-backend-production.up.railway.app/doc/swagger-ui/index.html#/
   - Listar exámenes a tomar en período <img src="https://img.shields.io/badge/Front-Hecho-success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 - Estudiantes
   - Generar escolaridad <img src="https://img.shields.io/badge/Front-Hecho-success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
-  - Listado de asignaturas aprobadas <img src="https://img.shields.io/badge/Front-InProgress-yellow"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
+  - Listado de asignaturas aprobadas <img src="https://img.shields.io/badge/Front-Hecho-Success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
   - Listado de asignaturas pendientes <img src="https://img.shields.io/badge/Front-Hecho-success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 
 # INSTALACIÓN DEL FRONTEND

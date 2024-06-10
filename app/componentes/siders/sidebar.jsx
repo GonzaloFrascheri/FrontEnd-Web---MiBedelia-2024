@@ -98,12 +98,6 @@ export default function Sidebar () {
                         >
                           Listar Usuarios
                         </a>
-                        <a
-                          className='nav-link'
-                          href='/privado/Administrador/Usuarios/Buscar'
-                        >
-                          Buscar Usuarios
-                        </a>
                       </nav>
                     </div>
                   </>
@@ -158,10 +152,16 @@ export default function Sidebar () {
                         >
                           Listar asignaturas por carreras
                         </a>
-                        <a className="nav-link" href="/privado/Coordinador/Registrar/Previatura">
+                        <a
+                          className='nav-link'
+                          href='/privado/Coordinador/Registrar/Previatura'
+                        >
                           Registrar previatura
                         </a>
-                        <a className="nav-link" href="/privado/Coordinador/Listar/PreviasPorAsignatura">
+                        <a
+                          className='nav-link'
+                          href='/privado/Coordinador/Listar/PreviasPorAsignatura'
+                        >
                           Listar previas por asignatura
                         </a>
                       </nav>

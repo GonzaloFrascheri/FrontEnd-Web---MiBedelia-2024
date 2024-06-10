@@ -1,6 +1,5 @@
 'use client'
 import React from 'react'
-import { useRouter } from 'next/navigation'
 import HeaderPagePrivado from '@/app/componentes/headers/headerPage-privado'
 import NavPrivado from '@/app/componentes/navs/nav-privado'
 import Sidebar from '@/app/componentes/siders/sidebar'
@@ -8,7 +7,6 @@ import ListarUsuarios from '@/app/componentes/administrador/usuarios/listarUsuar
 import { useSidebar } from '@/context/AppContext'
 
 function Page () {
-  const router = useRouter()
   const breadcrumbs = ['privado', 'Administrador', 'Usuarios', 'Listar']
   const { isSidebarToggled } = useSidebar()
 
