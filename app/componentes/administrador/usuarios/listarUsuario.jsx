@@ -9,7 +9,7 @@ import {
   faArrowCircleRight,
   faSearch
 } from '@fortawesome/free-solid-svg-icons'
-import ActividadReciente from './ActividadReciente'
+import ActividadReciente from './actividadReciente'
 
 export default function ListarUsuarios () {
   const [estado, setEstado] = useState({ estado: 0, message: '' })
