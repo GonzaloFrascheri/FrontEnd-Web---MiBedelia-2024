@@ -3,7 +3,7 @@ import axios from '@/utils/axios'
 import * as XLSX from 'xlsx';
 import {GenerarExcelActaExamen} from '@/app/componentes/generadorEXCEL/actaExamen.jsx'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faQuestionCircle, faExclamationTriangle,faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { faQuestionCircle, faExclamationTriangle,faInfoCircle, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import DataTable from 'react-data-table-component';
 
 export default function ExamenRegistrar({
@@ -22,6 +22,7 @@ export default function ExamenRegistrar({
     const [studentsData, setStudentsData] = useState([]);
     const [isValid, setIsValid] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const generarExcel = () => {
         if (!examenDto) {
@@ -108,7 +109,6 @@ export default function ExamenRegistrar({
         };
         reader.readAsArrayBuffer(file);
     };
-    
 
     const handleSubmitExcel = (e) => {
         e.preventDefault();
@@ -134,7 +134,7 @@ export default function ExamenRegistrar({
     ];
 
     const enviarDatos = async () => {
-        
+        setIsLoading(true);
         const datos = {
             id: formData.idExamen,
             nombreAsignatura: formData.nombreExamen,
@@ -148,6 +148,7 @@ export default function ExamenRegistrar({
         try {
             const {data, status} = await axios.put('Funcionario/registrarActaExamen', datos);
             if (status === 200) {
+                setIsLoading(false);
                 setEstado({
                     ...estado,
                     message: data.message + ' Se registró con éxito el acta para la asignatura: [' + examenDto.nombreAsignatura + '].',
@@ -156,6 +157,7 @@ export default function ExamenRegistrar({
             }
         } catch (error) {
             console.error('Error al enviar los datos:', error);
+            setIsLoading(false);
             setEstado({
                 ...estado,
                 estado: error.code,
@@ -247,15 +249,12 @@ export default function ExamenRegistrar({
                                         Descargar Planilla en Excel
                                     </button>
                                     <input 
+                                        className='btn btn-success'
                                         type="file" 
                                         accept=".xlsx, .xls" 
                                         onChange={handleFileChange}
-                                        style={{ display: 'none' }} 
                                         id="upload-excel"
                                     />
-                                    <label htmlFor="upload-excel" className="btn btn-success">
-                                        Cargar Planilla Excel
-                                    </label>
                                     <button
                                         disabled={!isValid}
                                         type="submit"
@@ -297,6 +296,24 @@ export default function ExamenRegistrar({
                         </div>
                     </form>
                     )}
+                    {isLoading && (
+                        <div className="modal show fade" style={{ display: 'block' }}>
+                            <div className="modal-dialog">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5 className="modal-title" id="staticBackdropLabel">Se estan enviando los datos, aguarde por favor...</h5>
+                                    </div>
+                                    <div className="modal-body">
+                                        <div className="d-flex justify-content-center my-3">
+                                            <div className="spinner-border" role="status">
+                                                <span className="sr-only"><FontAwesomeIcon icon={faSpinner} /></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ) }
                 </div>
             </div>
         </div>

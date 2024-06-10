@@ -19,7 +19,7 @@ export default function FinDeCursoRegistrar({
     const [studentsData, setStudentsData] = useState([]);
     const [isValid, setIsValid] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-    const [isLoading, setIsLoading] = useState(false); // Estado de carga
+    const [isLoading, setIsLoading] = useState(false);
 
     const generarExcel = () => {
         if (!FinDeCursoDto) {
@@ -145,7 +145,6 @@ export default function FinDeCursoRegistrar({
                 resultado: est.nota
             }))
         };
-
         try {
             const { data, status } = await axios.put('Funcionario/registrarActaFinCurso', datos);
             if (status === 200) {
