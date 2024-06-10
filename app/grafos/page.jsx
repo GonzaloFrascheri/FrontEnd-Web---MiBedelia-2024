@@ -8,28 +8,60 @@ import Footer from '@/app/componentes/main/footer';
 
 const Previas = () => {
 
-    const [id, setId] = useState("nodos")
+    const [id] = useState("nodos")
     const [nodes, setNodes] = useState([])
     const [edges, setEdges] = useState([])
 
+    // carrera
+    const [carreraId, setCarreraId] = useState(null);
+    const [carreraNombre, setCarreraNombre] = useState(null);
+    const [listaCarrera, setListaCarrera] = useState([])
+    const handleCarreraChange = (event) => {
+        const selected = Number(event.target.value);
+        const selectedCarrera = listaCarrera.find(
+            (carrera) => carrera.id === selected
+        );
+        setCarreraId(selectedCarrera.id)
+        setCarreraNombre(selectedCarrera.nombre)
+    }
+    // Fetch lista carrera
     useEffect(() => {
         const fetchData = async () => {
-          try {
-            const { data, status } = await axios.get('metadata/getDataGrafo?idCarrera=1')
-
-            if (status === 200) {
-                setNodes(data.dataAsignatura)
-                setEdges(data.dataPuntero)
-            }
-          } catch (error) {
+            try {
+                const { data, status } = await axios.get('public/listarCarrera')
+                if (status === 200) {
+                    setListaCarrera(data)
+                }
+            } catch (error) {
                 console.error(error)
-          }
+            }
         }
-    
         fetchData()
     }, [])
 
+    // grafos
     useEffect(() => {
+        const fetchData = async () => {
+            if (carreraId !== null) {
+                try {
+                    const { data, status } = await axios.get('metadata/getDataGrafo?idCarrera=' + carreraId)
+
+                    if (status === 200) {
+                        setNodes(data.dataAsignatura)
+                        setEdges(data.dataPuntero)
+                    }
+                } catch (error) {
+                    console.error(error)
+                }
+            }
+        }
+    
+        fetchData()
+    }, [ carreraId ])
+
+    useEffect(() => {
+        if (nodes.length === 0) return;
+        console.info('entro en nodes')
         // create a network
         const container = document.getElementById(id);
         const data = {
@@ -53,8 +85,8 @@ const Previas = () => {
                         to: item.to, 
                         label: item.label,
                         arrows: "to", 
-                        dashes: item.requisito === "aprobado" ? false : [5, 5],
-                        color: item.requisito === "aprobado" ? "blue" : "red",
+                        dashes: item.requisito === "EXONERADO" ? false : [5, 5],
+                        color: item.requisito === "EXONERADO" ? "blue" : "red",
                         font: { 
                             size: 12, 
                             color: "red", 
@@ -74,7 +106,8 @@ const Previas = () => {
         return () => {
         network.destroy();
         };
-    }, [id, nodes, edges]); // Dependency array ensures the effect runs only once after the initial render
+    }, [nodes, edges]);
+
     return (
         <>
         <NavPublico />
@@ -99,12 +132,51 @@ const Previas = () => {
                     <div className="container-xl px-4 mt-n10">
                         <div className="row">
                             <div className="col-xxl-12 col-xl-12 mb-12">
-                                <div className="card h-100">
+                                <div className="card card-header-actions h-100">
                                     <div className="card-header">
-                                        <h5 className="card-title">Grafo de Previaturas por carrera: Tecnólogo Informático:</h5>
+                                        Selecciones una carrera:
+                                        <select 
+                                            className="w-50 form-control" 
+                                            id="listaDeCarrera"
+                                            onChange={handleCarreraChange}
+                                        >
+                                            <option value="" disabled selected>Seleccione una carrera</option>
+                                            {listaCarrera && (listaCarrera.length > 0 ? (
+                                                listaCarrera.map((carrera) => (
+                                                    <option key={carrera.id} value={carrera.id}>{carrera.nombre}</option>
+                                                ))
+                                            ) : (
+                                                <option>No se recibieron datos aún</option>
+                                            ))}
+                                        </select>
                                     </div>
                                     <div className="card-body h-100 p-5">
-                                        <div className="container-previas" id={id} />
+                                        {carreraId !== null ? (
+                                            <div className="card bg-light">
+                                                <div className="card-header text-dark">
+                                                    Previatura de la carrera: {carreraNombre}
+                                                    <span className="text-primary">[-----&gt;] Exonerado</span>
+                                                    <span className="text-red">[- - -&gt;] A examen</span>
+                                                </div>
+                                                <div className="card-body">
+                                                    <div className="container-previas" id={id} />
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div className="card card-icon">
+                                                <div className="row no-gutters">
+                                                    <div className="col-auto card-icon-aside bg-primary text-white">
+                                                        <i className="fas fa-question-circle"></i>
+                                                    </div>
+                                                    <div className="col">
+                                                        <div className="card-body py-5">
+                                                            <h5 className="card-title">Vista de Previatura de Carreras en grafos</h5>
+                                                            <p className="card-text">Seleccione una carrera para visualizar su previatura en grafos.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>

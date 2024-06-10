@@ -81,9 +81,9 @@ export default function ListarUsuarios () {
       const { data, status } = await axios.get(
         `/Administrador/listarUsuario?page=${page}&pageSize=${pageSize}&searchText=${search}`
       )
-      const filteredItems = data.items.filter(item => item.status === true)
-      setData(filteredItems)
-      setFilter(filteredItems)
+      //const filteredItems = data.items.filter(item => item.status === true)
+      setData(data.items)
+      //setFilter(filteredItems)
       setTotalPages(data.totalPages)
     } catch (error) {
       console.log(error)

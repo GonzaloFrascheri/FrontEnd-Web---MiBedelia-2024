@@ -72,13 +72,23 @@ export default function ListarUsuarios () {
     },
     {
       name: 'accion',
+      width: '110px',
       selector: (row) => (
+        (row.status !== true) ? (
+          <button
+            className='btn btn-outline-yelow btn-xs'
+            disabled="disabled"
+          >
+            Eliminado
+          </button>
+        ) : (
         <button
           className="btn btn-outline-red btn-xs"
           onClick={() => handleDelete(row.id, row.nombre, row.apellido)}
         >
           Eliminar
         </button>
+        )
       )
     }
   ];
@@ -86,11 +96,11 @@ export default function ListarUsuarios () {
   const fetchUsers = async (page = 1, searchText = '') => {
     setLoading(true);
     try {
-      const { data, status } = await axios.get(`Administrador/listarUsuario?page=${page}&pageSize=10&searchText=${searchText}`);
+      const { data, status } = await axios.get(`Administrador/listarUsuarioFilterCi?page=${page}&pageSize=10&searchText=${searchText}`);
       if (status === 200) {
-        const filteredItems = data.items.filter(item => item.status === true);
-        setData(filteredItems);
-        setTotalRows(data.totalPages);
+        //const filteredItems = data.items.filter(item => item.status === true);
+        setData(data.items);
+        //setTotalRows(data.totalPages);
         setTotalPages(data.totalPages);
       }
     } catch (error) {
@@ -178,24 +188,27 @@ export default function ListarUsuarios () {
                     paginationServer
                     paginationTotalRows={totalRows}
                     onChangePage={(page) => setCurrentPage(page)}
+                    noDataComponent='No hubo resultado para la búsqueda, recuerde buscar por Cédula de Identidad.'
                     fixedHeader
                     highlightOnHover
                     subHeader
                     subHeaderComponent={
-                      <div className="w-50 input-group input-group-joined">
+                      <div className="w-25 input-group input-group-joined">
                         <span className="input-group-text">
                           <FontAwesomeIcon icon={faSearch} />
                         </span>
                         <input 
                           className="form-control ps-0" 
                           type="text"
+                          pattern='[0-9]{1,8}'
+                          onInvalid={(e) => e.target.setCustomValidity('Ingrese solo números')}
                           placeholder="Buscar por cédula de identidad..."
                           value={search}
                           onChange={handleSearch}
                         />
                       </div>
                     }
-                    subHeaderAlign="right"
+                    subHeaderAlign="left"
                     progressPending={loading}
                     progressComponent={<Loader />}
                   />
