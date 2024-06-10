@@ -38,6 +38,7 @@ export default function Index({ listaAsignatura, handleChangeAsignatura, selecte
                 setError(true);
             } else {
                 const fecha = new Date(FinDeCursoDto.fechaExamen);
+                const estudiantes = FinDeCursoDto.estudiantes || [];
                 const datosPrueba = {
                     asignatura: FinDeCursoDto.nombreAsignatura,
                     semestre: FinDeCursoDto.semestre,
@@ -47,7 +48,7 @@ export default function Index({ listaAsignatura, handleChangeAsignatura, selecte
                         nombre: FinDeCursoDto.nombreDocente,
                     },
                     estudiantes: 
-                        FinDeCursoDto.estudiantes,
+                        estudiantes,
                     logo: logoBase64 // Imagen en base64
                 };
                 PDFGenerador(datosPrueba);

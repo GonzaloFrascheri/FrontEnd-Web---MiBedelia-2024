@@ -70,6 +70,9 @@ export default function Index () {
     fetchListaFinDeCursoDto()
   }, [selectedAsignaturaId])
 
+  // Obtengo la lista de estudiantes de finDeCursoDto directamente, ya que venia undefined estudiantes
+  const estudiantes = finDeCursoDto.estudiantes || [];
+
   return (
     <body
       className={isSidebarToggled ? 'nav-fixed' : 'nav-fixed sidenav-toggled'}
