@@ -25,7 +25,7 @@ export default function AsignaturaListarPasos({ selectedCarreraId, selectedAsign
     return (
         <div className="step step-warning py-4 mt-n15">
             <div className={estado.paso1}>
-                <a className="step-item-link" href="/privado/Funcionario/Listar">Elegir Carrera</a>
+                <a className="step-item-link" href="/privado/Funcionario/Listar/Inscriptos">Elegir Carrera</a>
             </div>
             <div className={estado.paso2}>
                 <a

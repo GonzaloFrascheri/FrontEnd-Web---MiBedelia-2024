@@ -80,9 +80,9 @@ function FuncionarioExamenAsignatura() {
   const fetchListaAsignaturas = async (carreraId) => {
     try {
       const response = await axios.get(
-        `Funcionario/listarAsignaturaPaginado?idCarrera=${carreraId}&page=1&pageSize=300`
+        `Funcionario/listarAsignatura?idCarrera=${carreraId}`
       );
-      setListaAsignatura(response.data.items);
+      setListaAsignatura(response.data);
     } catch (error) {
       console.error("Error fetching listaAsignatura:", error);
     }

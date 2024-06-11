@@ -10,7 +10,7 @@ import ListarInscriptosPasos from '@/app/componentes/funcionario/listar/ListarIn
 import { useSidebar } from '@/context/AppContext'
 
 function FuncionarioListarInscriptos () {
-  const breadcrumbs = ['privado', 'Funcionario', 'Listar']
+  const breadcrumbs = ['privado', 'Funcionario', 'Listar', 'Inscriptos']
   const [listaCarrera, setListaCarrera] = useState([])
   const [listaAsignatura, setListaAsignatura] = useState([])
   const [selectedCarreraId, setSelectedCarreraId] = useState(null)
@@ -59,8 +59,8 @@ function FuncionarioListarInscriptos () {
   useEffect(() => {
     const fetchListaAsignaturas = async () => {
       try {
-        const response = await axios.get(`/Funcionario/listarAsignaturaPaginado?idCarrera=${selectedCarreraId}&page=1&pageSize=300`)
-        setListaAsignatura(response.data.items);
+        const response = await axios.get(`/Funcionario/listarAsignatura?idCarrera=${selectedCarreraId}`)
+        setListaAsignatura(response.data);
       } catch (error) {
         console.error('Error fetching listaAsignatura:', error)
       }

@@ -265,7 +265,7 @@ export default function Sidebar () {
                         </a>
                         <a
                           className='nav-link'
-                          href='/privado/Funcionario/Listar'
+                          href='/privado/Funcionario/Listar/Inscriptos'
                         >
                           Listar estudiantes inscriptos en asignatura
                         </a>
