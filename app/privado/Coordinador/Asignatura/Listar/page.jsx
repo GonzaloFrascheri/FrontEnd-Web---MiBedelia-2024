@@ -15,6 +15,7 @@ function CoordinadorListarAsignatura () {
   const [listaAsignatura, setListaAsignatura] = useState([])
   const [selectedCarreraId, setSelectedCarreraId] = useState(null)
   const [selectedAsignaturaId, setSelectedAsignaturaId] = useState(null)
+  const [cargando, setCargando] = useState(true);
   const handleCarreraChange = id => {
     setSelectedCarreraId(id)
     setFormData({
@@ -63,15 +64,15 @@ function CoordinadorListarAsignatura () {
 
   useEffect(() => {
     const fetchListaAsignaturas = async () => {
+      setCargando(true);
       try {
         const response = await axios.get(
-          'Coordinador/listarAsignaturaPaginado?idCarrera=' +
-            selectedCarreraId +
-            '&page=1&pageSize=300'
+          'Coordinador/listarAsignatura?idCarrera=' + selectedCarreraId
         )
-        setListaAsignatura(response.data.items)
-        console.info('listaAsignatura', response.data.items)
+        setCargando(false);
+        setListaAsignatura(response.data)
       } catch (error) {
+        setCargando(false);
         console.error('Error fetching listaAsignatura:', error)
       }
     }
@@ -103,6 +104,7 @@ function CoordinadorListarAsignatura () {
                   />
                 ) : (
                   <AsignaturaListAsignatura
+                    cargando={cargando}
                     listaAsignaturas={listaAsignatura}
                     handleAsignaturaChange={handleAsignaturaChange}
                     handleChange={handleChange}

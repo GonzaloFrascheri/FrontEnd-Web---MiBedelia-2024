@@ -5,7 +5,7 @@ import DataTable from 'react-data-table-component';
 import "react-datepicker/dist/react-datepicker.css";
 
 
-export default function Index({listaAsignaturas ,handleAsignaturaChange, handleChange, handleSubmit, formData, estado}) {
+export default function Index({cargando, listaAsignaturas ,handleAsignaturaChange, handleChange, handleSubmit, formData, estado}) {
 
     const [search, setSearch] = useState('');
    
@@ -56,7 +56,7 @@ export default function Index({listaAsignaturas ,handleAsignaturaChange, handleC
                     <DataTable
                         columns={columnas}
                         data={listaAsignaturas}
-                        progressPending={!listaAsignaturas.length}
+                        progressPending={cargando}
                         progressComponent={<Loader />}
                         noHeader
                         pagination
