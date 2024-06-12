@@ -41,7 +41,7 @@ function NavPrivado () {
     try {
       const { data, status } = await axios.get('Estudiante/NewNotificaciones');
       if (status === 200) {
-        console.log(data);
+        //console.log('NewNotificaciones', data);
         setNotifications(data);
         setCantSinLeer(data.length);
       }
@@ -127,7 +127,8 @@ function NavPrivado () {
               {/* Estudiante */}
               {(user && user.role === 'ESTUDIANTE') ? (
                 (notifications && notifications.length > 0) ? (
-                  notifications.map((notification, index) => (
+                  <>
+                  {notifications.map((notification, index) => (
                     <a
                       key={index}
                       className="dropdown-item dropdown-notifications-item"
@@ -140,24 +141,31 @@ function NavPrivado () {
                         <div className="dropdown-notifications-item-content-text">{notification.texto}</div>
                       </div>
                     </a>
-                  ))
+                  ))}
+                  <a className="dropdown-item dropdown-notifications-footer" href="/privado/Estudiantes/VerNotificaciones">Ver todas las notificaciones</a>
+                </>
                 ) : (
+                  <>
                   <a className="dropdown-item dropdown-notifications-item" href="#!">
                     <div className="dropdown-notifications-item-icon bg-success"><FontAwesomeIcon icon={faCheckDouble} /></div>
                     <div className="dropdown-notifications-item-content">
                       <div className="dropdown-notifications-item-content-text">Sin Notificaciones nuevas.</div>
                     </div>
                   </a>
-                )
+                  <a className="dropdown-item dropdown-notifications-footer" href="/privado/Estudiantes/VerNotificaciones">Ver todas las notificaciones</a>
+                  </>
+                ) 
               ) : (
+                <>
                 <a className="dropdown-item dropdown-notifications-item" href="#!">
                   <div className="dropdown-notifications-item-icon bg-success"><FontAwesomeIcon icon={faCheckDouble} /></div>
                   <div className="dropdown-notifications-item-content">
                     <div className="dropdown-notifications-item-content-text">Sin Notificaciones nuevas.</div>
                   </div>
                 </a>
+                <a className="dropdown-item dropdown-notifications-footer" href="#!">Ver todas las notificaciones</a>
+                </>
               )}
-              <a className="dropdown-item dropdown-notifications-footer" href="/privado/Estudiantes/VerNotificaciones">Ver todas las notificaciones</a>
             </div>
           </li>
           <li className='nav-item dropdown no-caret dropdown-user me-3 me-lg-4'>

@@ -229,6 +229,7 @@ function VerPerfilPage () {
                 credentials={credentials}
                 isPasswordEditable={isPasswordEditable}
                 handleCheckboxChange={handleCheckboxChange}
+                userData={userData}
               />
             </div>
           </main>

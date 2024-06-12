@@ -9,7 +9,8 @@ export default function VerPerfil ({
   handleSubmit,
   estado,
   isPasswordEditable,
-  handleCheckboxChange
+  handleCheckboxChange,
+  userData
 }) {
   return (
     <>
@@ -17,9 +18,11 @@ export default function VerPerfil ({
         <a className='nav-link active ms-0' href='#'>
           Perfil
         </a>
-        <a className='nav-link' href='/privado/Estudiantes/VerNotificaciones'>
-          Notificaciones
-        </a>
+        {(userData && userData.role === 'ESTUDIANTE') && (
+          <a className='nav-link' href='/privado/Estudiantes/VerNotificaciones'>
+            Notificaciones
+          </a>
+        )}
       </nav>
       <hr className='mt-0 mb-4' />
       <div className='row'>

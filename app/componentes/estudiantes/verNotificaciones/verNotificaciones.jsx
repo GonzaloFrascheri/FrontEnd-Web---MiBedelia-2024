@@ -1,23 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import axios from '@/utils/axios'
-import { useSidebar } from '@/context/AppContext'
 import { useAuth } from '@/context/AuthProvider'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBell, faKey } from '@fortawesome/free-solid-svg-icons'
+import { faBell,faEye, faEyeSlash, faTrash, faKey } from '@fortawesome/free-solid-svg-icons'
 
-export default function VerPerfil () {
+export default function VerPerfil() {
   const authData = useAuth()
   const [user, setUser] = useState(null)
-  const { isSidebarToggled, toggleSidebar } = useSidebar()
   useEffect(() => {
     if (authData && !user) {
       setUser(authData)
     }
     fetchNotifications();
   }, [authData, user])
-  const toggleDropdown = () => {
-    setDropdownOpen(prevState => !prevState)
-  }
 
   // Estado para las notificaciones
   const [notifications, setNotifications] = useState([]);
@@ -25,7 +20,7 @@ export default function VerPerfil () {
     try {
       const { data, status } = await axios.get('Estudiante/AllNotificaciones');
       if (status === 200) {
-        console.info('todas', data);
+        //console.info('Estudiante/AllNotificaciones', data);
         setNotifications(data);
         setCantSinLeer(data.length);
       }
@@ -52,47 +47,74 @@ export default function VerPerfil () {
         </a>
       </nav>
       <hr className='mt-0 mb-4' />
-      <div class="container mt-5">
-      <div class="card">
-        <div class="card-header">
-          Notificaciones
-        </div>
-        <div class="list-group list-group-flush">
-        <div class="col-lg-4">
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar avatar-lg"><img class="avatar-img img-fluid" src="assets/img/illustrations/profiles/profile-1.png" /></div>
-                                            <div class="ms-3">
-                                                <div class="fs-4 text-dark fw-500">Tiger Nixon</div>
-                                                <div class="small text-muted">Admin</div>
-                                            </div>
-                                        </div>
-                                    </div>
-          <ul>
-            <li>
-              {
-              (notifications && notifications.length > 0) ? (
-                notifications.map((notification, index) => (
-                  <>
-                  <div class="d-flex w-100 justify-content-between">
-                    <FontAwesomeIcon icon={faBell} />
-                  </div>
-                  <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Notificación {index+1} [{notification.id}]</h5>
-                    <small>{formatearFecha(notification.fecha)}</small>
-                  </div>
-                  <p class="mb-1">{notification.texto} [leído: {notification.leido}]</p>
-                  </>
-                ))
-              ) : (
-
-                    <div className="dropdown-notifications-item-content-text">Sin Notificaciones nuevas.</div>
-
-              )}
-            </li>
-          </ul>
+      <div className="container mt-5">
+        <div className="card">
+          <div className="card-header">
+            Notificaciones
+          </div>
+          <div className="list-group list-group-flush">
+            <ul className="ps-0 mb-0">
+                {
+                  (notifications && notifications.length > 0) ? (
+                    notifications.map((notification, index) => (
+                      <li key={notification.id} className="list-group-item">
+                        <div className="d-flex align-items-center">
+                          <div className={`avatar avatar-lg ${notification.leido ? 'avatar-busy' : 'avatar-online'}`}>
+                            <FontAwesomeIcon icon={faBell} />
+                          </div>
+                          <div className="ms-3 w-100">
+                            <div className="d-flex w-100 justify-content-between">
+                              <h5 className="mb-1">Notificación {index + 1}</h5>
+                              <small>{formatearFecha(notification.fecha)}</small>
+                            </div>
+                            <div className="d-flex w-100 justify-content-between">
+                              <p className="mb-1">{notification.texto}</p>
+                              <div className="dropdown-notifications-item-content-text">
+                                {notification.leido  ? (
+                                  <button
+                                    data-bs-toggle="tooltip" data-bs-placement="left" title="Eliminar la notificación."
+                                    className="btn btn-danger btn-sm"
+                                    onClick={() => 
+                                    {
+                                      axios.put(`Estudiante/LeerNotificacion/${notification.id}`).then(() => {
+                                        fetchNotifications();
+                                      });
+                                    }}
+                                  >
+                                    <FontAwesomeIcon icon={faTrash} />
+                                  </button>
+                                ) : (
+                                  <button
+                                    data-bs-toggle="tooltip" data-bs-placement="left" title="Marcar la notificación como leída."
+                                    className="btn btn-success btn-sm"
+                                    onClick={() => 
+                                    {
+                                      axios.put(`Estudiante/LeerNotificacion/${notification.id}`).then(() => {
+                                        fetchNotifications();
+                                      });
+                                    }}
+                                  >
+                                    <FontAwesomeIcon icon={faEye} />
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                    ))
+                  ) : (
+                    <li className="list-group-item">
+                        <div className="d-flex align-items-center">
+                          <div className="dropdown-notifications-item-content-text">Sin Notificaciones nuevas.</div>
+                        </div>
+                    </li>
+                  )}
+            </ul>
+          </div>
+          <div className='card-footer'></div>
         </div>
       </div>
-    </div>
     </>
   )
 }
