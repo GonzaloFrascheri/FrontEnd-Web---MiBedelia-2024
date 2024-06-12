@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react'
 import { useSidebar } from '@/context/AppContext'
 import { useAuth } from '@/context/AuthProvider'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faAngleDown,
   faArrowsToCircle,
@@ -7,8 +9,6 @@ import {
   faPenFancy,
   faUserTie
 } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useEffect, useState } from 'react'
 
 export default function Sidebar () {
   const authData = useAuth()

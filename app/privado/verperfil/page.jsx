@@ -12,6 +12,8 @@ import {
 } from '@/utils/validators'
 import { hashPassword } from '@/utils/utils'
 import storage from '@/utils/storage'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUserAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
 function VerPerfilPage () {
   let authData = useAuth()
@@ -208,7 +210,7 @@ function VerPerfilPage () {
                     <div className='col-auto mb-3'>
                       <h1 className='page-header-title'>
                         <div className='page-header-icon'>
-                          <i data-feather='user'></i>
+                          <FontAwesomeIcon icon={faUserAlt} />
                         </div>
                         Configuracion de cuenta - Perfil
                       </h1>
@@ -227,6 +229,7 @@ function VerPerfilPage () {
                 credentials={credentials}
                 isPasswordEditable={isPasswordEditable}
                 handleCheckboxChange={handleCheckboxChange}
+                userData={userData}
               />
             </div>
           </main>
