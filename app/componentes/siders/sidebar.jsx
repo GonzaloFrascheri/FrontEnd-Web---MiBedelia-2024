@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useRouter, usePathname } from 'next/navigation'
 import { useSidebar } from '@/context/AppContext'
 import { useAuth } from '@/context/AuthProvider'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -18,6 +19,9 @@ export default function Sidebar () {
   const [collapseCoordinador, setCollapseCoordinador] = useState(false)
   const [collapseFuncionario, setCollapseFuncionario] = useState(false)
   const [collapseEstudiante, setCollapseEstudiante] = useState(false)
+  
+  const router = useRouter()
+  const currentPath = usePathname()
 
   const toggleCollapseAdministrador = () => {
     setCollapseAdministrador(!collapseAdministrador)
@@ -41,6 +45,10 @@ export default function Sidebar () {
     }
   }, [authData, userData])
 
+  const isActive = (path) => currentPath === path;
+
+  const isAnyChildActive = (paths) => paths.some(path => isActive(path));
+
   return (
     isSidebarToggled && (
       <nav className='sidenav shadow-right sidenav-light'>
@@ -54,7 +62,11 @@ export default function Sidebar () {
                 {userData.role === 'ADMIN' && (
                   <>
                     <a
-                      className='nav-link collapsed'
+                      className={`nav-link collapsed ${isAnyChildActive([
+                        '/privado/Administrador/Usuarios/Alta',
+                        '/privado/Administrador/Usuarios/Baja',
+                        '/privado/Administrador/Usuarios/Listar'
+                      ]) ? 'active' : ''}`}
                       onClick={toggleCollapseAdministrador}
                       aria-expanded={collapseAdministrador ? 'true' : 'false'}
                       data-bs-toggle='collapse'
@@ -70,32 +82,18 @@ export default function Sidebar () {
                       </div>
                     </a>
                     <div
-                      className={`collapse ${
-                        collapseAdministrador ? 'show' : ''
-                      }`}
+                      className={`collapse ${collapseAdministrador ? 'show' : ''}`}
                       id='collapseAdministrador'
                       data-bs-parent='#accordionSidenav'
                     >
-                      <nav
-                        className='sidenav-menu-nested nav accordion'
-                        id='accordionSidenavPages'
-                      >
-                        <a
-                          className='nav-link'
-                          href='/privado/Administrador/Usuarios/Alta'
-                        >
+                      <nav className='sidenav-menu-nested nav accordion' id='accordionSidenavPages'>
+                        <a className={`nav-link ${isActive('/privado/Administrador/Usuarios/Alta') ? 'active' : ''}`} href='/privado/Administrador/Usuarios/Alta'>
                           Alta de Usuario
                         </a>
-                        <a
-                          className='nav-link'
-                          href='/privado/Administrador/Usuarios/Baja'
-                        >
+                        <a className={`nav-link ${isActive('/privado/Administrador/Usuarios/Baja') ? 'active' : ''}`} href='/privado/Administrador/Usuarios/Baja'>
                           Baja de Usuario
                         </a>
-                        <a
-                          className='nav-link'
-                          href='/privado/Administrador/Usuarios/Listar'
-                        >
+                        <a className={`nav-link ${isActive('/privado/Administrador/Usuarios/Listar') ? 'active' : ''}`} href='/privado/Administrador/Usuarios/Listar'>
                           Listar Usuarios
                         </a>
                       </nav>
@@ -108,7 +106,13 @@ export default function Sidebar () {
                   userData.role === 'ADMIN') && (
                   <>
                     <a
-                      className='nav-link collapsed'
+                      className={`nav-link collapsed ${isAnyChildActive([
+                        '/privado/Coordinador/Carrera/Alta',
+                        '/privado/Coordinador/Asignatura/Alta',
+                        '/privado/Coordinador/Asignatura/Listar',
+                        '/privado/Coordinador/Registrar/Previatura',
+                        '/privado/Coordinador/Listar/PreviasPorAsignatura'
+                      ]) ? 'active' : ''}`}
                       onClick={toggleCollapseCoordinador}
                       aria-expanded={collapseCoordinador ? 'true' : 'false'}
                       data-bs-toggle='collapse'
@@ -124,44 +128,24 @@ export default function Sidebar () {
                       </div>
                     </a>
                     <div
-                      className={`collapse ${
-                        collapseCoordinador ? 'show' : ''
-                      }`}
+                      className={`collapse ${collapseCoordinador ? 'show' : ''}`}
                       id='collapseCoordinador'
                       data-bs-parent='#accordionSidenav'
                     >
-                      <nav
-                        className='sidenav-menu-nested nav accordion'
-                        id='accordionSidenavPages'
-                      >
-                        <a
-                          className='nav-link'
-                          href='/privado/Coordinador/Carrera/Alta'
-                        >
+                      <nav className='sidenav-menu-nested nav accordion' id='accordionSidenavPages'>
+                        <a className={`nav-link ${isActive('/privado/Coordinador/Carrera/Alta') ? 'active' : ''}`} href='/privado/Coordinador/Carrera/Alta'>
                           Alta Carrera
                         </a>
-                        <a
-                          className='nav-link'
-                          href='/privado/Coordinador/Asignatura/Alta'
-                        >
+                        <a className={`nav-link ${isActive('/privado/Coordinador/Asignatura/Alta') ? 'active' : ''}`} href='/privado/Coordinador/Asignatura/Alta'>
                           Alta Asignatura
                         </a>
-                        <a
-                          className='nav-link'
-                          href='/privado/Coordinador/Asignatura/Listar'
-                        >
+                        <a className={`nav-link ${isActive('/privado/Coordinador/Asignatura/Listar') ? 'active' : ''}`} href='/privado/Coordinador/Asignatura/Listar'>
                           Listar asignaturas por carreras
                         </a>
-                        <a
-                          className='nav-link'
-                          href='/privado/Coordinador/Registrar/Previatura'
-                        >
+                        <a className={`nav-link ${isActive('/privado/Coordinador/Registrar/Previatura') ? 'active' : ''}`} href='/privado/Coordinador/Registrar/Previatura'>
                           Registrar previatura
                         </a>
-                        <a
-                          className='nav-link'
-                          href='/privado/Coordinador/Listar/PreviasPorAsignatura'
-                        >
+                        <a className={`nav-link ${isActive('/privado/Coordinador/Listar/PreviasPorAsignatura') ? 'active' : ''}`} href='/privado/Coordinador/Listar/PreviasPorAsignatura'>
                           Listar previas por asignatura
                         </a>
                       </nav>
@@ -174,7 +158,20 @@ export default function Sidebar () {
                   userData.role === 'ADMIN') && (
                   <>
                     <a
-                      className='nav-link collapsed'
+                      className={`nav-link collapsed ${isAnyChildActive([
+                        '/privado/Funcionario/Generar/ActaExamen',
+                        '/privado/Funcionario/Registro/ActaExamen',
+                        '/privado/Funcionario/Generar/ActaFinDeCurso',
+                        '/privado/Funcionario/Registro/ActaFinDeCurso',
+                        '/privado/Funcionario/Registro/HorarioAsignatura',
+                        '/privado/Funcionario/Registro/PeriodoExamen',
+                        '/privado/Funcionario/Modificar/HorarioAsignatura',
+                        '/privado/Funcionario/Modificar/HorarioExamen',
+                        '/privado/Funcionario/Registro/AltaExamen',
+                        '/privado/Funcionario/AltaDocente',
+                        '/privado/Funcionario/Listar/Inscriptos',
+                        '/privado/Funcionario/Listar/Periodo'
+                      ]) ? 'active' : ''}`}
                       onClick={toggleCollapseFuncionario}
                       aria-expanded={collapseFuncionario ? 'true' : 'false'}
                       data-bs-toggle='collapse'
@@ -190,89 +187,45 @@ export default function Sidebar () {
                       </div>
                     </a>
                     <div
-                      className={`collapse ${
-                        collapseFuncionario ? 'show' : ''
-                      }`}
+                      className={`collapse ${collapseFuncionario ? 'show' : ''}`}
                       id='collapseFuncionario'
                       data-bs-parent='#accordionSidenav'
                     >
-                      <nav
-                        className='sidenav-menu-nested nav accordion'
-                        id='accordionSidenavPages'
-                      >
-                        <a
-                          className='nav-link'
-                          href='/privado/Funcionario/Generar/ActaExamen'
-                        >
+                      <nav className='sidenav-menu-nested nav accordion' id='accordionSidenavPages'>
+                        <a className={`nav-link ${isActive('/privado/Funcionario/Generar/ActaExamen') ? 'active' : ''}`} href='/privado/Funcionario/Generar/ActaExamen'>
                           Generar acta examen
                         </a>
-                        <a
-                          className='nav-link'
-                          href='/privado/Funcionario/Registro/ActaExamen'
-                        >
+                        <a className={`nav-link ${isActive('/privado/Funcionario/Registro/ActaExamen') ? 'active' : ''}`} href='/privado/Funcionario/Registro/ActaExamen'>
                           Registrar acta de examen
                         </a>
-                        <a
-                          className='nav-link'
-                          href='/privado/Funcionario/Generar/ActaFinDeCurso'
-                        >
+                        <a className={`nav-link ${isActive('/privado/Funcionario/Generar/ActaFinDeCurso') ? 'active' : ''}`} href='/privado/Funcionario/Generar/ActaFinDeCurso'>
                           Generar acta fin de curso
                         </a>
-                        <a
-                          className='nav-link'
-                          href='/privado/Funcionario/Registro/ActaFinDeCurso'
-                        >
-                          Registrar acta de fin de curso
+                        <a className={`nav-link ${isActive('/privado/Funcionario/Registro/ActaFinDeCurso') ? 'active' : ''}`} href='/privado/Funcionario/Registro/ActaFinDeCurso'>
+                          Registrar acta fin de curso
                         </a>
-                        <a
-                          className='nav-link'
-                          href='/privado/Funcionario/Registro/HorarioAsignatura'
-                        >
-                          Registro de horario a asignatura
+                        <a className={`nav-link ${isActive('/privado/Funcionario/Registro/HorarioAsignatura') ? 'active' : ''}`} href='/privado/Funcionario/Registro/HorarioAsignatura'>
+                          Registro horario de asignatura
                         </a>
-                        <a
-                          className='nav-link'
-                          href='/privado/Funcionario/Registro/PeriodoExamen'
-                        >
+                        <a className={`nav-link ${isActive('/privado/Funcionario/Registro/PeriodoExamen') ? 'active' : ''}`} href='/privado/Funcionario/Registro/PeriodoExamen'>
                           Registro periodo de examen
                         </a>
-
-                        <a
-                          className='nav-link'
-                          href='/privado/Funcionario/Modificar/HorarioAsignatura'
-                        >
+                        <a className={`nav-link ${isActive('/privado/Funcionario/Modificar/HorarioAsignatura') ? 'active' : ''}`} href='/privado/Funcionario/Modificar/HorarioAsignatura'>
                           Modificar horario de asignatura
                         </a>
-
-                        <a
-                          className='nav-link'
-                          href='/privado/Funcionario/Modificar/HorarioExamen'
-                        >
+                        <a className={`nav-link ${isActive('/privado/Funcionario/Modificar/HorarioExamen') ? 'active' : ''}`} href='/privado/Funcionario/Modificar/HorarioExamen'>
                           Modificar horario de examen
                         </a>
-
-                        <a
-                          className='nav-link'
-                          href='/privado/Funcionario/Registro/AltaExamen'
-                        >
+                        <a className={`nav-link ${isActive('/privado/Funcionario/Registro/AltaExamen') ? 'active' : ''}`} href='/privado/Funcionario/Registro/AltaExamen'>
                           Alta de examen
                         </a>
-                        <a
-                          className='nav-link'
-                          href='/privado/Funcionario/AltaDocente'
-                        >
+                        <a className={`nav-link ${isActive('/privado/Funcionario/AltaDocente') ? 'active' : ''}`} href='/privado/Funcionario/AltaDocente'>
                           Alta docente
                         </a>
-                        <a
-                          className='nav-link'
-                          href='/privado/Funcionario/Listar/Inscriptos'
-                        >
+                        <a className={`nav-link ${isActive('/privado/Funcionario/Listar/Inscriptos') ? 'active' : ''}`} href='/privado/Funcionario/Listar/Inscriptos'>
                           Listar estudiantes inscriptos en asignatura
                         </a>
-                        <a
-                          className='nav-link'
-                          href='/privado/Funcionario/Listar/Periodo'
-                        >
+                        <a className={`nav-link ${isActive('/privado/Funcionario/Listar/Periodo') ? 'active' : ''}`} href='/privado/Funcionario/Listar/Periodo'>
                           Listar exámenes a tomar en período
                         </a>
                       </nav>
@@ -285,7 +238,14 @@ export default function Sidebar () {
                   userData.role === 'ADMIN') && (
                   <>
                     <a
-                      className='nav-link collapsed'
+                      className={`nav-link collapsed ${isAnyChildActive([
+                        '/privado/Estudiantes/Carrera',
+                        '/privado/Estudiantes/Asignatura',
+                        '/privado/Estudiantes/Examen',
+                        '/privado/Estudiantes/Asignatura/Pendiente',
+                        '/privado/Estudiantes/Asignatura/Aprobada',
+                        '/privado/Estudiantes/Escolaridad'
+                      ]) ? 'active' : ''}`}
                       onClick={toggleCollapseEstudiante}
                       aria-expanded={collapseEstudiante ? 'true' : 'false'}
                       data-bs-toggle='collapse'
@@ -305,44 +265,23 @@ export default function Sidebar () {
                       id='collapseEstudiante'
                       data-bs-parent='#accordionSidenav'
                     >
-                      <nav
-                        className='sidenav-menu-nested nav accordion'
-                        id='accordionSidenavPages'
-                      >
-                        <a
-                          className='nav-link'
-                          href='/privado/Estudiantes/Carrera'
-                        >
+                      <nav className='sidenav-menu-nested nav accordion' id='accordionSidenavPages'>
+                        <a className={`nav-link ${isActive('/privado/Estudiantes/Carrera') ? 'active' : ''}`} href='/privado/Estudiantes/Carrera'>
                           Inscripción a una carrera
                         </a>
-                        <a
-                          className='nav-link'
-                          href='/privado/Estudiantes/Asignatura'
-                        >
+                        <a className={`nav-link ${isActive('/privado/Estudiantes/Asignatura') ? 'active' : ''}`} href='/privado/Estudiantes/Asignatura'>
                           Inscripción a una asignatura
                         </a>
-                        <a
-                          className='nav-link'
-                          href='/privado/Estudiantes/Examen'
-                        >
+                        <a className={`nav-link ${isActive('/privado/Estudiantes/Examen') ? 'active' : ''}`} href='/privado/Estudiantes/Examen'>
                           Inscripción a un exámen
                         </a>
-                        <a
-                          className='nav-link'
-                          href='/privado/Estudiantes/Asignatura/Pendiente'
-                        >
+                        <a className={`nav-link ${isActive('/privado/Estudiantes/Asignatura/Pendiente') ? 'active' : ''}`} href='/privado/Estudiantes/Asignatura/Pendiente'>
                           Asignaturas pendientes
                         </a>
-                        <a
-                          className='nav-link'
-                          href='/privado/Estudiantes/Asignatura/Aprobada'
-                        >
+                        <a className={`nav-link ${isActive('/privado/Estudiantes/Asignatura/Aprobada') ? 'active' : ''}`} href='/privado/Estudiantes/Asignatura/Aprobada'>
                           Asignaturas aprobadas
                         </a>
-                        <a
-                          className='nav-link'
-                          href='/privado/Estudiantes/Escolaridad'
-                        >
+                        <a className={`nav-link ${isActive('/privado/Estudiantes/Escolaridad') ? 'active' : ''}`} href='/privado/Estudiantes/Escolaridad'>
                           Generar Escolaridad
                         </a>
                       </nav>
