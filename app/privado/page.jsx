@@ -17,7 +17,6 @@ function PrivadoPage () {
     if (authData && !data) {
       setData(authData)
     }
-    console.log(`Auth data:`, data)
   }, [authData, data])
 
   return (

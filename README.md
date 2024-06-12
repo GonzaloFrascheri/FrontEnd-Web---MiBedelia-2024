@@ -49,6 +49,10 @@ https://mibedelia-backend-production.up.railway.app/doc/swagger-ui/index.html#/
   - Listado de asignaturas aprobadas <img src="https://img.shields.io/badge/Front-Hecho-Success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
   - Listado de asignaturas pendientes <img src="https://img.shields.io/badge/Front-Hecho-success"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
 
+## Tareas - Notificaciones 
+- Estudiantes
+  - Mostrar notificaciones sin leer <img src="https://img.shields.io/badge/Front-EnProceso-yellow"> <img src="https://img.shields.io/badge/Backend-Hecho-success">
+
 # INSTALACIÓN DEL FRONTEND
 ```bash
 # instalar next

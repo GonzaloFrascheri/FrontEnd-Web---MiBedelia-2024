@@ -17,7 +17,7 @@ export default function VerPerfil ({
         <a className='nav-link active ms-0' href='#'>
           Perfil
         </a>
-        <a className='nav-link' href='#'>
+        <a className='nav-link' href='/privado/Estudiantes/VerNotificaciones'>
           Notificaciones
         </a>
       </nav>
