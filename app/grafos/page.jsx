@@ -23,7 +23,20 @@ const Previas = () => {
         );
         setCarreraId(selectedCarrera.id)
         setCarreraNombre(selectedCarrera.nombre)
+        setAsignaturaId(null);
     }
+
+    // asignatura
+    const [asignaturaId, setAsignaturaId] = useState(null);
+    const handleAsignaturaChange = (event) => {
+        const selected = event.target.value;
+        if (selected === "all") {
+            setAsignaturaId(null);
+        } else {
+            setAsignaturaId(Number(selected));
+        }
+    }
+
     // Fetch lista carrera
     useEffect(() => {
         const fetchData = async () => {
@@ -39,7 +52,7 @@ const Previas = () => {
         fetchData()
     }, [])
 
-    // grafos
+    // Fetch data grafo
     useEffect(() => {
         const fetchData = async () => {
             if (carreraId !== null) {
@@ -59,14 +72,35 @@ const Previas = () => {
         fetchData()
     }, [ carreraId ])
 
+    // Update grafo
     useEffect(() => {
         if (nodes.length === 0) return;
-        console.info('entro en nodes')
-        // create a network
+
+        let filteredNodes = nodes;
+        let filteredEdges = edges;
+
+        if (asignaturaId !== null) {
+            const requiredNodes = new Set([asignaturaId]);
+            const stack = [asignaturaId];
+
+            while (stack.length > 0) {
+                const nodeId = stack.pop();
+                edges.forEach(edge => {
+                    if (edge.to === nodeId && !requiredNodes.has(edge.from)) {
+                        requiredNodes.add(edge.from);
+                        stack.push(edge.from);
+                    }
+                });
+            }
+
+            filteredNodes = nodes.filter(node => requiredNodes.has(node.id));
+            filteredEdges = edges.filter(edge => requiredNodes.has(edge.from) && requiredNodes.has(edge.to));
+        }
+
         const container = document.getElementById(id);
         const data = {
             nodes: new DataSet(
-                nodes.map(
+                filteredNodes.map(
                     item => ({ 
                         id: item.id, 
                         label: item.label, 
@@ -79,7 +113,7 @@ const Previas = () => {
                 )
             ),
             edges: new DataSet(
-                edges.map(
+                filteredEdges.map(
                     item => ({ 
                         from: item.from, 
                         to: item.to, 
@@ -97,16 +131,26 @@ const Previas = () => {
             )
         };
         const options = {
-        nodes: {
-            shape: "box"
-        },
+            nodes: {
+                shape: "box"
+            },
+            layout: {
+                hierarchical: {
+                direction: "DU",
+                sortMethod: "directed",
+                },
+            },
+            physics: {
+                hierarchicalRepulsion: {
+                avoidOverlap: 1,
+                },
+            },
         };
         const network = new Network(container, data, options);
-        // Cleanup function to destroy the network when the component unmounts
         return () => {
-        network.destroy();
+            network.destroy();
         };
-    }, [nodes, edges]);
+    }, [nodes, edges, asignaturaId]);
 
     return (
         <>
@@ -134,7 +178,7 @@ const Previas = () => {
                             <div className="col-xxl-12 col-xl-12 mb-12">
                                 <div className="card card-header-actions h-100">
                                     <div className="card-header">
-                                        Selecciones una carrera:
+                                        Seleccione una carrera:
                                         <select 
                                             className="w-50 form-control" 
                                             id="listaDeCarrera"
@@ -152,11 +196,41 @@ const Previas = () => {
                                     </div>
                                     <div className="card-body h-100 p-5">
                                         {carreraId !== null ? (
-                                            <div className="card bg-light">
-                                                <div className="card-header text-dark">
-                                                    Previatura de la carrera: {carreraNombre}
-                                                    <span className="text-primary">[-----&gt;] Exonerado</span>
-                                                    <span className="text-red">[- - -&gt;] A examen</span>
+                                            <div className="card">
+                                                <div className="card-header">
+                                                    <div className="col w-50">
+                                                        <h1>
+                                                        Carrera: <span class="badge bg-primary">{carreraNombre}</span>
+                                                        </h1>
+                                                    </div>
+                                                    <div className="col-2">
+                                                        <div className="align-items-center justify-content-between">
+                                                            <img src="/img/flechaAzul.png" alt="Carrera" className="img-thumbnail" />
+                                                            <span className="text-primary">Exonerado</span><br />
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-2">
+                                                        <div className="align-items-center justify-content-between">
+                                                            <img src="/img/flechaRoja.png" alt="Carrera" className="img-thumbnail" />
+                                                            <span className="text-red">A examen</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="col">
+                                                        <select 
+                                                            className="form-control" 
+                                                            id="listaDeAsignatura"
+                                                            onChange={handleAsignaturaChange}
+                                                        >
+                                                            <option value="all" selected>Todas</option>
+                                                            {nodes && (nodes.length > 0 ? (
+                                                                nodes.map((asignatura) => (
+                                                                    <option key={asignatura.id} value={asignatura.id}>{asignatura.label}</option>
+                                                                ))
+                                                            ) : (
+                                                                <option>No se recibieron datos aún</option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
                                                 </div>
                                                 <div className="card-body">
                                                     <div className="container-previas" id={id} />

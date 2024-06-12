@@ -42,7 +42,7 @@ export default function ListarPreviasPorAsignaturaPasos ({estado, setEstado}) {
             <div className={estado.paso1}>
                 <a 
                     className="step-item-link"
-                    href="/privado/Coordinador/Registrar/Previatura"
+                    href="/privado/Coordinador/Listar/PreviasPorAsignatura"
                 >
                     Elegir Carrera
                 </a>
