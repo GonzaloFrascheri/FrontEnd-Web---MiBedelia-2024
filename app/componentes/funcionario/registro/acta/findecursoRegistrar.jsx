@@ -172,7 +172,7 @@ export default function FinDeCursoRegistrar({
                 <div className="card shadow-lg border-0 rounded-lg">
                     <div className="card-header justify-content-center">
                         <h3 className="fw-light">
-                            Generar Acta de Examen para la asignatura: <span className="badge bg-primary text-white ms-5">
+                            Registrar acta de fin de curso para la asignatura: <span className="badge bg-primary text-white ms-5">
                                 {formData?.nombreAsignatura || ""}
                             </span>
                         </h3>
@@ -215,7 +215,7 @@ export default function FinDeCursoRegistrar({
                                                 <div className="col">
                                                     <div className="card-body py-5">
                                                         <h5 className="card-title">Paso 4: Confirmar datos</h5>
-                                                        <p className="card-text">Verifique que los datos estén cargados correctamente y haga clic en "Confirmar" para enviar los datos.</p>
+                                                        <p className="card-text">Verifique que los datos estén cargados correctamente y haga clic en &quot;Confirmar&quot; para enviar los datos.</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -302,10 +302,10 @@ export default function FinDeCursoRegistrar({
                                             <div className="col">
                                                 <div className="card-body py-5">
                                                     <h5 className="card-title">Paso 3: Cargar el archivo excel con las notas</h5>
-                                                    <p className="card-text"><b>1ro.:</b> utilice el botón "Descargar Planilla en Excel" y descarge el archivo en su equipo.</p>
-                                                    <p className="card-text"><b>2do.:</b> Modifique el archivo en su equipo, cargando las notas correspondiente a cada estudiante en la columna "Notas".</p>
-                                                    <p className="card-text"><b>3ro.:</b> utilice el botón "Cargar Planilla Excel" para seleccionar el archivo descargado y ya modificado, recuerde guardar los cambios.</p>
-                                                    <p className="card-text"><b>4to.:</b> Utilice el botón "Analizar Notas" para procesar las notas y generar el acta de examen.</p>
+                                                    <p className="card-text"><b>1ro.:</b> utilice el botón &quot;Descargar Planilla en Excel&quot; y descarge el archivo en su equipo.</p>
+                                                    <p className="card-text"><b>2do.:</b> Modifique el archivo en su equipo, cargando las notas correspondiente a cada estudiante en la columna &quot;Notas&quot;.</p>
+                                                    <p className="card-text"><b>3ro.:</b> utilice el botón &quot;Cargar Planilla Excel&quot; para seleccionar el archivo descargado y ya modificado, recuerde guardar los cambios.</p>
+                                                    <p className="card-text"><b>4to.:</b> Utilice el botón &quot;Analizar Notas&quot; para procesar las notas y generar el acta de examen.</p>
                                                 </div>
                                             </div>
                                         </div>

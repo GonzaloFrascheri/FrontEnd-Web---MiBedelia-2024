@@ -57,7 +57,7 @@ export default function FinDeCursoListAsignatura({
                                 <div className="col">
                                     <div className="card-body py-5">
                                         <h5 className="card-title">Paso 2: Seleccionar una asignatura</h5>
-                                        <p className="card-text">Utilice el selector: "Lista de asignaturas", despliéguelo y seleccione la asignatura correspondiente.</p>
+                                        <p className="card-text">Utilice el selector: &quot;Lista de asignaturas&quot;, despliéguelo y seleccione la asignatura correspondiente.</p>
                                     </div>
                                 </div>
                             </div>
@@ -75,7 +75,7 @@ export default function FinDeCursoListAsignatura({
                                 </div>
                                 <div className="alert-icon-content">
                                     <h6 className="alert-heading">Resultado</h6>
-                                    {estado.message}!
+                                    {estado.message}
                                 </div>
                             </div>
                         </div>

@@ -52,7 +52,7 @@ export default function Index({estado, formData, handleChange, handleSubmit, err
                                 </div>
                                 <div className="alert-icon-content">
                                     <h6 className="alert-heading">Resultado</h6>
-                                    {estado.message}!
+                                    {estado.message}
                                 </div>
                             </div>
                             <div className="card-footer text-center">

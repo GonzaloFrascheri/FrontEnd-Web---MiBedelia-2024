@@ -1,3 +1,5 @@
+import React from 'react'
+
 export default function ListarAsignaturas ({
   asignaturas,
   seleccionarAsignatura,
@@ -16,7 +18,7 @@ export default function ListarAsignaturas ({
           id='listaDeAsignaturas'
           name='asignatura'
           required
-          value={asignaturaSeleccionada || ''}
+          value={asignaturaSeleccionada ? asignaturaSeleccionada.id : ''}
           disabled={estanCargandoAsignaturas || asignaturas.length === 0}
         >
           {estanCargandoAsignaturas ? (
@@ -37,6 +39,22 @@ export default function ListarAsignaturas ({
           )}
         </select>
       </div>
+      {asignaturaSeleccionada && (
+        <div className='mt-3'>
+          <p>
+            <strong>Hora de inicio:</strong> {asignaturaSeleccionada.horaInicio}
+          </p>
+          <p>
+            <strong>Hora de fin:</strong> {asignaturaSeleccionada.horaFin}
+          </p>
+          <p>
+            <strong>Días dictados:</strong>{' '}
+            {asignaturaSeleccionada.diasDictados
+              ? asignaturaSeleccionada.diasDictados.join(', ')
+              : 'No disponible'}
+          </p>
+        </div>
+      )}
     </div>
   )
 }

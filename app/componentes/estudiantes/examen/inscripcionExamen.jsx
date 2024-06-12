@@ -50,7 +50,7 @@ export default function Index ({
                   </div>
                   <div className='alert-icon-content'>
                     <h6 className='alert-heading'>Resultado</h6>
-                    {estado.message}!
+                    {estado.message}
                   </div>
                 </div>
               </div>

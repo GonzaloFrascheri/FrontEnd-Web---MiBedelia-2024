@@ -32,7 +32,8 @@ export default function EstudianteInscripcionAsignatura () {
   }
 
   const handleSubjectChange = e => {
-    setSelectedSubjectId(e.target.value)
+    const selectedSubject = subjects.find(subject => subject.id === Number(e.target.value))
+    setSelectedSubjectId(selectedSubject)
   }
 
   useEffect(() => {
