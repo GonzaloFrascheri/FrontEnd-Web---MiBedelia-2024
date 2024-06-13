@@ -14,20 +14,22 @@ export default function Index({estado, handleChange, handleSubmit, docenteDto}) 
                             <form onSubmit={handleSubmit}>
                                 <div className="card-body">
                                     <div className="row gx-3">
-                                        <div className="mb-3">
-                                            <label className="text-gray-600 small">Cedula</label>
-                                            <input
-                                                className="form-control form-control-solid"
-                                                name="ci"
-                                                type="text"
-                                                placeholder="Cedula"
-                                                maxLength="8"
-                                                value={docenteDto.ci}
-                                                onChange={handleChange} required
-                                            />
-                                            {docenteDto.ci === "" && (
-                                                <span className="text-danger text-xs">Este campo es requerido</span>
-                                            )}
+                                        <div className="col-md-6">
+                                            <div className="mb-3">
+                                                <label className="text-gray-600 small">Cedula</label>
+                                                <input
+                                                    className="form-control form-control-solid"
+                                                    name="ci"
+                                                    type="number"
+                                                    placeholder="Cedula"
+                                                    maxLength="8"
+                                                    value={docenteDto.ci}
+                                                    onChange={handleChange} required
+                                                />
+                                                {docenteDto.ci === "" && (
+                                                    <span className="text-danger text-xs">Este campo es requerido</span>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="row gx-3">
