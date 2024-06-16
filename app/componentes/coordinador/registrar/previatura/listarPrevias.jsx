@@ -266,8 +266,8 @@ export default function ListarPreviasInfo({
                                 </form>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" onClick={handleCancelar}>Cancelar</button>
-                                <button type="button" className="btn btn-primary" onClick={handleAsignarPrevia}>Asignar</button>
+                                <button id="btnCancelar" type="button" className="btn btn-secondary" onClick={handleCancelar}>Cancelar</button>
+                                <button id="btnAsignar" type="button" className="btn btn-primary" onClick={handleAsignarPrevia}>Asignar</button>
                             </div>
                         </div>
                     </div>

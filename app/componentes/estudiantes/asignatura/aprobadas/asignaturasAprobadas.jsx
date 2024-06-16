@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import ListarCarreras from '@/app/componentes/reutilizables/listarCarreras'
+import axios from '@/utils/axios'
 
 export default function AsignaturasAprobadas({
   resetearForm,
   carreraSeleccionada,
   estanCargandoCarreras,
   estado,
+  setEstado,
   carreras,
   seleccionarCarrera,
-  obtenerAsignaturasAprobadas,
   fechaInicio,
   setFechaInicio,
   fechaFin,
-  setFechaFin
+  setFechaFin,
+  userData
 }) {
   const [asignaturasAprobadas, setAsignaturasAprobadas] = useState([]);
   const [mensaje, setMensaje] = useState('');
@@ -22,9 +24,32 @@ export default function AsignaturasAprobadas({
       alert('Debes seleccionar una carrera antes de ver las asignaturas aprobadas.');
       return;
     }
+    const obtenerAsignaturasAprobadas = async () => {
+      try {
+        console.log(`/Estudiante/getAsignaturasAprobadas?idEstudiante=${userData.id}&idCarrera=${carreraSeleccionada}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
+        const response = await axios.get(
+          `/Estudiante/getAsignaturasAprobadas?idEstudiante=${userData.id}&idCarrera=${carreraSeleccionada}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
+        )
+        const { data } = response
+        return data
+      } catch (error) {
+        console.info('error', error)
+        const { status, data } = error.response
+        setEstado({
+          estado: status,
+          message: data.message
+        })
+        return []
+      }
+    }
     
     const asignaturas = await obtenerAsignaturasAprobadas();
-    
+
+    console.info('asignaturas', asignaturas)
+    console.info('fechaInicio', fechaInicio)
+    console.info('fechaFin', fechaFin)
+
+
     const asignaturasFiltradas = asignaturas.filter(asignaturas => {
       const fechaAprobacion = new Date(asignaturas.fechaAprobacion);
       const fechaInicioFiltro = fechaInicio ? new Date(fechaInicio) : null ;
@@ -39,12 +64,12 @@ export default function AsignaturasAprobadas({
       
     });
     
-    if(asignaturasFiltradas.length === 0){
+    if(asignaturas.length === 0){
       setMensaje('No existen asignaturas aprobadas en el rango de tiempo solicitado.')
       return;
     }
 
-    setAsignaturasAprobadas(asignaturasFiltradas);
+    setAsignaturasAprobadas(asignaturas);
   };
 
   const formatearFecha = (fecha) => {
@@ -106,6 +131,7 @@ export default function AsignaturasAprobadas({
                     </div>
                     <div className='card-footer text-center'>
                       <button
+                        id='btnListadoAsignaturasAprobadas'
                         disabled={!fechaInicio || !fechaFin}
                         onClick={handleVerAsignaturas}
                         type='button'

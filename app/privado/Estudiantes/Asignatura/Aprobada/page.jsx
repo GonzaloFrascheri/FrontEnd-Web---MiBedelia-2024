@@ -19,7 +19,7 @@ function EstudianteAsignaturasAprobadas () {
   const [userData, setUserData] = useState('')
   const [careers, setCareers] = useState([])
   const [careesAreLoading, setCareesAreLoading] = useState(true)
-  const [selectedCareer, setSelectedCareer] = useState('')
+  const [selectedCarrera, setSelectedCarrera] = useState('')
   const { isSidebarToggled } = useSidebar()
   const [fechaInicio, setFechaInicio] = useState('')
   const [fechaFin, setFechaFin] = useState('')
@@ -58,26 +58,9 @@ function EstudianteAsignaturasAprobadas () {
     }
   }, [userData])
 
-  const obtenerAsignaturasAprobadas = async () => {
-    try {
-      const response = await axios.get(
-        `/Estudiante/getAsignaturasAprobadas?idEstudiante=${userData.id}&idCarrera=${selectedCareer}`
-      )
-      const { data } = response
-      return data
-    } catch (error) {
-      const { status, data } = error.response
-      setEstado({
-        estado: status,
-        message: data.message
-      })
-      return []
-    }
-  }
-
   // Manejador de cambio de carrera
   const handleCareerChange = e => {
-    setSelectedCareer(e.target.value)
+    setSelectedCarrera(e.target.value)
   }
 
   const resetFormStatus = () => {
@@ -85,7 +68,7 @@ function EstudianteAsignaturasAprobadas () {
       message: '',
       estado: ''
     })
-    setSelectedCareer('')
+    setSelectedCarrera('')
     setCareers(prevState => [...prevState])
   }
 
@@ -129,16 +112,17 @@ function EstudianteAsignaturasAprobadas () {
                 </div>
                 <AsignaturasAprobadas
                   estado={estado}
+                  setEstado={setEstado}
                   resetearForm={resetFormStatus}
                   carreras={careers}
-                  carreraSeleccionada={selectedCareer}
+                  carreraSeleccionada={selectedCarrera}
                   seleccionarCarrera={handleCareerChange}
                   estanCargandoCarreras={careesAreLoading}
-                  obtenerAsignaturasAprobadas={obtenerAsignaturasAprobadas}
                   fechaInicio={fechaInicio}
                   setFechaInicio={setFechaInicio}
                   fechaFin={fechaFin}
                   setFechaFin={setFechaFin}
+                  userData={userData}
                 />
               </main>
             </div>

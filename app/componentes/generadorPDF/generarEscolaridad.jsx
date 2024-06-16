@@ -28,7 +28,7 @@ export function IGenerarPdfEscolaridad(){
 
         // Título principal
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(20);
+        doc.setFontSize(18);
         doc.setTextColor(0, 0, 255);
         doc.text('Escolaridad', 105, imgY + imgHeight + 10, null, null, 'center');
 
@@ -55,7 +55,7 @@ export function IGenerarPdfEscolaridad(){
         currentY = doc.autoTable.previous.finalY + 10;
 
         // Lista de asignaturas cursadas
-        doc.setFontSize(20);
+        doc.setFontSize(16);
         doc.text('Asignaturas cursadas:', 10, currentY);
         currentY += 10;
 
@@ -65,28 +65,30 @@ export function IGenerarPdfEscolaridad(){
             startY: currentY,
             head: [['Nombre Asignatura', 'Resultado', 'Nombre Semestre']],
             body: inscripcionesAsignaturas.map(asignatura => [asignatura.nombreAsignatura, asignatura.resultado, asignatura.nombreSemestre]),
-            theme: 'grid'
+            theme: 'grid',
+            styles: { halign: 'center' },
         });
 
         // Actualiza currentY para la siguiente sección
         currentY = doc.autoTable.previous.finalY + 10;
 
         // Lista de exámenes inscritos
-        doc.setFontSize(20);
-        doc.text('Exámenes inscritos:', 10, currentY);
+        doc.setFontSize(16);
+        doc.text('Exámenes inscriptos:', 10, currentY);
         currentY += 10;
 
         doc.setFontSize(12);
 
         if (inscripcionesExamenes.length === 0) {
-            doc.text('No hay exámenes inscritos.', 10, currentY);
+            doc.text('No hay exámenes inscriptos.', 10, currentY);
         } else {
             // Tabla de exámenes inscritos
             doc.autoTable({
                 startY: currentY,
                 head: [['Nombre Examen', 'Resultado', 'Nombre Semestre']],
                 body: inscripcionesExamenes.map(examen => [examen.nombreExamen, examen.resultado, examen.nombreSemestre]),
-                theme: 'grid'
+                theme: 'grid',
+                styles: { halign: 'center' },
             });
         }
 

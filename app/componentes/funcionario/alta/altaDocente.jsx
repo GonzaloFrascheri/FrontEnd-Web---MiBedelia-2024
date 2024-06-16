@@ -67,6 +67,7 @@ export default function Index({estado, handleChange, handleSubmit, docenteDto}) 
                                 </div>
                                 <div className="card-footer text-center">
                                     <button 
+                                        id="btnAltaDocente"
                                         className="btn btn-primary"
                                         type="submit">Alta Docente</button>
                                 </div>

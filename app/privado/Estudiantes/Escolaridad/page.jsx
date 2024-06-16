@@ -16,7 +16,7 @@ export default function Index() {
     // Carreras
     const [listaCarrera, setListaCarrera] = useState([])
     const [careesAreLoading, setCareesAreLoading] = useState(true)
-    const [selectedCarreraId, setSelectedCarreraId] = useState(null)
+    const [selectedCarreraId, setSelectedCarreraId] = useState({ id: null, nombre: null })
     
     // Escolaridad
     const [listasInfo, setListasInfo] = useState({
@@ -70,14 +70,14 @@ export default function Index() {
         try {
             const response = await axios.get(`Estudiante/generarEscolaridad?carreraId=` + selectedCarreraId.id)
             setEscolaridadDto(response.data)
-            } catch (error) {
-                console.error('Error fetching listaGenerarEscolaridad:', error)
-            }
+        } catch (error) {
+            console.error('Error fetching listaGenerarEscolaridad:', error)
         }
+    }
                 
     useEffect(() => {
         fetchGenerarEscolaridad()
-    }, [selectedCarreraId])
+    }, [selectedCarreraId.id])
 
     useEffect(() => {
         // Ruta relativa a la carpeta pública del proyecto
@@ -85,7 +85,7 @@ export default function Index() {
         loadImageAsBase64(logoUrl, (base64) => {
           setLogoBase64(base64);
         });
-      }, []);
+    }, []);
 
     const [logoBase64, setLogoBase64] = useState(null);
     const formatearFecha = (fecha) => {
@@ -117,39 +117,6 @@ export default function Index() {
             }
         }
     }
-
-
-    /*
-    {
-        "nombreEstudiante": "string",
-        "cedula": "string",
-        "carrera": "string",
-        "fechaEmision": "2024-06-07T13:35:39.412Z",
-        "inscripcionesAsignaturas": [
-          {
-            "id": 0,
-            "finalizado": true,
-            "fechaInscripcion": "2024-06-07T13:35:39.412Z",
-            "resultado": "string",
-            "nombreAsignatura": "string",
-            "gradoAsignatura": 0,
-            "nombreSemestre": "string"
-          }
-        ],
-        "inscripcionesExamenes": [
-          {
-            "id": 0,
-            "finalizado": true,
-            "fechaInscripcion": "2024-06-07T13:35:39.412Z",
-            "anioLectivo": 0,
-            "resultado": "string",
-            "nombreExamen": "string",
-            "fechaExamen": "2024-06-07T13:35:39.412Z",
-            "gradoAsignatura": 0,
-            "nombreSemestre": "string"
-          }
-        ]
-    }*/
 
     // Función para cargar la imagen y convertirla a base64
     const loadImageAsBase64 = (url, callback) => {
