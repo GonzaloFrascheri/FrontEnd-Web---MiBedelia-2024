@@ -110,9 +110,10 @@ export default function ListarInscriptosAsignaturas({ listaAsignaturas, handleAs
                                 </tr>
                             </thead>
                             <tbody>
+                                {console.info('Horarios:', horarios)}
                                 {horarios.map((horario, index) => (
                                     <tr key={index}>
-                                        <td>{horario.diasDictados.join(', ')}</td>
+                                        <td>{horario.diasDictados ? horario.diasDictados.join(', ') : 'No disponible'}</td>
                                         <td>{horario.nombreDocente}</td>
                                         <td>{formatearFecha(horario.inicioSemestre)}</td>
                                         <td>{formatearFecha(horario.finSemestre)}</td>

@@ -175,6 +175,15 @@ function FuncionarioExamenAsignatura() {
 
     if (!handleValidation()) return;
 
+    // valirdar que el arreglo de diasDictados no esté vacío
+    if (formData.diasDictados.length === 0) {
+      setErrors((prevState) => ({
+        ...prevState,
+        diasDictados: "Debe seleccionar al menos un día",
+      }));
+      return;
+    }
+
     try {
       const { data, status } = await axios.post(
         "Funcionario/registroHorarioAsignatura",

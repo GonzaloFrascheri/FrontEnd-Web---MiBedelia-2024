@@ -19,10 +19,12 @@ export default function ModificarHorarioAsignatura () {
   // Carreras
   const [listaCarrera, setListaCarrera] = useState([])
   const [selectedCarreraId, setSelectedCarreraId] = useState('')
+  const [selectedCarrera, setSelectedCarrera] = useState('')
   const [estanCargandoCarreras, setEstanCargandoCarreras] = useState(true)
   // Asignaturas
   const [listaAsignatura, setListaAsignatura] = useState([])
   const [selectedAsignaturaId, setSelectedAsignaturaId] = useState('')
+  const [selectedAsignatura, setSelectedAsignatura] = useState('')
   const [estanCargandoAsignaturas, setEstanCargandoAsignaturas] = useState(true)
   // Horarios
   const [listaHorarios, setListaHorarios] = useState([])
@@ -33,11 +35,13 @@ export default function ModificarHorarioAsignatura () {
   const handleCarreraChange = e => {
     e.preventDefault()
     setSelectedCarreraId(e.target.value)
+    setSelectedCarrera(e.target.options[e.target.selectedIndex].text)
   }
 
   const handleChangeAsignatura = e => {
     e.preventDefault()
     setSelectedAsignaturaId(e.target.value)
+    setSelectedAsignatura(e.target.options[e.target.selectedIndex].text)
   }
 
   const handleHorarioChange = id => {
@@ -146,10 +150,12 @@ export default function ModificarHorarioAsignatura () {
                   handleSubmit={handleSubmit}
                   carreras={listaCarrera}
                   seleccionarCarrera={handleCarreraChange}
+                  selectedCarrera={selectedCarrera}
                   estanCargandoCarreras={estanCargandoCarreras}
                   carreraSeleccionada={selectedCarreraId}
                   asignaturas={listaAsignatura}
                   seleccionarAsignatura={handleChangeAsignatura}
+                  selectedAsignatura={selectedAsignatura}
                   estanCargandoAsignaturas={estanCargandoAsignaturas}
                   asignaturaSeleccionada={selectedAsignaturaId}
                   horarios={listaHorarios}

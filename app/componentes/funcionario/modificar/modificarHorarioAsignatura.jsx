@@ -8,10 +8,12 @@ export default function Index ({
   handleSubmit,
   carreras,
   seleccionarCarrera,
+  selectedCarrera,
   estanCargandoCarreras,
   carreraSeleccionada,
   asignaturas,
   seleccionarAsignatura,
+  selectedAsignatura,
   estanCargandoAsignaturas,
   asignaturaSeleccionada,
   horarios,
@@ -39,7 +41,10 @@ export default function Index ({
             ) : !asignaturaSeleccionada ? (
               <>
                 <div className='card-header justify-content-center'>
-                  <h3 className='fw-light'>Seleccionar asignatura</h3>
+                  <h3 className='fw-light'>
+                    Seleccionar asignatura
+                    <span className="badge bg-primary text-white ms-5">carrera seleccionada: <b>{selectedCarrera}</b></span>
+                  </h3> 
                 </div>
                 <ListarAsignaturas
                   asignaturaSeleccionada={asignaturaSeleccionada}
@@ -51,7 +56,10 @@ export default function Index ({
             ) : !horarioSeleccionado ? (
               <>
                 <div className='card-header justify-content-center'>
-                  <h3 className='fw-light'>Seleccionar horario a editar</h3>
+                  <h3 className='fw-light'>
+                    Seleccionar horario a editar
+                    <span className="badge bg-primary text-white ms-5">asignatura seleccionada: <b>{selectedAsignatura}</b></span>
+                  </h3>
                 </div>
                 <ListarHorarios
                   horarioSeleccionado={horarioSeleccionado}
